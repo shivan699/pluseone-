@@ -1,0 +1,1424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Financial Support – MediCare</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@600;700;800&display=swap" rel="stylesheet"/>
+<style>
+/* ═══════════════ TOKENS ═══════════════ */
+:root{
+  --b9:#0d2557;--b7:#084620;--b6:#052a12;--b5:#03351e;
+  --b4:#074110;--b2:#bfdbfe;--b1:#dbeafe;--b0:#eff6ff;
+  --g6:#16a34a;--g1:#dcfce7;--g0:#f0fdf4;
+  --a6:#d97706;--a1:#fef3c7;
+  --r6:#dc2626;--r1:#fee2e2;
+  --p6:#7c3aed;--p1:#ede9fe;
+  --t6:#0d9488;--t1:#ccfbf1;
+  --bg:#f0f6ff;--surf:#fff;
+  --brd:#e2e8f0;--brd2:#c7d8f0;
+  --txt:#0f172a;--mut:#64748b;--mut2:#94a3b8;
+  --r:14px;--r2:10px;
+  --sh:0 2px 12px rgba(37,99,235,.07),0 1px 3px rgba(0,0,0,.06);
+  --shm:0 8px 32px rgba(37,99,235,.12),0 2px 8px rgba(0,0,0,.07);
+  --fh:'Sora',sans-serif;--fb:'Inter',sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--fb);background:var(--bg);color:var(--txt);min-height:100vh}
+button{cursor:pointer;font-family:inherit}
+input,select,textarea{font-family:inherit}
+img{max-width:100%}
+
+/* ═══════════════ HEADER ═══════════════ */
+.site-hdr{
+  background:linear-gradient(135deg,var(--b9),var(--b7) 55%,var(--b6));
+  padding:0 24px;position:sticky;top:0;z-index:300;
+  box-shadow:0 4px 24px rgba(13,37,87,.28);
+}
+.hdr-inner{display:flex;align-items:center;gap:14px;height:64px}
+.hdr-logo{display:flex;align-items:center;gap:10px}
+.logo-box{width:40px;height:40px;border-radius:11px;background:rgba(255,255,255,.18);
+  display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.logo-txt{font-family:var(--fh);font-size:18px;font-weight:800;color:#fff}
+.logo-txt span{color:#93c5fd}
+.hdr-badge{margin-left:auto;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.22);
+  color:#e0f2fe;font-size:11px;font-weight:600;padding:4px 12px;border-radius:20px;letter-spacing:.04em}
+
+/* ═══════════════ NAV TABS ═══════════════ */
+.nav-tabs{
+  background:var(--surf);border-bottom:2px solid var(--brd);
+  display:flex;gap:4px;padding:0 20px;overflow-x:auto;scrollbar-width:none;
+  position:sticky;top:64px;z-index:200;box-shadow:var(--sh);
+}
+.nav-tabs::-webkit-scrollbar{display:none}
+.nav-tab{
+  padding:14px 20px;font-size:13px;font-weight:600;
+  color:var(--mut);border:none;background:transparent;
+  border-bottom:2.5px solid transparent;white-space:nowrap;
+  transition:all .2s;display:flex;align-items:center;gap:7px;
+}
+.nav-tab.active{color:var(--b5);border-bottom-color:var(--b5);font-weight:700}
+.nav-tab:hover:not(.active){color:var(--b5)}
+
+/* ═══════════════ WRAP ═══════════════ */
+.wrap{max-width:900px;margin:0 auto;padding:28px 18px 80px}
+.pg{display:none;animation:up .3s ease}
+.pg.active{display:block}
+@keyframes up{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+
+/* ═══════════════ SEC TITLE ═══════════════ */
+.sec-hd{margin-bottom:22px}
+.sec-hd h2{font-family:var(--fh);font-size:22px;font-weight:800;color:var(--b9)}
+.sec-hd p{font-size:13px;color:var(--mut);margin-top:4px}
+
+/* ═══════════════ CARD ═══════════════ */
+.card{background:var(--surf);border-radius:var(--r);box-shadow:var(--sh);border:1px solid var(--brd)}
+.card-hd{padding:18px 22px;border-bottom:1px solid var(--brd);display:flex;align-items:center;gap:12px}
+.card-ico{width:40px;height:40px;border-radius:11px;background:var(--b0);
+  display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.card-hd-txt h3{font-family:var(--fh);font-size:15px;font-weight:700;color:var(--b9)}
+.card-hd-txt p{font-size:12px;color:var(--mut);margin-top:1px}
+.card-bd{padding:22px}
+
+/* ═══════════════ QUIZ STEP ═══════════════ */
+.quiz-step{display:none}
+.quiz-step.active{display:block}
+.q-label{font-family:var(--fh);font-size:16px;font-weight:700;color:var(--b9);margin-bottom:18px}
+.q-sub{font-size:13px;color:var(--mut);margin-top:-12px;margin-bottom:18px}
+.q-opts{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;margin-bottom:18px}
+.q-opt{
+  padding:14px 16px;border-radius:11px;border:1.5px solid var(--brd2);
+  background:var(--b0);font-size:13px;font-weight:500;color:var(--txt);
+  text-align:left;transition:all .2s;display:flex;align-items:center;gap:10px;
+}
+.q-opt:hover{border-color:var(--b4);background:var(--b1)}
+.q-opt.sel{border-color:var(--b5);background:var(--b1);color:var(--b7);font-weight:700}
+.q-opt .opt-ico{font-size:20px;flex-shrink:0}
+.q-opt-circle{width:18px;height:18px;border-radius:50%;border:2px solid var(--brd2);
+  flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.q-opt.sel .q-opt-circle{border-color:var(--b5);background:var(--b5)}
+.q-opt.sel .q-opt-circle::after{content:'✓';color:#fff;font-size:10px;font-weight:900}
+.q-inp{width:100%;padding:11px 14px;border:1.5px solid var(--brd2);border-radius:10px;
+  font-size:14px;background:var(--b0);outline:none;transition:all .2s;margin-bottom:14px}
+.q-inp:focus{border-color:var(--b5);box-shadow:0 0 0 3px rgba(37,99,235,.12);background:#fff}
+.q-prog{display:flex;gap:6px;margin-bottom:22px}
+.q-dot{height:4px;border-radius:4px;flex:1;background:var(--brd);transition:background .3s}
+.q-dot.done{background:var(--b5)}
+.q-dot.active{background:var(--b4)}
+.q-step-info{font-size:12px;color:var(--mut);margin-bottom:14px;font-weight:600}
+.btn-row{display:flex;gap:10px;margin-top:18px;flex-wrap:wrap}
+.btn{padding:11px 22px;border-radius:10px;font-size:13px;font-weight:700;border:none;transition:all .2s}
+.btn:hover{transform:translateY(-1px)}
+.btn-pri{background:var(--b5);color:#fff;box-shadow:0 4px 14px rgba(37,99,235,.3)}
+.btn-pri:hover{background:var(--b7)}
+.btn-sec{background:var(--surf);color:var(--b7);border:1.5px solid var(--brd2)}
+.btn-sec:hover{border-color:var(--b4);background:var(--b0)}
+.btn-g{background:linear-gradient(135deg,var(--g6),var(--t6));color:#fff;box-shadow:0 4px 14px rgba(22,163,74,.3)}
+
+/* QUIZ RESULT */
+.score-hero{
+  background:linear-gradient(135deg,var(--b9),var(--b6));
+  border-radius:var(--r);padding:28px;color:#fff;text-align:center;margin-bottom:20px;
+}
+.score-circle{
+  width:110px;height:110px;border-radius:50%;
+  border:6px solid rgba(255,255,255,.2);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  margin:0 auto 14px;background:rgba(255,255,255,.1);
+}
+.score-num{font-family:var(--fh);font-size:34px;font-weight:800}
+.score-lbl{font-size:11px;opacity:.7;font-weight:600;letter-spacing:.06em}
+.score-hero h2{font-family:var(--fh);font-size:18px;font-weight:800;margin-bottom:6px}
+.score-hero p{font-size:13px;opacity:.8;line-height:1.6}
+.schemes-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px;margin-bottom:20px}
+.scheme-card{border-radius:11px;padding:16px;border:1px solid var(--brd);box-shadow:var(--sh)}
+.scheme-card.tier1{background:var(--g0);border-color:#bbf7d0}
+.scheme-card.tier2{background:var(--b0);border-color:var(--b2)}
+.scheme-card.tier3{background:var(--a1);border-color:#fde68a}
+.scheme-head{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.scheme-ico{font-size:22px}
+.scheme-name{font-size:13px;font-weight:700;color:var(--b9)}
+.scheme-amt{font-family:var(--fh);font-size:18px;font-weight:800;margin-bottom:4px}
+.scheme-desc{font-size:11px;color:var(--mut);line-height:1.55}
+.rec-box{background:linear-gradient(135deg,#4f46e5,var(--p6));border-radius:var(--r);
+  padding:20px;color:#fff;display:flex;gap:14px;align-items:flex-start}
+.rec-ico{font-size:28px;flex-shrink:0;margin-top:2px}
+.rec-box h3{font-family:var(--fh);font-size:14px;font-weight:700;margin-bottom:5px}
+.rec-box p{font-size:13px;opacity:.85;line-height:1.65}
+
+/* ═══════════════ KYC FORM ═══════════════ */
+.form-sec{margin-bottom:24px}
+.form-sec-title{
+  font-family:var(--fh);font-size:13px;font-weight:700;color:var(--b7);
+  text-transform:uppercase;letter-spacing:.07em;margin-bottom:14px;
+  padding-bottom:8px;border-bottom:2px solid var(--b1);
+  display:flex;align-items:center;gap:8px;
+}
+.fgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px}
+.fgrid.two{grid-template-columns:1fr 1fr}
+.fg{display:flex;flex-direction:column;gap:5px}
+.fg.full{grid-column:1/-1}
+.fg label{font-size:11px;font-weight:700;color:var(--b7);text-transform:uppercase;letter-spacing:.05em}
+.fi{
+  padding:10px 13px;border:1.5px solid var(--brd2);border-radius:9px;
+  font-size:13px;background:var(--b0);outline:none;color:var(--txt);
+  transition:all .2s;width:100%;
+}
+.fi:focus{border-color:var(--b5);box-shadow:0 0 0 3px rgba(37,99,235,.12);background:#fff}
+.fi.err{border-color:var(--r6);box-shadow:0 0 0 3px rgba(220,38,38,.1)}
+.err-msg{font-size:11px;color:var(--r6);font-weight:600;margin-top:2px;display:none}
+.fi.err + .err-msg{display:block}
+select.fi{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2.5'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;background-size:14px;padding-right:32px}
+
+/* Upload card */
+.upload-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px;margin-bottom:8px}
+.up-card{
+  border:2px dashed var(--brd2);border-radius:11px;padding:18px 12px;
+  background:var(--b0);text-align:center;cursor:pointer;
+  transition:all .25s;position:relative;overflow:hidden;
+  display:flex;flex-direction:column;align-items:center;gap:8px;
+}
+.up-card.required::before{
+  content:'Required';position:absolute;top:6px;left:6px;
+  background:var(--r1);color:var(--r6);font-size:9px;font-weight:800;
+  padding:2px 7px;border-radius:20px;letter-spacing:.03em;
+}
+.up-card:hover{border-color:var(--b4);background:var(--b1)}
+.up-card input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.up-ico{font-size:30px}
+.up-title{font-size:12px;font-weight:700;color:var(--b7)}
+.up-sub{font-size:10px;color:var(--mut2)}
+.up-card.has-file{border-color:var(--g6);border-style:solid;background:var(--g0)}
+.up-card.has-file::before{content:'✓ Uploaded';background:var(--g1);color:var(--g6)}
+.up-preview{width:60px;height:60px;border-radius:8px;object-fit:cover;display:none}
+.up-card.has-file .up-preview{display:block}
+.up-card.has-file .up-ico-wrap{display:none}
+.up-fname{font-size:10px;color:var(--g6);font-weight:700;word-break:break-all;display:none}
+.up-card.has-file .up-fname{display:block}
+.up-ico-wrap{display:flex;flex-direction:column;align-items:center;gap:6px}
+
+/* KYC stepper nav */
+.kyc-steps{display:flex;gap:0;margin-bottom:24px;overflow-x:auto;scrollbar-width:none}
+.kyc-steps::-webkit-scrollbar{display:none}
+.kyc-stp{
+  display:flex;align-items:center;gap:0;flex:1;min-width:0;cursor:pointer;
+}
+.kyc-stp-inner{
+  display:flex;flex-direction:column;align-items:center;gap:4px;flex:1;
+  padding:10px 6px;border-bottom:2.5px solid var(--brd);
+  transition:border .2s;min-width:60px;
+}
+.kyc-stp.active .kyc-stp-inner{border-color:var(--b5)}
+.kyc-stp.done .kyc-stp-inner{border-color:var(--g6)}
+.stp-dot{
+  width:30px;height:30px;border-radius:50%;border:2px solid var(--brd);
+  background:var(--surf);font-size:12px;font-weight:700;color:var(--mut2);
+  display:flex;align-items:center;justify-content:center;transition:all .25s;flex-shrink:0;
+}
+.kyc-stp.active .stp-dot{border-color:var(--b5);background:var(--b5);color:#fff}
+.kyc-stp.done .stp-dot{border-color:var(--g6);background:var(--g6);color:#fff}
+.stp-lbl{font-size:10px;font-weight:600;color:var(--mut2);white-space:nowrap;text-align:center}
+.kyc-stp.active .stp-lbl{color:var(--b6);font-weight:700}
+.kyc-stp.done .stp-lbl{color:var(--g6);font-weight:700}
+.kyc-section{display:none}
+.kyc-section.active{display:block}
+
+/* ═══════════════ STATUS TRACKER ═══════════════ */
+.status-summary{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));
+  gap:12px;margin-bottom:24px;
+}
+.ss-card{border-radius:11px;padding:15px 16px;border:1px solid var(--brd);box-shadow:var(--sh)}
+.ss-lbl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--mut);margin-bottom:5px}
+.ss-val{font-family:var(--fh);font-size:16px;font-weight:800}
+.ss-blue{background:var(--b0)}.ss-blue .ss-val{color:var(--b7)}
+.ss-green{background:var(--g0)}.ss-green .ss-val{color:var(--g6)}
+.ss-amber{background:var(--a1)}.ss-amber .ss-val{color:var(--a6)}
+.ss-purple{background:var(--p1)}.ss-purple .ss-val{color:var(--p6)}
+.ss-gray{background:#f1f5f9}.ss-gray .ss-val{color:var(--mut)}
+
+/* Timeline */
+.timeline{position:relative;padding-left:48px}
+.timeline::before{content:'';position:absolute;left:16px;top:0;bottom:0;width:2px;background:var(--brd)}
+.tl-item{position:relative;margin-bottom:28px}
+.tl-item:last-child{margin-bottom:0}
+.tl-dot{
+  position:absolute;left:-40px;top:2px;
+  width:32px;height:32px;border-radius:50%;
+  border:2px solid var(--brd);background:var(--surf);
+  display:flex;align-items:center;justify-content:center;
+  font-size:14px;z-index:1;transition:all .3s;
+}
+.tl-item.done .tl-dot{background:var(--g6);border-color:var(--g6);color:#fff}
+.tl-item.current .tl-dot{
+  background:var(--b5);border-color:var(--b5);color:#fff;
+  box-shadow:0 0 0 5px rgba(37,99,235,.18);
+  animation:tl-pulse 1.8s infinite;
+}
+.tl-item.rejected .tl-dot{background:var(--r6);border-color:var(--r6);color:#fff}
+@keyframes tl-pulse{0%,100%{box-shadow:0 0 0 5px rgba(37,99,235,.18)}50%{box-shadow:0 0 0 10px rgba(37,99,235,.07)}}
+.tl-card{
+  background:var(--surf);border-radius:11px;padding:16px 18px;
+  border:1px solid var(--brd);box-shadow:var(--sh);
+  transition:box-shadow .2s;
+}
+.tl-card:hover{box-shadow:var(--shm)}
+.tl-item.current .tl-card{border-color:var(--b2);background:var(--b0)}
+.tl-item.done .tl-card{border-color:#bbf7d0}
+.tl-item.rejected .tl-card{border-color:#fecaca;background:var(--r1)}
+.tl-head{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:6px;flex-wrap:wrap}
+.tl-title{font-size:14px;font-weight:700;color:var(--b9)}
+.tl-item.done .tl-title{color:var(--g6)}
+.tl-item.current .tl-title{color:var(--b6)}
+.pill{display:inline-block;padding:3px 10px;border-radius:20px;font-size:10px;font-weight:700;white-space:nowrap}
+.pill-g{background:var(--g1);color:var(--g6)}
+.pill-b{background:var(--b1);color:var(--b6)}
+.pill-a{background:var(--a1);color:var(--a6)}
+.pill-r{background:var(--r1);color:var(--r6)}
+.pill-p{background:var(--p1);color:var(--p6)}
+.tl-date{font-size:11px;color:var(--mut);margin-bottom:4px;font-weight:600}
+.tl-desc{font-size:12px;color:var(--mut);line-height:1.6}
+.tl-team{font-size:11px;color:var(--b5);font-weight:600;margin-top:6px;display:flex;align-items:center;gap:4px}
+
+/* Pending docs */
+.pending-docs{
+  background:var(--a1);border:1px solid #fde68a;border-radius:11px;padding:14px 16px;
+  display:flex;align-items:flex-start;gap:10px;margin-bottom:20px;
+}
+.pending-docs.ok{background:var(--g0);border-color:#bbf7d0}
+.pd-ico{font-size:20px;flex-shrink:0;margin-top:1px}
+.pd-title{font-size:13px;font-weight:700;color:var(--a6);margin-bottom:4px}
+.pending-docs.ok .pd-title{color:var(--g6)}
+.pd-list{font-size:12px;color:var(--a6);line-height:1.7}
+.pending-docs.ok .pd-list{color:var(--g6)}
+
+/* Action buttons */
+.action-bar{display:flex;gap:10px;flex-wrap:wrap;margin-top:24px}
+.act-btn{
+  display:flex;align-items:center;gap:8px;padding:11px 18px;
+  border-radius:10px;font-size:13px;font-weight:700;border:none;transition:all .2s;
+}
+.act-btn:hover{transform:translateY(-1px)}
+.act-dl{background:var(--b5);color:#fff;box-shadow:0 2px 10px rgba(37,99,235,.3)}
+.act-cs{background:var(--surf);color:var(--b7);border:1.5px solid var(--brd2)}
+.act-ed{background:var(--surf);color:var(--a6);border:1.5px solid #fde68a}
+.act-vd{background:var(--surf);color:var(--p6);border:1.5px solid #c4b5fd}
+.act-sim{background:linear-gradient(135deg,var(--g6),var(--t6));color:#fff;box-shadow:0 2px 10px rgba(22,163,74,.3)}
+.act-btn:disabled{opacity:.45;cursor:not-allowed;transform:none}
+
+/* ═══════════════ TOAST ═══════════════ */
+.toast{
+  position:fixed;bottom:24px;right:24px;z-index:999;
+  background:var(--b9);color:#fff;padding:12px 18px;border-radius:11px;
+  font-size:13px;font-weight:600;box-shadow:0 8px 32px rgba(0,0,0,.22);
+  display:flex;align-items:center;gap:8px;max-width:calc(100vw - 48px);
+  transform:translateY(80px);opacity:0;transition:all .35s cubic-bezier(.34,1.56,.64,1);
+}
+.toast.show{transform:none;opacity:1}
+
+/* ═══════════════ BADGE ═══════════════ */
+.badge{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700}
+.badge-g{background:var(--g1);color:var(--g6)}
+.badge-b{background:var(--b1);color:var(--b6)}
+.badge-a{background:var(--a1);color:var(--a6)}
+.badge-r{background:var(--r1);color:var(--r6)}
+
+/* ═══════════════ RESPONSIVE ═══════════════ */
+@media(max-width:640px){
+  .wrap{padding:16px 12px 60px}
+  .fgrid{grid-template-columns:1fr}
+  .fgrid.two{grid-template-columns:1fr}
+  .q-opts{grid-template-columns:1fr 1fr}
+  .status-summary{grid-template-columns:1fr 1fr}
+  .schemes-grid{grid-template-columns:1fr}
+  .nav-tab{padding:12px 14px;font-size:12px}
+  .kyc-stp-inner{padding:8px 4px}
+  .timeline{padding-left:38px}
+  .tl-dot{left:-33px;width:26px;height:26px;font-size:12px}
+  .action-bar{flex-direction:column}
+  .act-btn{justify-content:center}
+}
+@media(max-width:400px){
+  .q-opts{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- ══ HEADER ══ -->
+<header class="site-hdr">
+  <div class="hdr-inner">
+    <div class="hdr-logo">
+       <img src="assets/logo.png" width="200" height="50" viewBox="0 0 24 24" fill="none"/>
+  </div>
+</header>
+
+<!-- ══ NAV TABS ══ -->
+<div class="nav-tabs">
+  <button class="nav-tab active" data-pg="quiz">🧩 Eligibility Quiz</button>
+  <button class="nav-tab" data-pg="kyc">📋 KYC Application</button>
+  <button class="nav-tab" data-pg="status">📊 Application Status</button>
+</div>
+
+<div class="wrap">
+
+<!-- ══════════════════════════════════════════
+     PAGE 1 — ELIGIBILITY QUIZ
+══════════════════════════════════════════ -->
+<div class="pg active" id="pg-quiz">
+  <div class="sec-hd">
+    <h2>Financial Eligibility Quiz</h2>
+    <p>Answer a few questions to discover which schemes and assistance you qualify for.</p>
+  </div>
+
+  <div class="card">
+    <div class="card-hd">
+      <div class="card-ico">🧩</div>
+      <div class="card-hd-txt">
+        <h3>Check Your Eligibility</h3>
+        <p>Takes less than 2 minutes — 9 quick questions.</p>
+      </div>
+    </div>
+    <div class="card-bd">
+
+      <!-- Progress dots -->
+      <div class="q-prog" id="q-prog"></div>
+      <div class="q-step-info" id="q-step-info">Step 1 of 9</div>
+
+      <!-- Q1 Annual Income -->
+      <div class="quiz-step active" id="qs-1">
+        <div class="q-label">What is your annual household income?</div>
+        <div class="q-sub">Include all family members' combined income.</div>
+        <div class="q-opts">
+          <button class="q-opt" data-q="income" data-v="below1" onclick="selOpt(this)"><span class="q-opt-circle"></span><span class="opt-ico">💚</span>Below ₹1 Lakh</button>
+          <button class="q-opt" data-q="income" data-v="1to3" onclick="selOpt(this)"><span class="q-opt-circle"></span><span class="opt-ico">🟡</span>₹1L – ₹3L</button>
+          <button class="q-opt" data-q="income" data-v="3to5" onclick="selOpt(this)"><span class="q-opt-circle"></span><span class="opt-ico">🟠</span>₹3L – ₹5L</button>
+          <button class="q-opt" data-q="income" data-v="5to10" onclick="selOpt(this)"><span class="q-opt-circle"></span><span class="opt-ico">🔵</span>₹5L – ₹10L</button>
+          <button class="q-opt" data-q="income" data-v="above10" onclick="selOpt(this)"><span class="q-opt-circle"></span><span class="opt-ico">🔴</span>Above ₹10 Lakh</button>
+        </div>
+        <div class="btn-row"><button class="btn btn-pri" onclick="nextQ(1)">Next →</button></div>
+      </div>
+
+      <!-- Q2 Employment -->
+      <div class="quiz-step" id="qs-2">
+        <div class="q-label">What is your employment status?</div>
+        <div class="q-opts">
+          <button class="q-opt" data-q="employ" data-v="govt" onclick="selOpt(this)"><span class="q-opt-circle"></span><span class="opt-ico">🏛️</span>Government Employee</button>
+          <button class="q-opt" data-q="employ" data-v="private" onclick="selOpt(this)"><span class="q-opt-circle"></span><span class="opt-ico">🏢</span>Private Sector</button>
+          <button class="q-opt" data-q="employ" data-v="self" onclick="selOpt(this)"><span class="q-opt-circle"></span><span class="opt-ico">💼</span>Self-Employed</button>
+          <button class="q-opt" data-q="employ" data-v="farmer" onclick="selOpt(this)"><span class="q-opt-circle"></span><span class="opt-ico">🌾</span>Farmer</button>
+          <button class="q-opt" data-q="employ" data-v="unemployed" onclick="selOpt(this)"><span class="q-opt-circle"></span><span class="opt-ico">🔍</span>Unemployed</button>
+          <button class="q-opt" data-q="employ" data-v="retired" onclick="selOpt(this)"><span class="q-opt-circle"></span><span class="opt-ico">🧓</span>Retired</button>
+        </div>
+        <div class="btn-row">
+          <button class="btn btn-sec" onclick="prevQ(2)">← Back</button>
+          <button class="btn btn-pri" onclick="nextQ(2)">Next →</button>
+        </div>
+      </div>
+
+      <!-- Q3 Govt Scheme -->
+      <div class="quiz-step" id="qs-3">
+        <div class="q-label">Are you enrolled in any government scheme?</div>
+        <div class="q-opts">
+          <button class="q-opt" data-q="scheme" data-v="ab" onclick="selOpt(this)"><span class="q-opt-circle"></span><span class="opt-ico">🛡️</span>Ayushman Bharat</button>
+          <button class="q-opt" data-q="scheme" data-v="cghs" onclick="selOpt(this)"><span class="q-opt-circle"></span><span class="opt-ico">🏛️</span>CGHS</button>
+          <button class="q-opt" data-q="scheme" data-v="esi" onclick="selOpt(this)"><span class="q-opt-circle"></span><span class="opt-ico">🏭</span>ESIC</button>
+          <button class="q-opt" data-q="scheme" data-v="rsby" onclick="selOpt(this)"><span class="q-opt-circle"></span><span class="opt-ico">💳</span>State Health Scheme</button>
+          <button class="q-opt" data-q="scheme" data-v="none" onclick="selOpt(this)"><span class="q-opt-circle"></span><span class="opt-ico">❌</span>Not Enrolled</button>
+        </div>
+        <div class="btn-row">
+          <button class="btn btn-sec" onclick="prevQ(3)">← Back</button>
+          <button class="btn btn-pri" onclick="nextQ(3)">Next →</button>
+        </div>
+      </div>
+
+      <!-- Q4 Insurance -->
+      <div class="quiz-step" id="qs-4">
+        <div class="q-label">Do you have health insurance?</div>
+        <div class="q-opts">
+          <button class="q-opt" data-q="insurance" data-v="yes_corp" onclick="selOpt(this)"><span class="q-opt-circle"></span><span class="opt-ico">🏢</span>Yes — Corporate Policy</button>
+          <button class="q-opt" data-q="insurance" data-v="yes_ind" onclick="selOpt(this)"><span class="q-opt-circle"></span><span class="opt-ico">👤</span>Yes — Individual Policy</button>
+          <button class="q-opt" data-q="insurance" data-v="no" onclick="selOpt(this)"><span class="q-opt-circle"></span><span class="opt-ico">❌</span>No Insurance</button>
+        </div>
+        <div class="btn-row">
+          <button class="btn btn-sec" onclick="prevQ(4)">← Back</button>
+          <button class="btn btn-pri" onclick="nextQ(4)">Next →</button>
+        </div>
+      </div>
+
+      <!-- Q5 Family Members -->
+      <div class="quiz-step" id="qs-5">
+        <div class="q-label">How many family members are financially dependent on you?</div>
+        <div class="q-opts">
+          <button class="q-opt" data-q="family" data-v="0" onclick="selOpt(this)"><span class="q-opt-circle"></span><span class="opt-ico">👤</span>None</button>
+          <button class="q-opt" data-q="family" data-v="1to2" onclick="selOpt(this)"><span class="q-opt-circle"></span><span class="opt-ico">👨‍👩‍👦</span>1 – 2</button>
+          <button class="q-opt" data-q="family" data-v="3to4" onclick="selOpt(this)"><span class="q-opt-circle"></span><span class="opt-ico">👨‍👩‍👧‍👦</span>3 – 4</button>
+          <button class="q-opt" data-q="family" data-v="5plus" onclick="selOpt(this)"><span class="q-opt-circle"></span><span class="opt-ico">🏘️</span>5 or more</button>
+        </div>
+        <div class="btn-row">
+          <button class="btn btn-sec" onclick="prevQ(5)">← Back</button>
+          <button class="btn btn-pri" onclick="nextQ(5)">Next →</button>
+        </div>
+      </div>
+
+      <!-- Q6 Medical Condition -->
+      <div class="quiz-step" id="qs-6">
+        <div class="q-label">Do you have any of the following conditions?</div>
+        <div class="q-opts">
+          <button class="q-opt" data-q="condition" data-v="cancer" onclick="selOpt(this)"><span class="q-opt-circle"></span><span class="opt-ico">🎗️</span>Cancer / Tumour</button>
+          <button class="q-opt" data-q="condition" data-v="cardiac" onclick="selOpt(this)"><span class="q-opt-circle"></span><span class="opt-ico">❤️</span>Cardiac Disease</button>
+          <button class="q-opt" data-q="condition" data-v="kidney" onclick="selOpt(this)"><span class="q-opt-circle"></span><span class="opt-ico">🫘</span>Kidney / Dialysis</button>
+          <button class="q-opt" data-q="condition" data-v="neuro" onclick="selOpt(this)"><span class="q-opt-circle"></span><span class="opt-ico">🧠</span>Neurological</button>
+          <button class="q-opt" data-q="condition" data-v="ortho" onclick="selOpt(this)"><span class="q-opt-circle"></span><span class="opt-ico">🦴</span>Orthopaedic</button>
+          <button class="q-opt" data-q="condition" data-v="other" onclick="selOpt(this)"><span class="q-opt-circle"></span><span class="opt-ico">💊</span>Other Serious Illness</button>
+        </div>
+        <div class="btn-row">
+          <button class="btn btn-sec" onclick="prevQ(6)">← Back</button>
+          <button class="btn btn-pri" onclick="nextQ(6)">Next →</button>
+        </div>
+      </div>
+
+      <!-- Q7 Disability -->
+      <div class="quiz-step" id="qs-7">
+        <div class="q-label">Do you or a family member have a disability?</div>
+        <div class="q-opts">
+          <button class="q-opt" data-q="disability" data-v="yes_cert" onclick="selOpt(this)"><span class="q-opt-circle"></span><span class="opt-ico">📜</span>Yes — with Certificate</button>
+          <button class="q-opt" data-q="disability" data-v="yes_no_cert" onclick="selOpt(this)"><span class="q-opt-circle"></span><span class="opt-ico">✋</span>Yes — without Certificate</button>
+          <button class="q-opt" data-q="disability" data-v="no" onclick="selOpt(this)"><span class="q-opt-circle"></span><span class="opt-ico">✅</span>No Disability</button>
+        </div>
+        <div class="btn-row">
+          <button class="btn btn-sec" onclick="prevQ(7)">← Back</button>
+          <button class="btn btn-pri" onclick="nextQ(7)">Next →</button>
+        </div>
+      </div>
+
+      <!-- Q8 Senior Citizen -->
+      <div class="quiz-step" id="qs-8">
+        <div class="q-label">Is the patient a senior citizen?</div>
+        <div class="q-opts">
+          <button class="q-opt" data-q="senior" data-v="yes60" onclick="selOpt(this)"><span class="q-opt-circle"></span><span class="opt-ico">🧓</span>Yes — Age 60–79</button>
+          <button class="q-opt" data-q="senior" data-v="yes80" onclick="selOpt(this)"><span class="q-opt-circle"></span><span class="opt-ico">👴</span>Yes — Age 80+</button>
+          <button class="q-opt" data-q="senior" data-v="no" onclick="selOpt(this)"><span class="q-opt-circle"></span><span class="opt-ico">🙋</span>No — Below 60</button>
+        </div>
+        <div class="btn-row">
+          <button class="btn btn-sec" onclick="prevQ(8)">← Back</button>
+          <button class="btn btn-pri" onclick="nextQ(8)">Next →</button>
+        </div>
+      </div>
+
+      <!-- Q9 Treatment Type -->
+      <div class="quiz-step" id="qs-9">
+        <div class="q-label">What type of treatment is required?</div>
+        <div class="q-opts">
+          <button class="q-opt" data-q="treatment" data-v="surgery" onclick="selOpt(this)"><span class="q-opt-circle"></span><span class="opt-ico">🔬</span>Major Surgery</button>
+          <button class="q-opt" data-q="treatment" data-v="chemo" onclick="selOpt(this)"><span class="q-opt-circle"></span><span class="opt-ico">💉</span>Chemotherapy / Radiation</button>
+          <button class="q-opt" data-q="treatment" data-v="dialysis" onclick="selOpt(this)"><span class="q-opt-circle"></span><span class="opt-ico">🩺</span>Dialysis / Long-term Care</button>
+          <button class="q-opt" data-q="treatment" data-v="medicine" onclick="selOpt(this)"><span class="q-opt-circle"></span><span class="opt-ico">💊</span>Medicines Only</button>
+          <button class="q-opt" data-q="treatment" data-v="diagnostics" onclick="selOpt(this)"><span class="q-opt-circle"></span><span class="opt-ico">🧪</span>Diagnostics / Tests</button>
+        </div>
+        <div class="btn-row">
+          <button class="btn btn-sec" onclick="prevQ(9)">← Back</button>
+          <button class="btn btn-g" onclick="calcScore()">🎯 View My Results</button>
+        </div>
+      </div>
+
+      <!-- RESULT -->
+      <div class="quiz-step" id="qs-result">
+        <div class="score-hero">
+          <div class="score-circle">
+            <div class="score-num" id="res-score">0</div>
+            <div class="score-lbl">/ 100</div>
+          </div>
+          <h2 id="res-headline">Calculating…</h2>
+          <p id="res-subline"></p>
+        </div>
+        <div style="font-family:var(--fh);font-size:14px;font-weight:700;color:var(--b9);margin-bottom:12px">Eligible Schemes</div>
+        <div class="schemes-grid" id="schemes-grid"></div>
+        <div class="rec-box" id="rec-box" style="margin-top:20px">
+          <div class="rec-ico">🤖</div>
+          <div>
+            <h3>Financial Assistance Recommendation</h3>
+            <p id="rec-text"></p>
+          </div>
+        </div>
+        <div class="btn-row" style="margin-top:20px">
+          <button class="btn btn-pri" onclick="goToKyc()">Apply Now → KYC</button>
+          <button class="btn btn-sec" onclick="restartQuiz()">🔄 Retake Quiz</button>
+        </div>
+      </div>
+
+    </div><!-- card-bd -->
+  </div><!-- card -->
+</div><!-- pg-quiz -->
+
+
+<!-- ══════════════════════════════════════════
+     PAGE 2 — KYC FORM
+══════════════════════════════════════════ -->
+<div class="pg" id="pg-kyc">
+  <div class="sec-hd">
+    <h2>KYC Application Form</h2>
+    <p>Complete all sections to submit your financial assistance application.</p>
+  </div>
+
+  <!-- KYC Step Nav -->
+  <div class="card" style="margin-bottom:20px">
+    <div class="card-bd" style="padding:14px 16px">
+      <div class="kyc-steps" id="kyc-steps">
+        <div class="kyc-stp active" onclick="gotoKycSec(0)">
+          <div class="kyc-stp-inner"><div class="stp-dot">1</div><div class="stp-lbl">Personal</div></div>
+        </div>
+        <div class="kyc-stp" onclick="gotoKycSec(1)">
+          <div class="kyc-stp-inner"><div class="stp-dot">2</div><div class="stp-lbl">Identity</div></div>
+        </div>
+        <div class="kyc-stp" onclick="gotoKycSec(2)">
+          <div class="kyc-stp-inner"><div class="stp-dot">3</div><div class="stp-lbl">Medical</div></div>
+        </div>
+        <div class="kyc-stp" onclick="gotoKycSec(3)">
+          <div class="kyc-stp-inner"><div class="stp-dot">4</div><div class="stp-lbl">Income</div></div>
+        </div>
+        <div class="kyc-stp" onclick="gotoKycSec(4)">
+          <div class="kyc-stp-inner"><div class="stp-dot">5</div><div class="stp-lbl">Bank</div></div>
+        </div>
+        <div class="kyc-stp" onclick="gotoKycSec(5)">
+          <div class="kyc-stp-inner"><div class="stp-dot">6</div><div class="stp-lbl">Documents</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-bd">
+
+      <!-- SEC 1: Personal Details -->
+      <div class="kyc-section active" id="kyc-0">
+        <div class="form-sec">
+          <div class="form-sec-title">👤 Personal Details</div>
+          <div class="fgrid">
+            <div class="fg full">
+              <label>Full Name *</label>
+              <input class="fi" id="k-name" placeholder="As per Aadhaar Card" required/>
+              <span class="err-msg">Please enter your full name</span>
+            </div>
+            <div class="fg">
+              <label>Date of Birth *</label>
+              <input class="fi" id="k-dob" type="date" required/>
+              <span class="err-msg">Please select date of birth</span>
+            </div>
+            <div class="fg">
+              <label>Gender *</label>
+              <select class="fi" id="k-gender" required>
+                <option value="">Select Gender</option>
+                <option>Male</option><option>Female</option>
+                <option>Transgender</option><option>Prefer not to say</option>
+              </select>
+              <span class="err-msg">Please select gender</span>
+            </div>
+            <div class="fg">
+              <label>Mobile Number *</label>
+              <input class="fi" id="k-mobile" type="tel" placeholder="10-digit mobile" maxlength="10" required/>
+              <span class="err-msg">Please enter a valid 10-digit mobile number</span>
+            </div>
+            <div class="fg">
+              <label>Email Address</label>
+              <input class="fi" id="k-email" type="email" placeholder="youremail@example.com"/>
+              <span class="err-msg">Please enter a valid email address</span>
+            </div>
+            <div class="fg full">
+              <label>Residential Address *</label>
+              <input class="fi" id="k-addr" placeholder="House No., Street, City, State – PIN Code" required/>
+              <span class="err-msg">Please enter your address</span>
+            </div>
+          </div>
+        </div>
+        <div class="btn-row">
+          <button class="btn btn-pri" onclick="nextKyc(0)">Next → Identity Proof</button>
+        </div>
+      </div>
+
+      <!-- SEC 2: Identity -->
+      <div class="kyc-section" id="kyc-1">
+        <div class="form-sec">
+          <div class="form-sec-title">🪪 Identity Details</div>
+          <div class="fgrid">
+            <div class="fg">
+              <label>Aadhaar Number *</label>
+              <input class="fi" id="k-aadhar" placeholder="XXXX XXXX XXXX" maxlength="14" required/>
+              <span class="err-msg">Enter a valid 12-digit Aadhaar number</span>
+            </div>
+            <div class="fg">
+              <label>PAN Number</label>
+              <input class="fi" id="k-pan" placeholder="ABCDE1234F" maxlength="10" style="text-transform:uppercase"/>
+              <span class="err-msg">Enter a valid PAN (e.g. ABCDE1234F)</span>
+            </div>
+          </div>
+        </div>
+        <div class="form-sec">
+          <div class="form-sec-title">📎 Upload Identity Documents</div>
+          <div class="upload-cards">
+            <div class="up-card required" id="up-aadhaar" data-dockey="aadhaar">
+              <input type="file" accept="image/*,.pdf" onchange="handleUp(this,'aadhaar','Aadhaar Card')"/>
+              <div class="up-ico-wrap">
+                <div class="up-ico">🪪</div>
+                <div class="up-title">Aadhaar Card</div>
+                <div class="up-sub">Front & Back · JPG/PDF</div>
+              </div>
+              <img class="up-preview" src="" alt=""/>
+              <div class="up-fname"></div>
+            </div>
+            <div class="up-card" id="up-pan" data-dockey="pan">
+              <input type="file" accept="image/*,.pdf" onchange="handleUp(this,'pan','PAN Card')"/>
+              <div class="up-ico-wrap">
+                <div class="up-ico">💳</div>
+                <div class="up-title">PAN Card</div>
+                <div class="up-sub">Clear photo · JPG/PDF</div>
+              </div>
+              <img class="up-preview" src="" alt=""/>
+              <div class="up-fname"></div>
+            </div>
+          </div>
+        </div>
+        <div class="btn-row">
+          <button class="btn btn-sec" onclick="gotoKycSec(0)">← Back</button>
+          <button class="btn btn-pri" onclick="nextKyc(1)">Next → Medical Details</button>
+        </div>
+      </div>
+
+      <!-- SEC 3: Medical Details -->
+      <div class="kyc-section" id="kyc-2">
+        <div class="form-sec">
+          <div class="form-sec-title">🏥 Medical Details</div>
+          <div class="fgrid">
+            <div class="fg">
+              <label>Hospital Name *</label>
+              <input class="fi" id="k-hosp" placeholder="Name of treating hospital" required/>
+              <span class="err-msg">Please enter hospital name</span>
+            </div>
+            <div class="fg">
+              <label>Doctor Name *</label>
+              <input class="fi" id="k-doc" placeholder="Treating doctor's name" required/>
+              <span class="err-msg">Please enter doctor name</span>
+            </div>
+            <div class="fg">
+              <label>Treatment / Procedure *</label>
+              <select class="fi" id="k-ttype" required>
+                <option value="">Select treatment</option>
+                <option>Coronary Bypass (CABG)</option>
+                <option>Total Knee Replacement</option>
+                <option>Cancer Treatment</option>
+                <option>Kidney Transplant</option>
+                <option>Brain Tumour Surgery</option>
+                <option>Dialysis</option>
+                <option>Spinal Surgery</option>
+                <option>Other Major Surgery</option>
+              </select>
+              <span class="err-msg">Please select treatment type</span>
+            </div>
+            <div class="fg">
+              <label>Estimated Cost (₹) *</label>
+              <input class="fi" id="k-cost" type="number" min="1" placeholder="e.g. 350000" required/>
+              <span class="err-msg">Please enter a valid estimated cost</span>
+            </div>
+            <div class="fg full">
+              <label>Medical Summary</label>
+              <textarea class="fi" id="k-summary" rows="3" placeholder="Brief description of diagnosis and treatment plan…" style="resize:vertical"></textarea>
+            </div>
+          </div>
+        </div>
+        <div class="btn-row">
+          <button class="btn btn-sec" onclick="gotoKycSec(1)">← Back</button>
+          <button class="btn btn-pri" onclick="nextKyc(2)">Next → Income Details</button>
+        </div>
+      </div>
+
+      <!-- SEC 4: Income -->
+      <div class="kyc-section" id="kyc-3">
+        <div class="form-sec">
+          <div class="form-sec-title">💰 Income Details</div>
+          <div class="fgrid">
+            <div class="fg">
+              <label>Occupation *</label>
+              <select class="fi" id="k-occ" required>
+                <option value="">Select occupation</option>
+                <option>Government Employee</option>
+                <option>Private Sector</option>
+                <option>Self-Employed / Business</option>
+                <option>Farmer</option>
+                <option>Daily Wage Worker</option>
+                <option>Retired</option>
+                <option>Unemployed</option>
+              </select>
+              <span class="err-msg">Please select occupation</span>
+            </div>
+            <div class="fg">
+              <label>Annual Income (₹) *</label>
+              <input class="fi" id="k-inc" type="number" min="0" placeholder="e.g. 240000" required/>
+              <span class="err-msg">Please enter a valid annual income</span>
+            </div>
+            <div class="fg">
+              <label>Employer / Organisation Name</label>
+              <input class="fi" id="k-emp" placeholder="If employed"/>
+            </div>
+            <div class="fg">
+              <label>Ration Card Type</label>
+              <select class="fi" id="k-ration">
+                <option value="">Select type</option>
+                <option>APL (Above Poverty Line)</option>
+                <option>BPL (Below Poverty Line)</option>
+                <option>AAY (Antyodaya)</option>
+                <option>Not Applicable</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="btn-row">
+          <button class="btn btn-sec" onclick="gotoKycSec(2)">← Back</button>
+          <button class="btn btn-pri" onclick="nextKyc(3)">Next → Bank Details</button>
+        </div>
+      </div>
+
+      <!-- SEC 5: Bank Details -->
+      <div class="kyc-section" id="kyc-4">
+        <div class="form-sec">
+          <div class="form-sec-title">🏦 Bank Details</div>
+          <div class="fgrid">
+            <div class="fg">
+              <label>Account Holder Name *</label>
+              <input class="fi" id="k-holder" placeholder="As per passbook" required/>
+              <span class="err-msg">Please enter account holder name</span>
+            </div>
+            <div class="fg">
+              <label>Bank Name *</label>
+              <input class="fi" id="k-bank" placeholder="e.g. State Bank of India" required/>
+              <span class="err-msg">Please enter bank name</span>
+            </div>
+            <div class="fg">
+              <label>IFSC Code *</label>
+              <input class="fi" id="k-ifsc" placeholder="e.g. SBIN0001234" style="text-transform:uppercase" maxlength="11" required/>
+              <span class="err-msg">Please enter a valid IFSC code</span>
+            </div>
+            <div class="fg">
+              <label>Account Number *</label>
+              <input class="fi" id="k-acct" type="text" placeholder="Bank account number" required/>
+              <span class="err-msg">Please enter account number</span>
+            </div>
+            <div class="fg">
+              <label>Confirm Account Number *</label>
+              <input class="fi" id="k-acct2" type="text" placeholder="Re-enter account number" required/>
+              <span class="err-msg">Account numbers do not match</span>
+            </div>
+          </div>
+        </div>
+        <div class="btn-row">
+          <button class="btn btn-sec" onclick="gotoKycSec(3)">← Back</button>
+          <button class="btn btn-pri" onclick="nextKyc(4)">Next → Upload Documents</button>
+        </div>
+      </div>
+
+      <!-- SEC 6: Documents -->
+      <div class="kyc-section" id="kyc-5">
+        <div class="form-sec">
+          <div class="form-sec-title">📎 Upload All Documents</div>
+          <p style="font-size:12px;color:var(--mut);margin:-6px 0 14px">Aadhaar, PAN and Bank Passbook are mandatory. Uploading in any section updates it everywhere.</p>
+          <div class="upload-cards">
+            <div class="up-card required" id="up2-aadhaar" data-dockey="aadhaar">
+              <input type="file" accept="image/*,.pdf" onchange="handleUp(this,'aadhaar','Aadhaar Card')"/>
+              <div class="up-ico-wrap"><div class="up-ico">🪪</div><div class="up-title">Aadhaar Card</div><div class="up-sub">JPG / PDF</div></div>
+              <img class="up-preview" src="" alt=""/>
+              <div class="up-fname"></div>
+            </div>
+            <div class="up-card required" id="up2-pan" data-dockey="pan">
+              <input type="file" accept="image/*,.pdf" onchange="handleUp(this,'pan','PAN Card')"/>
+              <div class="up-ico-wrap"><div class="up-ico">💳</div><div class="up-title">PAN Card</div><div class="up-sub">JPG / PDF</div></div>
+              <img class="up-preview" src="" alt=""/>
+              <div class="up-fname"></div>
+            </div>
+            <div class="up-card" id="up2-income" data-dockey="income">
+              <input type="file" accept="image/*,.pdf" onchange="handleUp(this,'income','Income Certificate')"/>
+              <div class="up-ico-wrap"><div class="up-ico">📜</div><div class="up-title">Income Certificate</div><div class="up-sub">Issued by authority</div></div>
+              <img class="up-preview" src="" alt=""/>
+              <div class="up-fname"></div>
+            </div>
+            <div class="up-card" id="up2-medical" data-dockey="medical">
+              <input type="file" accept="image/*,.pdf" onchange="handleUp(this,'medical','Medical Documents')"/>
+              <div class="up-ico-wrap"><div class="up-ico">🏥</div><div class="up-title">Medical Documents</div><div class="up-sub">Prescription / Reports</div></div>
+              <img class="up-preview" src="" alt=""/>
+              <div class="up-fname"></div>
+            </div>
+            <div class="up-card" id="up2-estimate" data-dockey="estimate">
+              <input type="file" accept="image/*,.pdf" onchange="handleUp(this,'estimate','Hospital Estimate')"/>
+              <div class="up-ico-wrap"><div class="up-ico">📋</div><div class="up-title">Hospital Estimate</div><div class="up-sub">Cost estimate letter</div></div>
+              <img class="up-preview" src="" alt=""/>
+              <div class="up-fname"></div>
+            </div>
+            <div class="up-card required" id="up2-bank" data-dockey="bank">
+              <input type="file" accept="image/*,.pdf" onchange="handleUp(this,'bank','Bank Passbook')"/>
+              <div class="up-ico-wrap"><div class="up-ico">🏦</div><div class="up-title">Bank Passbook</div><div class="up-sub">First page clearly visible</div></div>
+              <img class="up-preview" src="" alt=""/>
+              <div class="up-fname"></div>
+            </div>
+          </div>
+        </div>
+        <div class="btn-row">
+          <button class="btn btn-sec" onclick="gotoKycSec(4)">← Back</button>
+          <button class="btn btn-g" onclick="submitKyc()">✅ Submit Application</button>
+        </div>
+      </div>
+
+    </div><!-- card-bd -->
+  </div><!-- card -->
+</div><!-- pg-kyc -->
+
+
+<!-- ══════════════════════════════════════════
+     PAGE 3 — APPLICATION STATUS
+══════════════════════════════════════════ -->
+<div class="pg" id="pg-status">
+  <div class="sec-hd">
+    <h2>Application Status Tracker</h2>
+    <p>Track your financial assistance application in real time.</p>
+  </div>
+
+  <!-- Summary Cards (rendered dynamically) -->
+  <div class="status-summary" id="status-summary"></div>
+
+  <!-- Pending Documents Alert (rendered dynamically) -->
+  <div class="pending-docs" id="pending-docs-box"></div>
+
+  <!-- Timeline -->
+  <div class="card" style="margin-bottom:20px">
+    <div class="card-hd">
+      <div class="card-ico">📋</div>
+      <div class="card-hd-txt">
+        <h3>Application Timeline</h3>
+        <p>Live status of each stage in your application journey.</p>
+      </div>
+    </div>
+    <div class="card-bd">
+      <div class="timeline" id="status-timeline"></div>
+    </div><!-- card-bd -->
+  </div><!-- card -->
+
+  <!-- Action Bar -->
+  <div class="action-bar">
+    <button class="act-btn act-sim" id="btn-simulate" onclick="simulateNextStage()">
+      ⏩ Simulate Next Update
+    </button>
+    <button class="act-btn act-dl" onclick="toast('📥 Application downloaded as PDF (demo)')">
+      📥 Download Application
+    </button>
+    <button class="act-btn act-cs" onclick="toast('📞 Connecting to support: 1800-XXX-XXXX')">
+      📞 Contact Support
+    </button>
+    <button class="act-btn act-ed" onclick="editApplication()">
+      ✏️ Edit Application
+    </button>
+    <button class="act-btn act-vd" onclick="toast('📁 Opening document vault…')">
+      📁 View Documents
+    </button>
+  </div>
+
+</div><!-- pg-status -->
+</div><!-- wrap -->
+
+<!-- Toast -->
+<div class="toast" id="toast"><span id="toast-msg"></span></div>
+
+<script>
+"use strict";
+
+/* ═════════════════════════════════════════
+   GLOBAL STATE
+═════════════════════════════════════════ */
+const TOTAL_Q = 9;
+let answers = {};
+let curQ = 1;
+let quizResult = null;       // { score, schemes, recommendation }
+
+let kycCur = 0;
+let uploadedDocs = {};        // { aadhaar:{name,dataUrl}, pan:{...}, income:{...}, medical:{...}, estimate:{...}, bank:{...} }
+const REQUIRED_DOC_KEYS = ["aadhaar", "pan", "bank"];
+const OPTIONAL_DOC_KEYS = ["income", "medical", "estimate"];
+const DOC_LABELS = {
+  aadhaar: "Aadhaar Card", pan: "PAN Card", income: "Income Certificate",
+  medical: "Medical Documents", estimate: "Hospital Estimate", bank: "Bank Passbook"
+};
+
+let applicationData = null;   // populated on submitKyc()
+
+/* Application stage timeline definition */
+const STAGE_DEFS = [
+  { key: "submitted", title: "Application Submitted", team: "System · Auto-processed", offsetDays: 0,
+    desc: (d) => `Your application ${d.appId} was successfully submitted online. An acknowledgement has been sent to your registered mobile and email.` },
+  { key: "docs_verified", title: "Documents Verified", team: "Document Verification Team", offsetDays: 2,
+    desc: (d) => `Aadhaar, PAN and Bank documents have been verified successfully.${d.pendingDocs.length ? " Some supporting documents are still pending review." : " All supporting documents are in order."}` },
+  { key: "kyc_completed", title: "KYC Completed", team: "KYC & Compliance Team", offsetDays: 3,
+    desc: () => `KYC verification has been completed successfully. Identity, income, and bank details have been validated.` },
+  { key: "under_review", title: "Under Review", team: "Financial Assistance Committee", offsetDays: 5,
+    desc: (d) => `Your application for ${d.treatment || "the requested treatment"} at ${d.hospital || "the treating hospital"} is being reviewed. The committee is evaluating treatment necessity, income proof, and applicable scheme coverage.` },
+  { key: "approval_pending", title: "Approval Pending", team: "Medical Officer + Finance Head", offsetDays: 7,
+    desc: (d) => `Senior medical officer and finance head will give final approval.${d.pendingDocs.length ? " Upload pending documents to avoid delays." : ""}` },
+  { key: "decision", title: "Approved / Rejected", team: "Notification Team", offsetDays: 9,
+    desc: (d) => `Final decision has been communicated: your application has been approved for ${d.approvedAmountStr}. Funds will move to disbursement next.` },
+  { key: "funds_released", title: "Funds Released", team: "Treasury & Disbursement Team", offsetDays: 12,
+    desc: (d) => `Approved amount of ${d.approvedAmountStr} has been credited to your registered bank account via NEFT/RTGS.` }
+];
+
+let currentStageIndex = 0; // index into STAGE_DEFS representing the latest reached stage
+
+/* ═════════════════════════════════════════
+   HELPERS
+═════════════════════════════════════════ */
+function fmtINR(n) {
+  n = Math.round(n);
+  return "₹" + n.toLocaleString("en-IN");
+}
+
+function parseINR(str) {
+  if (typeof str === "number") return str;
+  const digits = String(str).replace(/[^0-9]/g, "");
+  return digits ? parseInt(digits, 10) : 0;
+}
+
+function fmtDate(d) {
+  return d.toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" });
+}
+
+function addDays(base, days) {
+  const d = new Date(base);
+  d.setDate(d.getDate() + days);
+  return d;
+}
+
+let tt;
+function toast(msg) {
+  clearTimeout(tt);
+  const el = document.getElementById("toast");
+  document.getElementById("toast-msg").textContent = msg;
+  el.classList.add("show");
+  tt = setTimeout(() => el.classList.remove("show"), 3400);
+}
+
+/* ═════════════════════════════════════════
+   QUIZ LOGIC
+═════════════════════════════════════════ */
+(function buildProgressDots() {
+  const prog = document.getElementById("q-prog");
+  for (let i = 1; i <= TOTAL_Q; i++) {
+    const d = document.createElement("div");
+    d.className = "q-dot" + (i === 1 ? " active" : "");
+    d.id = "qdot-" + i;
+    prog.appendChild(d);
+  }
+})();
+
+function selOpt(btn) {
+  const q = btn.dataset.q;
+  btn.closest(".q-opts").querySelectorAll(".q-opt").forEach(b => b.classList.remove("sel"));
+  btn.classList.add("sel");
+  answers[q] = btn.dataset.v;
+}
+
+function nextQ(step) {
+  const stepMap = { 1: "income", 2: "employ", 3: "scheme", 4: "insurance", 5: "family", 6: "condition", 7: "disability", 8: "senior", 9: "treatment" };
+  if (step < TOTAL_Q && !answers[stepMap[step]]) { toast("⚠ Please select an option to continue."); return; }
+  document.getElementById("qs-" + step).classList.remove("active");
+  const next = step === TOTAL_Q ? "result" : step + 1;
+  document.getElementById("qs-" + next).classList.add("active");
+  curQ = step === TOTAL_Q ? TOTAL_Q : step + 1;
+  updateProg(curQ);
+  document.getElementById("q-step-info").textContent = step < TOTAL_Q ? `Step ${step + 1} of ${TOTAL_Q}` : "Results";
+}
+
+function prevQ(step) {
+  document.getElementById("qs-" + step).classList.remove("active");
+  document.getElementById("qs-" + (step - 1)).classList.add("active");
+  curQ = step - 1;
+  updateProg(curQ);
+  document.getElementById("q-step-info").textContent = `Step ${step - 1} of ${TOTAL_Q}`;
+}
+
+function updateProg(cur) {
+  for (let i = 1; i <= TOTAL_Q; i++) {
+    const d = document.getElementById("qdot-" + i);
+    d.className = "q-dot" + (i < cur ? " done" : i === cur ? " active" : "");
+  }
+}
+
+function calcScore() {
+  let score = 50;
+  const a = answers;
+  if (a.income === "below1") score += 20; else if (a.income === "1to3") score += 15; else if (a.income === "3to5") score += 10; else if (a.income === "5to10") score += 5;
+  if (a.employ === "unemployed" || a.employ === "farmer") score += 10; else if (a.employ === "govt") score += 5;
+  if (a.scheme === "none") score += 8; else if (a.scheme === "ab") score += 5;
+  if (a.insurance === "no") score += 8;
+  if (a.family === "5plus") score += 8; else if (a.family === "3to4") score += 5;
+  if (a.condition === "cancer" || a.condition === "kidney") score += 10; else if (a.condition) score += 6;
+  if (a.disability === "yes_cert") score += 8; else if (a.disability === "yes_no_cert") score += 5;
+  if (a.senior === "yes80") score += 8; else if (a.senior === "yes60") score += 5;
+  if (a.treatment === "surgery" || a.treatment === "chemo") score += 8; else if (a.treatment === "dialysis") score += 6;
+  score = Math.min(score, 100);
+
+  document.getElementById("res-score").textContent = score;
+  document.getElementById("res-headline").textContent =
+    score >= 80 ? "Excellent Eligibility ✅" : score >= 65 ? "High Eligibility 🟡" : score >= 45 ? "Moderate Eligibility 🟠" : "Limited Eligibility 🔴";
+  document.getElementById("res-subline").textContent =
+    `Your score of ${score}/100 qualifies you for multiple financial assistance programmes. Scroll down to see your eligible schemes and recommended next steps.`;
+
+  // Build schemes
+  const schemes = [];
+  if (score >= 60 || a.income === "below1" || a.income === "1to3") schemes.push({ cls: "tier1", ico: "🛡️", name: "Ayushman Bharat PM-JAY", amt: "₹5,00,000/year", desc: "Free cashless treatment at empanelled hospitals" });
+  if (a.scheme === "cghs" || a.employ === "govt") schemes.push({ cls: "tier2", ico: "🏛️", name: "CGHS Coverage", amt: "Unlimited", desc: "Comprehensive health coverage for govt employees & pensioners" });
+  if (a.scheme === "esi" || a.employ === "private") schemes.push({ cls: "tier2", ico: "🏭", name: "ESIC Benefits", amt: "100% Covered", desc: "Full medical coverage for organised sector workers" });
+  if (score >= 50) schemes.push({ cls: "tier2", ico: "💙", name: "State CM Relief Fund", amt: "₹1,00,000 – ₹3,00,000", desc: "State government medical assistance for critical illness" });
+  if (a.condition === "cancer") schemes.push({ cls: "tier1", ico: "🎗️", name: "PM Rashtriya Arogya Nidhi", amt: "₹15,00,000", desc: "Catastrophic illness fund for BPL patients" });
+  if (a.disability === "yes_cert") schemes.push({ cls: "tier3", ico: "♿", name: "NHFDC Disability Scheme", amt: "₹2,00,000", desc: "Financial aid for persons with certified disability" });
+  if (a.senior === "yes60" || a.senior === "yes80") schemes.push({ cls: "tier3", ico: "🧓", name: "National Vayoshri Yojana", amt: "₹50,000 – ₹1,00,000", desc: "Senior citizen assistive devices and medical support" });
+  if (schemes.length < 2) schemes.push({ cls: "tier3", ico: "💊", name: "Hospital Financial Aid", amt: "Varies", desc: "In-hospital financial assistance from hospital trust" });
+
+  const sg = document.getElementById("schemes-grid");
+  sg.innerHTML = schemes.map(s => `
+    <div class="scheme-card ${s.cls}">
+      <div class="scheme-head"><span class="scheme-ico">${s.ico}</span><div class="scheme-name">${s.name}</div></div>
+      <div class="scheme-amt">${s.amt}</div>
+      <div class="scheme-desc">${s.desc}</div>
+    </div>`).join("");
+
+  const recs = {
+    high: `Based on your profile, we strongly recommend applying for <strong>Ayushman Bharat PM-JAY</strong> first — this alone could cover your full treatment cost. Additionally, contact your district collector's office for the CM Relief Fund. Complete KYC now to begin the process within 24 hours.`,
+    med: `Your profile qualifies for ${schemes.length} schemes. Start with the <strong>State CM Relief Fund</strong> and hospital's in-house financial assistance. Submit the KYC form and our case managers will assign a dedicated financial counsellor to guide you.`,
+    low: `While your income level may not qualify for all central schemes, you are eligible for hospital-level assistance and NGO grants. Our team can connect you with 3–5 NGOs that fund your specific condition. Please proceed with KYC so we can match you precisely.`
+  };
+  const recKey = score >= 65 ? "high" : score >= 45 ? "med" : "low";
+  document.getElementById("rec-text").innerHTML = recs[recKey];
+
+  quizResult = { score: score, schemes: schemes, recommendation: recs[recKey] };
+
+  nextQ(9);
+}
+
+function restartQuiz() {
+  answers = {}; curQ = 1; quizResult = null;
+  document.querySelectorAll(".quiz-step").forEach(s => s.classList.remove("active"));
+  document.getElementById("qs-1").classList.add("active");
+  document.querySelectorAll(".q-opt").forEach(b => b.classList.remove("sel"));
+  updateProg(1);
+  document.getElementById("q-step-info").textContent = "Step 1 of 9";
+}
+
+function goToKyc() { switchPg("kyc"); }
+
+/* ═════════════════════════════════════════
+   KYC LOGIC
+═════════════════════════════════════════ */
+const VALIDATORS = {
+  "k-name": v => v.trim().length >= 3,
+  "k-dob": v => !!v,
+  "k-gender": v => !!v,
+  "k-mobile": v => /^[6-9]\d{9}$/.test(v.trim()),
+  "k-email": v => v.trim() === "" || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim()),
+  "k-addr": v => v.trim().length >= 8,
+  "k-aadhar": v => /^\d{12}$/.test(v.replace(/\s+/g, "")),
+  "k-pan": v => v.trim() === "" || /^[A-Za-z]{5}\d{4}[A-Za-z]$/.test(v.trim()),
+  "k-hosp": v => v.trim().length >= 2,
+  "k-doc": v => v.trim().length >= 2,
+  "k-ttype": v => !!v,
+  "k-cost": v => Number(v) > 0,
+  "k-occ": v => !!v,
+  "k-inc": v => Number(v) >= 0,
+  "k-holder": v => v.trim().length >= 2,
+  "k-bank": v => v.trim().length >= 2,
+  "k-ifsc": v => /^[A-Za-z]{4}0[A-Za-z0-9]{6}$/.test(v.trim()),
+  "k-acct": v => /^\d{6,20}$/.test(v.trim()),
+  "k-acct2": v => v.trim() !== "" && v.trim() === document.getElementById("k-acct").value.trim()
+};
+
+function validateField(id) {
+  const el = document.getElementById(id);
+  if (!el) return true;
+  const validator = VALIDATORS[id];
+  const ok = validator ? validator(el.value) : true;
+  el.classList.toggle("err", !ok);
+  return ok;
+}
+
+function gotoKycSec(idx) {
+  document.querySelectorAll(".kyc-section").forEach(s => s.classList.remove("active"));
+  document.getElementById("kyc-" + idx).classList.add("active");
+  document.querySelectorAll(".kyc-stp").forEach((s, i) => {
+    s.classList.remove("active", "done");
+    const dot = s.querySelector(".stp-dot");
+    if (i < idx) { s.classList.add("done"); dot.textContent = "✓"; }
+    else { dot.textContent = String(i + 1); if (i === idx) s.classList.add("active"); }
+  });
+  kycCur = idx;
+}
+
+function nextKyc(idx) {
+  const section = document.getElementById("kyc-" + idx);
+  const fields = section.querySelectorAll("[id^='k-']");
+  let ok = true;
+
+  fields.forEach(f => {
+    if (!VALIDATORS[f.id]) return; // no validation rule (e.g. optional employer field)
+    const fieldOk = validateField(f.id);
+    if (!fieldOk) {
+      ok = false;
+      f.addEventListener("input", () => validateField(f.id), { once: true });
+    }
+  });
+
+  if (!ok) { toast("⚠ Please fix the highlighted fields before continuing."); return; }
+
+  gotoKycSec(idx + 1);
+  document.getElementById("kyc-" + (idx + 1)).scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+/* ---- Document upload: syncs the same doc across every card sharing a data-dockey ---- */
+function handleUp(inputEl, docKey, label) {
+  const file = inputEl.files[0];
+  if (!file) return;
+
+  const applyToCards = (dataUrl) => {
+    document.querySelectorAll('.up-card[data-dockey="' + docKey + '"]').forEach(card => {
+      card.classList.add("has-file");
+      const nameEl = card.querySelector(".up-fname");
+      if (nameEl) nameEl.textContent = file.name.length > 22 ? file.name.slice(0, 20) + "…" : file.name;
+      const prevEl = card.querySelector(".up-preview");
+      if (prevEl && dataUrl) prevEl.src = dataUrl;
+    });
+  };
+
+  uploadedDocs[docKey] = { name: file.name, size: file.size };
+
+  if (file.type && file.type.indexOf("image/") === 0) {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      uploadedDocs[docKey].dataUrl = e.target.result;
+      applyToCards(e.target.result);
+    };
+    reader.readAsDataURL(file);
+  } else {
+    applyToCards(null);
+  }
+
+  toast("✅ " + label + " uploaded successfully!");
+}
+
+function missingRequiredDocs() {
+  return REQUIRED_DOC_KEYS.filter(k => !uploadedDocs[k]);
+}
+
+function missingOptionalDocs() {
+  return OPTIONAL_DOC_KEYS.filter(k => !uploadedDocs[k]);
+}
+
+function submitKyc() {
+  // Validate every field across all sections one last time
+  let allOk = true;
+  Object.keys(VALIDATORS).forEach(id => { if (!validateField(id)) allOk = false; });
+  if (!allOk) {
+    toast("⚠ Please complete all required fields correctly before submitting.");
+    // Jump to the first section containing an invalid field
+    for (let i = 0; i <= 4; i++) {
+      if (document.getElementById("kyc-" + i).querySelector(".fi.err")) { gotoKycSec(i); break; }
+    }
+    return;
+  }
+
+  const missingReq = missingRequiredDocs();
+  if (missingReq.length) {
+    toast("⚠ Please upload: " + missingReq.map(k => DOC_LABELS[k]).join(", "));
+    gotoKycSec(5);
+    return;
+  }
+
+  // Build the application data object from every field
+  applicationData = {
+    name: document.getElementById("k-name").value.trim(),
+    dob: document.getElementById("k-dob").value,
+    gender: document.getElementById("k-gender").value,
+    mobile: document.getElementById("k-mobile").value.trim(),
+    email: document.getElementById("k-email").value.trim(),
+    address: document.getElementById("k-addr").value.trim(),
+    aadhaar: document.getElementById("k-aadhar").value.trim(),
+    pan: document.getElementById("k-pan").value.trim(),
+    hospital: document.getElementById("k-hosp").value.trim(),
+    doctor: document.getElementById("k-doc").value.trim(),
+    treatment: document.getElementById("k-ttype").value,
+    estimatedCost: Number(document.getElementById("k-cost").value),
+    occupation: document.getElementById("k-occ").value,
+    annualIncome: Number(document.getElementById("k-inc").value),
+    bankHolder: document.getElementById("k-holder").value.trim(),
+    bankName: document.getElementById("k-bank").value.trim(),
+    ifsc: document.getElementById("k-ifsc").value.trim().toUpperCase(),
+    account: document.getElementById("k-acct").value.trim(),
+    submittedAt: new Date(),
+    appId: "MC-" + new Date().getFullYear() + "-" + Math.floor(10000 + Math.random() * 89999)
+  };
+
+  currentStageIndex = 0;
+  toast("🎉 Application submitted! Ref: " + applicationData.appId);
+  renderStatusPage();
+  setTimeout(() => switchPg("status"), 1400);
+}
+
+function editApplication() {
+  if (!applicationData) { switchPg("kyc"); return; }
+  const map = {
+    "k-name": applicationData.name, "k-dob": applicationData.dob, "k-gender": applicationData.gender,
+    "k-mobile": applicationData.mobile, "k-email": applicationData.email, "k-addr": applicationData.address,
+    "k-aadhar": applicationData.aadhaar, "k-pan": applicationData.pan,
+    "k-hosp": applicationData.hospital, "k-doc": applicationData.doctor, "k-ttype": applicationData.treatment,
+    "k-cost": applicationData.estimatedCost, "k-occ": applicationData.occupation, "k-inc": applicationData.annualIncome,
+    "k-holder": applicationData.bankHolder, "k-bank": applicationData.bankName, "k-ifsc": applicationData.ifsc,
+    "k-acct": applicationData.account, "k-acct2": applicationData.account
+  };
+  Object.keys(map).forEach(id => {
+    const el = document.getElementById(id);
+    if (el && map[id] !== undefined && map[id] !== null) el.value = map[id];
+  });
+  toast("✏️ Loaded your saved details — you can now edit and resubmit.");
+  switchPg("kyc");
+  gotoKycSec(0);
+}
+
+/* ═════════════════════════════════════════
+   APPLICATION STATUS — fully data-driven
+═════════════════════════════════════════ */
+function computeApprovedAmount(data) {
+  let base = data && data.estimatedCost ? data.estimatedCost : 300000;
+  if (quizResult && quizResult.schemes && quizResult.schemes.length) {
+    const parsed = quizResult.schemes.map(s => parseINR(s.amt)).filter(n => n > 0);
+    if (parsed.length) base = Math.max(base * 0.6, Math.min(Math.max.apply(null, parsed), base));
+  }
+  return Math.round(base * 0.8 / 1000) * 1000;
+}
+
+function renderStatusPage() {
+  const data = applicationData || {
+    name: "—", hospital: "Not specified yet", treatment: "Not specified yet",
+    estimatedCost: 300000, appId: "MC-DEMO-00000", submittedAt: new Date()
+  };
+
+  const eligibleAmount = quizResult && quizResult.schemes.length
+    ? quizResult.schemes.reduce((max, s) => Math.max(max, parseINR(s.amt)), 0) || data.estimatedCost
+    : data.estimatedCost;
+
+  const approvedAmount = computeApprovedAmount(data);
+  const pendingDocs = missingOptionalDocs();
+  const stage = STAGE_DEFS[currentStageIndex];
+
+  const ctx = {
+    appId: data.appId,
+    hospital: data.hospital,
+    treatment: data.treatment,
+    pendingDocs: pendingDocs,
+    approvedAmountStr: fmtINR(approvedAmount)
+  };
+
+  const statusLabelMap = {
+    submitted: "Submitted", docs_verified: "Docs Verified", kyc_completed: "KYC Completed",
+    under_review: "Under Review", approval_pending: "Approval Pending",
+    decision: "Approved", funds_released: "Funds Released"
+  };
+
+  // ---- Summary cards ----
+  const summaryHtml = `
+    <div class="ss-card ss-blue"><div class="ss-lbl">Application ID</div><div class="ss-val" style="font-size:13px">${data.appId}</div></div>
+    <div class="ss-card ss-amber"><div class="ss-lbl">Current Status</div><div class="ss-val" style="font-size:13px">${statusLabelMap[stage.key]}</div></div>
+    <div class="ss-card ss-blue"><div class="ss-lbl">Eligible Amount</div><div class="ss-val">${fmtINR(eligibleAmount)}</div></div>
+    <div class="ss-card ss-green"><div class="ss-lbl">Approved Amount</div><div class="ss-val">${currentStageIndex >= 5 ? fmtINR(approvedAmount) : "Pending"}</div></div>
+    <div class="ss-card ${pendingDocs.length ? "ss-amber" : "ss-green"}"><div class="ss-lbl">Pending Documents</div><div class="ss-val">${pendingDocs.length}</div></div>
+    <div class="ss-card ss-purple"><div class="ss-lbl">Expected Approval</div><div class="ss-val" style="font-size:13px">${fmtDate(addDays(data.submittedAt, STAGE_DEFS[5].offsetDays))}</div></div>
+  `;
+  document.getElementById("status-summary").innerHTML = summaryHtml;
+
+  // ---- Pending documents alert ----
+  const pdBox = document.getElementById("pending-docs-box");
+  if (pendingDocs.length) {
+    pdBox.className = "pending-docs";
+    pdBox.innerHTML = `
+      <div class="pd-ico">⚠️</div>
+      <div>
+        <div class="pd-title">${pendingDocs.length} Document${pendingDocs.length > 1 ? "s" : ""} Pending</div>
+        <div class="pd-list">${pendingDocs.map(k => "• " + DOC_LABELS[k] + " — please upload to avoid delays").join("<br>")}</div>
+      </div>`;
+  } else {
+    pdBox.className = "pending-docs ok";
+    pdBox.innerHTML = `
+      <div class="pd-ico">✅</div>
+      <div>
+        <div class="pd-title">All Documents Received</div>
+        <div class="pd-list">No pending documents — your file is complete and ready for review.</div>
+      </div>`;
+  }
+
+  // ---- Timeline ----
+  const pillFor = (i) => {
+    if (i < currentStageIndex) return '<span class="pill pill-g">Completed</span>';
+    if (i === currentStageIndex) return '<span class="pill pill-b">In Progress</span>';
+    return '<span class="pill pill-a">Pending</span>';
+  };
+
+  const timelineHtml = STAGE_DEFS.map((s, i) => {
+    const stateCls = i < currentStageIndex ? "done" : i === currentStageIndex ? "current" : "";
+    const dotContent = i < currentStageIndex ? "✓" : i === currentStageIndex ? "⟳" : String(i + 1);
+    const dateStr = i <= currentStageIndex
+      ? fmtDate(addDays(data.submittedAt, s.offsetDays))
+      : "Expected: " + fmtDate(addDays(data.submittedAt, s.offsetDays));
+    return `
+      <div class="tl-item ${stateCls}">
+        <div class="tl-dot">${dotContent}</div>
+        <div class="tl-card">
+          <div class="tl-head">
+            <div class="tl-title">${s.title}</div>
+            ${pillFor(i)}
+          </div>
+          <div class="tl-date">📅 ${dateStr}</div>
+          <div class="tl-desc">${s.desc(ctx)}</div>
+          <div class="tl-team">${i <= currentStageIndex ? "👥" : "🕐"} ${s.team}</div>
+        </div>
+      </div>`;
+  }).join("");
+  document.getElementById("status-timeline").innerHTML = timelineHtml;
+
+  // ---- Simulate button state ----
+  const simBtn = document.getElementById("btn-simulate");
+  if (currentStageIndex >= STAGE_DEFS.length - 1) {
+    simBtn.disabled = true;
+    simBtn.innerHTML = "✅ Application Fully Processed";
+  } else {
+    simBtn.disabled = false;
+    simBtn.innerHTML = "⏩ Simulate Next Update";
+  }
+}
+
+function simulateNextStage() {
+  if (currentStageIndex >= STAGE_DEFS.length - 1) return;
+  currentStageIndex++;
+  renderStatusPage();
+  toast("📣 Status updated: " + STAGE_DEFS[currentStageIndex].title);
+}
+
+/* ═════════════════════════════════════════
+   NAV
+═════════════════════════════════════════ */
+function switchPg(id) {
+  document.querySelectorAll(".pg").forEach(p => p.classList.remove("active"));
+  document.querySelectorAll(".nav-tab").forEach(t => t.classList.remove("active"));
+  document.getElementById("pg-" + id).classList.add("active");
+  document.querySelector('[data-pg="' + id + '"]').classList.add("active");
+  if (id === "status") renderStatusPage();
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+document.querySelectorAll(".nav-tab").forEach(t => {
+  t.addEventListener("click", () => switchPg(t.dataset.pg));
+});
+
+/* Initial render so the Status tab looks correct even before any submission */
+renderStatusPage();
+</script>
+</body>
+</html>

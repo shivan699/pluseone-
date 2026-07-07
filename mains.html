@@ -1,0 +1,525 @@
+ <!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hospital Cost Estimator</title>
+
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/navbar.css">
+</head>
+
+<body>
+    <style>
+        *{
+            box-sizing:border-box;
+        }
+
+        body{
+            margin:0;
+            background:#f5f7fb;
+            font-family:Arial, Helvetica, sans-serif;
+        }
+
+        /* ================= NAVBAR (fallback/base styles so the page
+           still looks right even if css/navbar.css is missing) ================= */
+
+        .navbar{
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            flex-wrap:wrap;
+            padding:15px 30px;
+            background:#ffffff;
+            box-shadow:0 2px 8px rgba(0,0,0,.08);
+            position:relative;
+        }
+
+        .navbar .logo h2{
+            margin:0;
+            font-size:22px;
+            color:#023411;
+        }
+
+        .nav-toggle{
+            display:none;
+            background:none;
+            border:none;
+            font-size:26px;
+            cursor:pointer;
+            color:#033a24;
+        }
+
+        .nav-links{
+            list-style:none;
+            display:flex;
+            gap:25px;
+            margin:0;
+            padding:0;
+        }
+
+        .nav-links li a{
+            text-decoration:none;
+            color:#333;
+            font-weight:500;
+            transition:.3s;
+        }
+
+        .nav-links li a:hover{
+            color:#04462b;
+        }
+
+        /* Hero */
+
+        .hero{
+            height:500px;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+
+            background:linear-gradient(rgba(0,0,0,.6),rgba(0,0,0,.6)),
+            url("../images/hospital-banner.jpg");
+
+            background-size:cover;
+            background-position:center;
+            color:white;
+            text-align:center;
+            padding:0 20px;
+        }
+
+        .hero-content h1{
+            font-size:45px;
+            margin-bottom:20px;
+            line-height:1.2;
+        }
+
+        .hero-content p{
+            font-size:18px;
+            margin-bottom:30px;
+        }
+
+        .btn{
+            background:#03482f;
+            color:white;
+            padding:15px 35px;
+            text-decoration:none;
+            border-radius:8px;
+            transition:.3s;
+            display:inline-block;
+        }
+
+        .btn:hover{
+            background:#084298;
+        }
+
+        /* Search */
+
+        .search-section{
+            width:80%;
+            max-width:700px;
+            margin:60px auto;
+            text-align:center;
+        }
+
+        .search-section h2{
+            margin-bottom:20px;
+        }
+
+        .search-section input{
+            width:60%;
+            padding:15px;
+            border:1px solid #ccc;
+            border-radius:8px;
+            font-size:16px;
+        }
+
+        .search-section button{
+            padding:15px 30px;
+            margin-left:10px;
+            border:none;
+            border-radius:8px;
+            background:#198754;
+            color:white;
+            cursor:pointer;
+            font-size:16px;
+        }
+
+        .search-section button:hover{
+            background:#157347;
+        }
+
+        /* Featured */
+
+        .featured{
+            width:90%;
+            margin:60px auto;
+        }
+
+        .featured h2{
+            text-align:center;
+            margin-bottom:40px;
+        }
+
+        .hospital-container{
+            display:grid;
+            grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+            gap:25px;
+        }
+
+        .hospital-card{
+            background:white;
+            border-radius:10px;
+            overflow:hidden;
+            box-shadow:0 5px 15px rgba(0,0,0,.1);
+            transition:.3s;
+        }
+
+        .hospital-card:hover{
+            transform:translateY(-8px);
+        }
+
+        .hospital-card img{
+            width:100%;
+            height:220px;
+            object-fit:cover;
+            display:block;
+        }
+
+        .hospital-card h3{
+            margin:15px;
+        }
+
+        .hospital-card p{
+            margin:0 15px 15px;
+            color:#f4b400;
+            font-size:18px;
+        }
+
+        .hospital-card a{
+            display:block;
+            margin:20px;
+            text-align:center;
+            text-decoration:none;
+            background:#012e14;
+            color:white;
+            padding:12px;
+            border-radius:8px;
+        }
+
+        .hospital-card a:hover{
+            background:#013e22;
+        }
+
+        /* Footer */
+
+        footer{
+            margin-top:80px;
+            background:#023727;
+            color:white;
+            text-align:center;
+            padding:20px;
+        }
+
+        /* ================= Responsive ================= */
+
+        @media(max-width:900px){
+
+            .hero{
+                height:420px;
+            }
+
+            .hero-content h1{
+                font-size:36px;
+            }
+        }
+
+        @media(max-width:768px){
+
+            .nav-toggle{
+                display:block;
+            }
+
+            .nav-links{
+                display:none;
+                flex-direction:column;
+                width:100%;
+                margin-top:15px;
+                gap:12px;
+            }
+
+            .nav-links.active{
+                display:flex;
+            }
+
+            .nav-links li{
+                margin:0;
+                text-align:center;
+            }
+
+            .hero-content h1{
+                font-size:30px;
+            }
+
+            .hero-content p{
+                font-size:16px;
+            }
+
+            .search-section{
+                width:90%;
+            }
+
+            .search-section input{
+                width:100%;
+                margin-bottom:15px;
+            }
+
+            .search-section button{
+                margin-left:0;
+                width:100%;
+            }
+        }
+
+        @media(max-width:480px){
+
+            .hero{
+                height:380px;
+            }
+
+            .hero-content h1{
+                font-size:24px;
+            }
+
+            .btn{
+                padding:12px 24px;
+                font-size:14px;
+            }
+
+            .hospital-card img{
+                height:180px;
+            }
+        }
+    </style>
+
+    <!-- ================= NAVBAR ================= -->
+
+    <nav class="navbar">
+
+         
+           <img src="assets/logo.png" width="200" height="50" viewBox="0 0 24 24" fill="none"/>
+        </div>
+
+        <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">
+            ☰
+        </button>
+
+        <ul class="nav-links" id="navLinks">
+
+            <li><a href="index.html">Home</a></li>
+
+            <li><a href="hospital-details.html">Hospital</a></li>
+
+            <li><a href="cost-estimate.html">Cost Estimate</a></li>
+
+            <li><a href="financial-support.html">Financial Support</a></li>
+
+            <li><a href="admin.html">Admin</a></li>
+
+        </ul>
+
+    </nav>
+
+    <!-- ================= HERO ================= -->
+
+    <section class="hero">
+
+        <div class="hero-content">
+
+            <h1>Find the Best Hospital & Estimate Treatment Cost</h1>
+
+            <p>
+                Compare hospitals, estimate treatment expenses,
+                and explore financial assistance.
+            </p>
+
+            <a href="cost-estimate.html" class="btn">
+                Estimate Cost
+            </a>
+
+        </div>
+
+    </section>
+
+    <!-- ================= SEARCH ================= -->
+
+    <section class="search-section">
+
+        <h2>Search Hospital</h2>
+
+        <input
+            type="text"
+            id="searchHospital"
+            placeholder="Enter Hospital Name">
+
+        <button onclick="searchHospital()">
+            Search
+        </button>
+
+    </section>
+
+    <!-- ================= FEATURED ================= -->
+
+    <section class="featured">
+
+        <h2>Featured Hospitals</h2>
+
+        <div class="hospital-container">
+
+            <div class="hospital-card">
+
+                <img src="aiims.jpg" alt="AIIMS Delhi hospital building">
+
+                <h3>AIIMS Delhi</h3>
+
+                <p>★★★★★</p>
+
+                <a href="hospital-details.html">
+                    View Details
+                </a>
+
+            </div>
+
+            <div class="hospital-card">
+
+                <img src="appolo.jpg" alt="Apollo Hospital building">
+
+                <h3>Apollo Hospital</h3>
+
+                <p>★★★★☆</p>
+
+                <a href="hospital-details.html">
+                    View Details
+                </a>
+
+            </div>
+
+            <div class="hospital-card">
+
+                <img src="fortis.jpg" alt="Fortis Hospital building">
+
+                <h3>Fortis Hospital</h3>
+
+                <p>★★★★★</p>
+
+                <a href="hospital-details.html">
+                    View Details
+                </a>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- ================= FOOTER ================= -->
+
+    <!-- Global Application Footer Structure -->
+    <footer class="app-footer">
+        <div class="footer-primary-layout">
+            <div class="footer-branding-cell">
+                <div class="logo-block-footer">
+                     
+                      <img src="assets/logo.png" width="200" height="50" alt="PulseOne" onerror="this.onerror=null;this.replaceWith(Object.assign(document.createElement('span'),{className:'logo-fallback-text',textContent:'PulseOne'}));"/>
+     
+                </div>
+                <p class="footer-mission-text">Structured healthcare infrastructure designed to connect hospitals, patients, and diagnostics into one seamless system.</p>
+                 
+        <div class="footer-bottom-bar">
+            <span>&copy; 2026 PulseOne Infrastructure. All rights reserved.</span>
+            <div class="compliance-tokens">
+                <span>ISO Certified</span>
+                <span>Secure Healthcare Systems</span>
+            </div>
+        </div>
+    </footer>
+    <style>
+        /* Footer */
+  .app-footer { padding: 36px 16px 20px; }
+  .footer-primary-layout { grid-template-columns: 1fr 1fr !important; gap: 24px; }
+  .footer-branding-cell { grid-column: 1 / -1; }
+  .footer-links-column h4 { margin-bottom: 10px; }
+  .footer-bottom-bar { flex-direction: column; gap: 8px; text-align: center; padding-top: 20px; font-size: 12px; }
+  .compliance-tokens { justify-content: center; flex-wrap: wrap; gap: 8px; }
+
+  /* Modal */
+  .modal-surface-container { width: 92vw; max-width: 420px; padding: 24px 20px; }
+
+
+    </style>
+    <script>
+        // Search Hospital
+
+        function searchHospital(){
+
+            const input = document.getElementById("searchHospital").value.trim().toLowerCase();
+
+            if(input === ""){
+                alert("Please enter hospital name");
+                return;
+            }
+
+            if(input.includes("apollo")){
+                window.location.href = "hospital-details.html";
+            }
+            else if(input.includes("aiims")){
+                window.location.href = "hospital-details.html";
+            }
+            else if(input.includes("fortis")){
+                window.location.href = "hospital-details.html";
+            }
+            else{
+                alert("Hospital not found");
+            }
+        }
+
+        // Allow pressing Enter inside the search box
+        document.getElementById("searchHospital").addEventListener("keydown", function(e){
+            if(e.key === "Enter"){
+                searchHospital();
+            }
+        });
+
+        // Mobile nav toggle
+        const navToggle = document.getElementById("navToggle");
+        const navLinks = document.getElementById("navLinks");
+
+        navToggle.addEventListener("click", function(){
+            const isOpen = navLinks.classList.toggle("active");
+            navToggle.setAttribute("aria-expanded", isOpen);
+        });
+
+        // Smooth Welcome
+        window.addEventListener("load", function(){
+            console.log("Hospital Cost Estimator Loaded");
+        });
+
+        // Card Animation
+        const cards = document.querySelectorAll(".hospital-card");
+
+        cards.forEach((card, index) => {
+
+            card.style.opacity = "0";
+            card.style.transform = "translateY(50px)";
+
+            setTimeout(() => {
+                card.style.transition = ".6s";
+                card.style.opacity = "1";
+                card.style.transform = "translateY(0px)";
+            }, 300 * index);
+
+        });
+    </script>
+
+</body>
+
+</html>

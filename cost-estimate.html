@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Cost Estimate</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,Helvetica,sans-serif;
+}
+
+body{
+background:#f4f7fb;
+}
+
+/* Navbar */
+
+.navbar{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:18px 8%;
+background:#023315;
+color:#fff;
+}
+
+.logo{
+font-size:25px;
+font-weight:bold;
+}
+
+.navbar ul{
+display:flex;
+list-style:none;
+}
+
+.navbar ul li{
+margin-left:25px;
+}
+
+.navbar ul li a{
+text-decoration:none;
+color:white;
+font-size:17px;
+}
+
+.navbar ul li a:hover{
+color:yellow;
+}
+
+/* Container */
+
+.container{
+width:90%;
+max-width:1100px;
+margin:40px auto;
+}
+
+/* Tabs */
+
+.tabs{
+display:flex;
+margin-bottom:30px;
+border-radius:8px;
+overflow:hidden;
+}
+
+.tabs button{
+flex:1;
+padding:15px;
+border:none;
+background:#ddd;
+cursor:pointer;
+font-size:18px;
+font-weight:bold;
+transition:.3s;
+}
+
+.tabs button.active{
+background:#023112;
+color:white;
+}
+
+/* Content */
+
+.tab-content{
+display:none;
+animation:fade .4s;
+}
+
+@keyframes fade{
+
+from{
+opacity:0;
+transform:translateY(20px);
+}
+
+to{
+opacity:1;
+transform:translateY(0px);
+}
+
+}
+
+/* Card */
+
+.card{
+
+background:white;
+padding:30px;
+border-radius:10px;
+box-shadow:0 5px 15px rgba(0,0,0,.1);
+
+}
+
+/* Form */
+
+.input-group{
+margin-bottom:20px;
+}
+
+.input-group label{
+display:block;
+margin-bottom:8px;
+font-weight:bold;
+}
+
+.input-group input,
+.input-group select{
+
+width:100%;
+padding:12px;
+border:1px solid #ccc;
+border-radius:6px;
+
+}
+
+.btn{
+
+background:#0d6efd;
+color:white;
+border:none;
+padding:14px 30px;
+border-radius:8px;
+cursor:pointer;
+font-size:16px;
+
+}
+
+.btn:hover{
+
+background:#084298;
+
+}
+
+/* Result */
+
+.result{
+
+margin-top:25px;
+background:#e9f5ff;
+padding:20px;
+border-left:5px solid #0d6efd;
+border-radius:8px;
+font-size:20px;
+font-weight:bold;
+
+}
+
+/* Upload */
+
+.upload-box{
+
+padding:40px;
+border:2px dashed #999;
+text-align:center;
+border-radius:10px;
+margin-bottom:25px;
+background:#fafafa;
+
+}
+
+.upload-box input{
+
+margin-top:20px;
+
+}
+
+/* Report */
+
+.report{
+
+margin-top:30px;
+background:white;
+padding:25px;
+border-radius:10px;
+box-shadow:0 5px 10px rgba(0,0,0,.1);
+
+}
+
+.report h3{
+
+margin-bottom:20px;
+
+}
+
+.report p{
+
+margin-bottom:12px;
+font-size:18px;
+
+}
+
+/* Responsive */
+
+@media(max-width:768px){
+
+.tabs{
+
+flex-direction:column;
+
+}
+
+.navbar{
+
+flex-direction:column;
+
+}
+
+.navbar ul{
+
+margin-top:15px;
+flex-wrap:wrap;
+justify-content:center;
+
+}
+
+.navbar ul li{
+
+margin:8px;
+
+}
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<nav class="navbar">
+
+<div class="logo">
+  <img src="assets/logo.png" width="200" height="50" viewBox="0 0 24 24" fill="none"/>
+</div>
+
+<ul>
+
+<li><a href="index.html">Home</a></li>
+<li><a href="#">Hospital</a></li>
+<li><a href="#">Cost Estimate</a></li>
+<li><a href="#">Financial Support</a></li>
+<li><a href="#">Admin</a></li>
+
+</ul>
+
+</nav>
+
+<div class="container">
+
+<div class="tabs">
+
+<button class="active" onclick="openTab('cost')">
+Cost Estimator
+</button>
+
+<button onclick="openTab('audit')">
+Bill Audit Upload
+</button>
+
+</div>
+
+<!-- Cost Estimator -->
+
+<div id="cost" class="tab-content" style="display:block;">
+
+<div class="card">
+
+<h2>Cost Estimator</h2>
+
+<br>
+
+<div class="input-group">
+<label>Patient Name</label>
+<input type="text">
+</div>
+
+<div class="input-group">
+<label>Age</label>
+<input type="number">
+</div>
+
+<div class="input-group">
+<label>Disease</label>
+<input type="text">
+</div>
+
+<div class="input-group">
+<label>Hospital</label>
+
+<select id="hospital">
+
+<option value="25000">AIIMS</option>
+
+<option value="40000">Apollo</option>
+
+<option value="35000">Fortis</option>
+
+</select>
+
+</div>
+
+<div class="input-group">
+
+<label>Treatment</label>
+
+<select id="treatment">
+
+<option value="50000">Heart Surgery</option>
+
+<option value="30000">Kidney Treatment</option>
+
+<option value="20000">Eye Surgery</option>
+
+</select>
+
+</div>
+
+<button class="btn" onclick="calculateCost()">
+
+Calculate Cost
+
+</button>
+
+<div class="result">
+
+Estimated Cost :
+₹ <span id="totalCost">0</span>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- Bill Audit -->
+
+<div id="audit" class="tab-content">
+
+<div class="card">
+
+<h2>Bill Audit Upload</h2>
+
+<br>
+
+<div class="upload-box">
+
+<h3>Upload Hospital Bill</h3>
+
+<input type="file" id="billFile" onchange="previewFile()">
+
+<p id="filename"></p>
+
+</div>
+
+<button class="btn" onclick="auditBill()">
+
+Generate Audit Report
+
+</button>
+
+<div class="report">
+
+<h3>Audit Report</h3>
+
+<p>
+Original Cost :
+₹ <span id="original">0</span>
+</p>
+
+<p>
+Extra Charges :
+₹ <span id="extra">0</span>
+</p>
+
+<p>
+Recommended Cost :
+₹ <span id="recommended">0</span>
+</p>
+
+<button class="btn" onclick="downloadReport()">
+
+Download Report
+
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+// Tabs
+
+function openTab(id){
+
+let tabs=document.querySelectorAll(".tab-content");
+
+tabs.forEach(tab=>{
+
+tab.style.display="none";
+
+});
+
+document.getElementById(id).style.display="block";
+
+let btn=document.querySelectorAll(".tabs button");
+
+btn.forEach(button=>{
+
+button.classList.remove("active");
+
+});
+
+event.target.classList.add("active");
+
+}
+
+// Cost
+
+function calculateCost(){
+
+let hospital=parseInt(document.getElementById("hospital").value);
+
+let treatment=parseInt(document.getElementById("treatment").value);
+
+let total=hospital+treatment;
+
+document.getElementById("totalCost").innerHTML=total.toLocaleString();
+
+}
+
+// Upload
+
+function previewFile(){
+
+let file=document.getElementById("billFile").files[0];
+
+if(file){
+
+document.getElementById("filename").innerHTML=file.name;
+
+}
+
+}
+
+// Audit
+
+function auditBill(){
+
+let original=120000;
+
+let extra=18000;
+
+let recommended=original-extra;
+
+document.getElementById("original").innerHTML=original.toLocaleString();
+
+document.getElementById("extra").innerHTML=extra.toLocaleString();
+
+document.getElementById("recommended").innerHTML=recommended.toLocaleString();
+
+}
+
+// Download
+
+function downloadReport(){
+
+let report=
+
+"Hospital Bill Audit Report\n\n"
+
++"Original Cost : ₹120000\n"
+
++"Extra Charges : ₹18000\n"
+
++"Recommended Cost : ₹102000";
+
+let blob=new Blob([report],{type:"text/plain"});
+
+let link=document.createElement("a");
+
+link.href=URL.createObjectURL(blob);
+
+link.download="AuditReport.txt";
+
+link.click();
+
+}
+
+</script>
+
+</body>
+</html>

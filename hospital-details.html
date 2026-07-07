@@ -1,0 +1,1371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<meta name="description" content="St. Metropolitan Medical Center — Hospital Details, Doctors, Departments & Appointments"/>
+<title>PulseOne — Hospital Details</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+/* ══════════════════════════════════════════
+   TOKENS
+══════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --teal:#0d6b5e;
+  --teal-dark:#085048;
+  --teal-light:#e6f4f2;
+  --teal-mid:#1a8a7a;
+  --green:#16a34a;
+  --green-light:#dcfce7;
+  --amber:#f59e0b;
+  --red:#ef4444;
+  --border:#e5e7eb;
+  --border2:#d1d5db;
+  --text:#111827;
+  --text2:#4b5563;
+  --text3:#9ca3af;
+  --bg:#f5f7f6;
+  --bg2:#f0f2f1;
+  --white:#fff;
+  --radius:10px;
+  --radius-sm:6px;
+  --radius-lg:16px;
+  --shadow:0 1px 4px rgba(0,0,0,.07);
+  --shadow-md:0 4px 20px rgba(0,0,0,.1);
+  --shadow-lg:0 10px 40px rgba(0,0,0,.14);
+  --transition:0.22s cubic-bezier(.4,0,.2,1);
+}
+
+html{ scroll-behavior:smooth; }
+body{
+  font-family:'Inter',system-ui,sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  font-size:14px;
+  line-height:1.5;
+  overflow-x:hidden;
+}
+a{ text-decoration:none; color:inherit; }
+img{ display:block; max-width:100%; }
+button{ font-family:inherit; cursor:pointer; border:none; }
+input,select,textarea{ font-family:inherit; outline:none; }
+
+/* ══════════════════════════════════════════
+   SCROLLBAR
+══════════════════════════════════════════ */
+::-webkit-scrollbar{ width:5px; height:5px; }
+::-webkit-scrollbar-track{ background:var(--bg2); }
+::-webkit-scrollbar-thumb{ background:var(--teal); border-radius:99px; }
+
+/* ══════════════════════════════════════════
+   NAVBAR
+══════════════════════════════════════════ */
+.navbar{
+  position:sticky; top:0; z-index:100;
+  background:var(--white);
+  border-bottom:1px solid var(--border);
+  box-shadow:var(--shadow);
+}
+.nav-inner{
+  max-width:1280px; margin:0 auto;
+  padding:0 24px; height:58px;
+  display:flex; align-items:center;
+  justify-content:space-between; gap:16px;
+}
+.nav-brand{
+  display:flex; align-items:center; gap:9px;
+  font-size:18px; font-weight:800;
+  color:var(--text); letter-spacing:-.3px;
+  flex-shrink:0;
+}
+.brand-icon{
+  width:28px; height:28px; border-radius:7px;
+  background:var(--teal-dark);
+  display:flex; align-items:center; justify-content:center;
+}
+.nav-links{
+  display:flex; gap:4px; list-style:none;
+}
+.nav-links a{
+  padding:7px 13px; border-radius:var(--radius-sm);
+  font-size:13px; font-weight:500; color:var(--text2);
+  transition:var(--transition);
+}
+.nav-links a:hover{ background:var(--bg); color:var(--text); }
+.nav-links a.active{ color:var(--teal); background:var(--teal-light); }
+.nav-right{ display:flex; align-items:center; gap:10px; }
+.btn-login{
+  padding:8px 20px; border-radius:var(--radius-sm);
+  border:1.5px solid var(--border2);
+  font-size:13px; font-weight:600; color:var(--text2);
+  background:var(--white); transition:var(--transition);
+}
+.btn-login:hover{ border-color:var(--teal); color:var(--teal); }
+.btn-signup{
+  padding:8px 20px; border-radius:var(--radius-sm);
+  background:var(--teal-dark); color:var(--white);
+  font-size:13px; font-weight:600; transition:var(--transition);
+}
+.btn-signup:hover{ background:var(--teal); }
+.hamburger{
+  display:none; flex-direction:column; gap:5px;
+  background:none; border:none; cursor:pointer; padding:4px;
+}
+.hamburger span{
+  display:block; width:22px; height:2px;
+  background:var(--text); border-radius:2px; transition:.3s;
+}
+
+/* ══════════════════════════════════════════
+   BREADCRUMB
+══════════════════════════════════════════ */
+.breadcrumb-bar{
+  background:var(--white); border-bottom:1px solid var(--border);
+  padding:10px 0;
+}
+.breadcrumb{
+  max-width:1280px; margin:0 auto; padding:0 24px;
+  display:flex; align-items:center; gap:6px;
+  font-size:12.5px; color:var(--text3);
+}
+.breadcrumb a{ color:var(--text3); transition:color .15s; }
+.breadcrumb a:hover{ color:var(--teal); }
+.breadcrumb span{ color:var(--text); font-weight:500; }
+
+/* ══════════════════════════════════════════
+   HERO / COVER
+══════════════════════════════════════════ */
+.hero-cover{
+  position:relative; height:280px; overflow:hidden;
+  background:linear-gradient(135deg,#062a24 0%,#0a4a3c 50%,#0d6b5e 100%);
+}
+/* Decorative grid */
+.hero-cover::before{
+  content:'';
+  position:absolute; inset:0;
+  background-image:
+    linear-gradient(rgba(255,255,255,.04) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.04) 1px,transparent 1px);
+  background-size:28px 28px;
+}
+/* Decorative glow orb */
+.hero-cover::after{
+  content:'';
+  position:absolute;
+  width:400px; height:400px; border-radius:50%;
+  background:radial-gradient(circle,rgba(45,212,191,.3),transparent 70%);
+  top:-100px; right:-80px;
+  filter:blur(10px);
+}
+.hero-cover-inner{
+  position:relative; z-index:1;
+  max-width:1280px; margin:0 auto;
+  padding:36px 24px;
+  height:100%; display:flex; align-items:flex-end;
+}
+
+/* ══════════════════════════════════════════
+   HOSPITAL HEADER CARD
+══════════════════════════════════════════ */
+.hosp-header-wrap{
+  max-width:1280px; margin:0 auto; padding:0 24px;
+  position:relative; z-index:2;
+}
+.hosp-header-card{
+  background:var(--white); border:1px solid var(--border);
+  border-radius:var(--radius-lg); padding:24px 28px;
+  margin-top:-60px;
+  display:flex; align-items:flex-start; gap:24px;
+  box-shadow:var(--shadow-md);
+  flex-wrap:wrap;
+}
+.hosp-logo-box{
+  width:90px; height:90px; border-radius:var(--radius);
+  background:var(--teal-light); border:3px solid var(--white);
+  display:flex; align-items:center; justify-content:center;
+  font-size:2.8rem; flex-shrink:0;
+  box-shadow:0 4px 14px rgba(0,0,0,.1);
+}
+.hosp-main{ flex:1; min-width:0; }
+.hosp-badges{
+  display:flex; gap:7px; flex-wrap:wrap; margin-bottom:10px;
+}
+.badge{
+  display:inline-flex; align-items:center; gap:4px;
+  font-size:11px; font-weight:700; letter-spacing:.04em;
+  padding:4px 10px; border-radius:20px;
+}
+.badge-nabl{ background:var(--green-light); color:var(--green); }
+.badge-iso { background:#dbeafe; color:#1d4ed8; }
+.badge-jci { background:#f3e8ff; color:#7c3aed; }
+.badge-open{ background:var(--green-light); color:var(--green); }
+.badge-open::before{
+  content:''; width:6px; height:6px; border-radius:50%;
+  background:var(--green); animation:blink 1.5s ease-in-out infinite;
+}
+@keyframes blink{ 0%,100%{opacity:1} 50%{opacity:.3} }
+
+.hosp-name{
+  font-size:22px; font-weight:800; letter-spacing:-.3px;
+  color:var(--text); margin-bottom:6px;
+}
+.hosp-type{
+  font-size:13px; font-weight:600; color:var(--teal);
+  margin-bottom:8px;
+}
+.hosp-meta{
+  display:flex; flex-wrap:wrap; gap:16px;
+  font-size:12.5px; color:var(--text2);
+}
+.hosp-meta-item{
+  display:flex; align-items:center; gap:5px;
+}
+.hosp-meta-item svg{ flex-shrink:0; color:var(--text3); }
+
+.hosp-rating{
+  display:flex; align-items:center; gap:6px;
+  background:var(--bg); border:1px solid var(--border);
+  border-radius:var(--radius-sm); padding:8px 14px;
+}
+.rating-star{ color:#f59e0b; font-size:1.1rem; }
+.rating-val{ font-size:16px; font-weight:800; }
+.rating-count{ font-size:12px; color:var(--text3); }
+
+.hosp-actions{
+  display:flex; flex-direction:column; gap:10px;
+  flex-shrink:0;
+}
+.btn-appt{
+  display:flex; align-items:center; justify-content:center; gap:7px;
+  padding:12px 24px; border-radius:var(--radius-sm);
+  background:var(--teal-dark); color:var(--white);
+  font-size:14px; font-weight:700; transition:var(--transition);
+  white-space:nowrap;
+}
+.btn-appt:hover{ background:var(--teal); box-shadow:0 4px 14px rgba(13,107,94,.35); }
+.btn-call{
+  display:flex; align-items:center; justify-content:center; gap:7px;
+  padding:11px 24px; border-radius:var(--radius-sm);
+  border:1.5px solid var(--border2);
+  background:var(--white); color:var(--text2);
+  font-size:13.5px; font-weight:600; transition:var(--transition);
+  white-space:nowrap;
+}
+.btn-call:hover{ border-color:var(--teal); color:var(--teal); }
+
+/* ══════════════════════════════════════════
+   STATS STRIP
+══════════════════════════════════════════ */
+.stats-strip{
+  max-width:1280px; margin:20px auto 0; padding:0 24px;
+}
+.stats-grid{
+  display:grid; grid-template-columns:repeat(4,1fr);
+  gap:14px;
+}
+.stat-card{
+  background:var(--white); border:1px solid var(--border);
+  border-radius:var(--radius); padding:18px 20px;
+  display:flex; align-items:center; gap:14px;
+  transition:var(--transition); cursor:default;
+}
+.stat-card:hover{
+  border-color:var(--teal); box-shadow:var(--shadow-md);
+  transform:translateY(-2px);
+}
+.stat-icon{
+  width:44px; height:44px; border-radius:10px;
+  background:var(--teal-light);
+  display:flex; align-items:center; justify-content:center;
+  flex-shrink:0; color:var(--teal);
+}
+.stat-val{
+  font-size:22px; font-weight:800; color:var(--text);
+  line-height:1;
+}
+.stat-lbl{ font-size:12px; color:var(--text3); margin-top:3px; }
+
+/* ══════════════════════════════════════════
+   MAIN LAYOUT
+══════════════════════════════════════════ */
+.page-wrap{
+  max-width:1280px; margin:24px auto 60px;
+  padding:0 24px;
+  display:grid;
+  grid-template-columns:1fr 340px;
+  gap:24px; align-items:start;
+}
+
+/* ══════════════════════════════════════════
+   TABS
+══════════════════════════════════════════ */
+.tabs{
+  display:flex; gap:4px;
+  background:var(--white); border:1px solid var(--border);
+  border-radius:var(--radius); padding:5px;
+  margin-bottom:20px; overflow-x:auto;
+  flex-wrap:nowrap;
+}
+.tab-btn{
+  padding:9px 18px; border-radius:var(--radius-sm);
+  font-size:13px; font-weight:600; color:var(--text2);
+  background:none; transition:var(--transition);
+  white-space:nowrap; flex-shrink:0;
+}
+.tab-btn.active{
+  background:var(--teal-dark); color:var(--white);
+  box-shadow:0 2px 8px rgba(13,107,94,.25);
+}
+.tab-btn:hover:not(.active){
+  background:var(--bg); color:var(--text);
+}
+
+/* Tab panels */
+.tab-panel{ display:none; }
+.tab-panel.active{ display:block; }
+
+/* ══════════════════════════════════════════
+   SECTION CARDS
+══════════════════════════════════════════ */
+.sec-card{
+  background:var(--white); border:1px solid var(--border);
+  border-radius:var(--radius-lg); padding:24px;
+  margin-bottom:20px; box-shadow:var(--shadow);
+}
+.sec-title{
+  font-size:16px; font-weight:700; color:var(--text);
+  margin-bottom:18px; display:flex; align-items:center; gap:8px;
+}
+.sec-title svg{ color:var(--teal); }
+
+/* ══════════════════════════════════════════
+   ABOUT
+══════════════════════════════════════════ */
+.about-text{
+  font-size:14px; color:var(--text2); line-height:1.75;
+  margin-bottom:18px;
+}
+.about-highlights{
+  display:grid; grid-template-columns:1fr 1fr; gap:12px;
+}
+.hl-item{
+  display:flex; align-items:flex-start; gap:10px;
+  background:var(--bg); border-radius:var(--radius-sm); padding:13px;
+}
+.hl-icon{
+  width:32px; height:32px; border-radius:8px;
+  background:var(--teal-light); color:var(--teal);
+  display:flex; align-items:center; justify-content:center;
+  flex-shrink:0;
+}
+.hl-title{ font-size:13px; font-weight:700; color:var(--text); }
+.hl-desc { font-size:12px; color:var(--text3); margin-top:1px; }
+
+/* ══════════════════════════════════════════
+   DEPARTMENTS GRID
+══════════════════════════════════════════ */
+.dept-grid{
+  display:grid; grid-template-columns:repeat(3,1fr); gap:12px;
+}
+.dept-card{
+  display:flex; flex-direction:column; align-items:center;
+  text-align:center; gap:8px;
+  background:var(--bg); border:1px solid var(--border);
+  border-radius:var(--radius); padding:18px 12px;
+  cursor:pointer; transition:var(--transition);
+}
+.dept-card:hover{
+  border-color:var(--teal); background:var(--teal-light);
+  transform:translateY(-3px); box-shadow:var(--shadow);
+}
+.dept-icon{
+  width:44px; height:44px; border-radius:12px;
+  background:var(--white); border:1px solid var(--border);
+  display:flex; align-items:center; justify-content:center;
+  font-size:1.4rem; transition:var(--transition);
+}
+.dept-card:hover .dept-icon{
+  background:var(--teal-dark); border-color:var(--teal-dark);
+}
+.dept-name{ font-size:12.5px; font-weight:700; color:var(--text); }
+.dept-count{ font-size:11px; color:var(--text3); }
+
+/* ══════════════════════════════════════════
+   DOCTORS
+══════════════════════════════════════════ */
+.doctor-card{
+  display:flex; align-items:center; gap:16px;
+  background:var(--bg); border:1px solid var(--border);
+  border-radius:var(--radius); padding:16px;
+  margin-bottom:12px; transition:var(--transition);
+  cursor:pointer;
+}
+.doctor-card:last-child{ margin-bottom:0; }
+.doctor-card:hover{
+  border-color:var(--teal); box-shadow:var(--shadow);
+  transform:translateX(4px);
+}
+.doctor-avatar{
+  width:60px; height:60px; border-radius:50%;
+  background:var(--teal-light); border:2px solid var(--border2);
+  display:flex; align-items:center; justify-content:center;
+  font-size:1.8rem; flex-shrink:0;
+}
+.doctor-name{ font-size:14.5px; font-weight:700; color:var(--text); }
+.doctor-spec{ font-size:12.5px; color:var(--teal); font-weight:600; margin-bottom:4px; }
+.doctor-meta{
+  display:flex; gap:12px; font-size:12px; color:var(--text3); flex-wrap:wrap;
+}
+.doctor-meta-item{ display:flex; align-items:center; gap:4px; }
+.doc-rating{ display:flex; align-items:center; gap:4px; font-size:12px; }
+.doc-star{ color:#f59e0b; font-size:12px; }
+.doc-rating-val{ font-weight:700; color:var(--text); }
+.btn-book-doc{
+  margin-left:auto; padding:8px 18px;
+  border-radius:var(--radius-sm);
+  background:var(--teal-dark); color:var(--white);
+  font-size:12.5px; font-weight:700; flex-shrink:0;
+  transition:var(--transition);
+}
+.btn-book-doc:hover{ background:var(--teal); }
+
+/* ══════════════════════════════════════════
+   REVIEWS
+══════════════════════════════════════════ */
+.review-overall{
+  display:flex; align-items:center; gap:24px;
+  padding:20px; background:var(--bg); border-radius:var(--radius);
+  margin-bottom:20px; flex-wrap:wrap;
+}
+.review-big-val{
+  font-size:52px; font-weight:800; color:var(--text);
+  line-height:1;
+}
+.review-big-stars{ display:flex; gap:3px; font-size:1.3rem; margin-top:4px; }
+.review-big-count{ font-size:12.5px; color:var(--text3); margin-top:4px; }
+.review-bars{ flex:1; min-width:180px; display:flex; flex-direction:column; gap:8px; }
+.bar-row{ display:flex; align-items:center; gap:8px; font-size:12.5px; }
+.bar-label{ color:var(--text3); width:40px; flex-shrink:0; }
+.bar-track{
+  flex:1; height:7px; background:var(--border);
+  border-radius:99px; overflow:hidden;
+}
+.bar-fill{
+  height:100%; border-radius:99px;
+  background:linear-gradient(90deg,var(--teal),var(--teal-mid));
+  transition:width .8s ease;
+}
+.bar-pct{ color:var(--text3); width:30px; text-align:right; flex-shrink:0; }
+
+.review-card{
+  border:1px solid var(--border); border-radius:var(--radius);
+  padding:18px; margin-bottom:12px; transition:var(--transition);
+}
+.review-card:hover{ border-color:var(--border2); box-shadow:var(--shadow); }
+.review-header{
+  display:flex; align-items:center; gap:12px; margin-bottom:10px;
+}
+.review-avatar{
+  width:38px; height:38px; border-radius:50%;
+  background:var(--teal-light); display:flex; align-items:center;
+  justify-content:center; font-size:1.1rem; flex-shrink:0;
+}
+.review-author{ font-size:13.5px; font-weight:700; }
+.review-date  { font-size:12px; color:var(--text3); }
+.review-stars { display:flex; gap:2px; font-size:12px; color:#f59e0b; }
+.review-text  { font-size:13.5px; color:var(--text2); line-height:1.7; }
+
+/* ══════════════════════════════════════════
+   GALLERY
+══════════════════════════════════════════ */
+.gallery-grid{
+  display:grid; grid-template-columns:repeat(3,1fr); gap:10px;
+}
+.gallery-item{
+  border-radius:var(--radius); overflow:hidden;
+  aspect-ratio:4/3;
+  background:linear-gradient(135deg,var(--bg2),var(--border));
+  display:flex; align-items:center; justify-content:center;
+  font-size:2.5rem; cursor:pointer; transition:var(--transition);
+  border:1px solid var(--border); position:relative;
+}
+.gallery-item:hover{ transform:scale(1.03); box-shadow:var(--shadow-md); }
+.gallery-item:first-child{
+  grid-column:span 2; grid-row:span 2;
+  font-size:4rem;
+}
+
+/* ══════════════════════════════════════════
+   RIGHT SIDEBAR
+══════════════════════════════════════════ */
+.sidebar{ display:flex; flex-direction:column; gap:18px; }
+
+/* Appointment card */
+.appt-card{
+  background:var(--white); border:1px solid var(--border);
+  border-radius:var(--radius-lg); overflow:hidden;
+  box-shadow:var(--shadow);
+  position:sticky; top:80px;
+}
+.appt-card-head{
+  background:linear-gradient(135deg,var(--teal-dark),var(--teal));
+  padding:20px; color:var(--white);
+}
+.appt-card-head h3{ font-size:16px; font-weight:800; margin-bottom:4px; }
+.appt-card-head p{ font-size:12.5px; opacity:.8; }
+.appt-card-body{ padding:20px; }
+
+.form-group{ margin-bottom:14px; }
+.form-label{ font-size:12px; font-weight:700; color:var(--text2); margin-bottom:6px; display:block; letter-spacing:.02em; }
+.form-control{
+  width:100%; padding:10px 13px;
+  border:1.5px solid var(--border); border-radius:var(--radius-sm);
+  font-size:13.5px; color:var(--text);
+  background:var(--bg); transition:var(--transition);
+}
+.form-control:focus{ border-color:var(--teal); background:var(--white); }
+.form-control::placeholder{ color:var(--text3); }
+
+/* Date picker row */
+.date-row{ display:flex; gap:8px; }
+.date-row .form-control{ flex:1; }
+
+/* Time slots */
+.time-slots{
+  display:grid; grid-template-columns:repeat(3,1fr); gap:7px;
+  margin-bottom:14px;
+}
+.time-slot{
+  padding:8px 4px; text-align:center;
+  border:1.5px solid var(--border); border-radius:var(--radius-sm);
+  font-size:12px; font-weight:600; color:var(--text2);
+  background:var(--white); cursor:pointer; transition:var(--transition);
+}
+.time-slot:hover{ border-color:var(--teal); color:var(--teal); }
+.time-slot.selected{ background:var(--teal-dark); border-color:var(--teal-dark); color:var(--white); }
+.time-slot.unavailable{
+  opacity:.4; cursor:not-allowed;
+  background:var(--bg); color:var(--text3);
+}
+
+.btn-confirm{
+  width:100%; padding:14px;
+  background:var(--teal-dark); color:var(--white);
+  border-radius:var(--radius-sm); font-size:14px; font-weight:700;
+  transition:var(--transition); position:relative; overflow:hidden;
+}
+.btn-confirm:hover{ background:var(--teal); box-shadow:0 4px 14px rgba(13,107,94,.35); }
+.btn-confirm:disabled{ opacity:.65; cursor:not-allowed; }
+
+.appt-note{
+  font-size:11.5px; color:var(--text3); text-align:center;
+  margin-top:12px; display:flex; align-items:center; gap:4px; justify-content:center;
+}
+
+/* Info box */
+.info-box{
+  background:var(--white); border:1px solid var(--border);
+  border-radius:var(--radius-lg); padding:18px; box-shadow:var(--shadow);
+}
+.info-box-title{
+  font-size:14px; font-weight:700; color:var(--text);
+  margin-bottom:14px; display:flex; align-items:center; gap:7px;
+}
+.info-box-title svg{ color:var(--teal); }
+.info-row{
+  display:flex; align-items:flex-start; gap:10px;
+  padding:8px 0; border-bottom:1px solid var(--border);
+  font-size:13px;
+}
+.info-row:last-child{ border-bottom:none; padding-bottom:0; }
+.info-row svg{ color:var(--teal); flex-shrink:0; margin-top:1px; }
+.info-label{ color:var(--text3); font-size:11.5px; }
+.info-val{ color:var(--text); font-weight:600; font-size:13px; }
+
+/* Map placeholder */
+.map-box{
+  background:linear-gradient(135deg,#e6f4f2,#d0ebe8);
+  border-radius:var(--radius); aspect-ratio:16/9;
+  display:flex; flex-direction:column;
+  align-items:center; justify-content:center; gap:8px;
+  border:1px solid var(--border); cursor:pointer;
+  transition:var(--transition);
+}
+.map-box:hover{ box-shadow:var(--shadow-md); }
+.map-box svg{ color:var(--teal); }
+.map-box p{ font-size:12.5px; font-weight:600; color:var(--teal); }
+
+/* ══════════════════════════════════════════
+   TOAST
+══════════════════════════════════════════ */
+#toast{
+  position:fixed; bottom:28px; right:28px; z-index:9999;
+  background:var(--text); color:var(--white);
+  border-radius:var(--radius); padding:13px 20px;
+  display:flex; align-items:center; gap:10px;
+  box-shadow:var(--shadow-lg); font-size:13.5px; font-weight:500;
+  transform:translateY(100px); opacity:0;
+  transition:.3s cubic-bezier(.34,1.56,.64,1); max-width:320px;
+}
+#toast.show{ transform:translateY(0); opacity:1; }
+
+/* ══════════════════════════════════════════
+   MOBILE MENU OVERLAY
+══════════════════════════════════════════ */
+.mob-menu{
+  display:none; position:fixed; inset:0; z-index:200;
+  background:rgba(6,8,17,.96); backdrop-filter:blur(16px);
+  flex-direction:column; align-items:center; justify-content:center; gap:28px;
+}
+.mob-menu.open{ display:flex; }
+.mob-menu a{ font-size:1.5rem; font-weight:700; color:rgba(255,255,255,.75); }
+.mob-menu a:hover{ color:#fff; }
+.mob-close{
+  position:absolute; top:20px; right:20px;
+  background:none; border:none; color:rgba(255,255,255,.7);
+  font-size:1.6rem; cursor:pointer;
+}
+
+/* ══════════════════════════════════════════
+   RESPONSIVE
+══════════════════════════════════════════ */
+@media(max-width:1100px){
+  .page-wrap{ grid-template-columns:1fr; }
+  .appt-card{ position:static; }
+  .sidebar{ display:grid; grid-template-columns:1fr 1fr; gap:18px; }
+}
+
+@media(max-width:900px){
+  .stats-grid{ grid-template-columns:repeat(2,1fr); }
+  .dept-grid { grid-template-columns:repeat(3,1fr); }
+  .gallery-grid{ grid-template-columns:repeat(2,1fr); }
+  .gallery-item:first-child{ grid-column:span 2; grid-row:span 1; }
+  .about-highlights{ grid-template-columns:1fr; }
+}
+
+@media(max-width:768px){
+  .nav-links, .btn-login{ display:none; }
+  .hamburger{ display:flex; }
+  .hero-cover{ height:200px; }
+  .hosp-header-card{
+    flex-direction:column; margin-top:-40px;
+  }
+  .hosp-actions{ flex-direction:row; width:100%; }
+  .btn-appt, .btn-call{ flex:1; justify-content:center; }
+  .stats-grid{ grid-template-columns:repeat(2,1fr); gap:10px; }
+  .sidebar{ grid-template-columns:1fr; }
+  .dept-grid{ grid-template-columns:repeat(2,1fr); }
+  .time-slots{ grid-template-columns:repeat(4,1fr); }
+  .review-overall{ flex-direction:column; align-items:flex-start; }
+  .gallery-grid{ grid-template-columns:repeat(2,1fr); }
+  .gallery-item:first-child{ grid-column:span 2; grid-row:span 1; }
+}
+
+@media(max-width:480px){
+  .nav-inner, .breadcrumb, .hosp-header-wrap,
+  .stats-strip, .page-wrap{ padding-left:14px; padding-right:14px; }
+  .hosp-name{ font-size:18px; }
+  .dept-grid{ grid-template-columns:repeat(2,1fr); gap:8px; }
+  .time-slots{ grid-template-columns:repeat(3,1fr); }
+  .tabs{ padding:4px; }
+  .tab-btn{ padding:8px 12px; font-size:12px; }
+  #toast{ right:14px; bottom:14px; max-width:calc(100vw - 28px); }
+}
+</style>
+</head>
+<body>
+
+<!-- ════════ MOBILE MENU ════════ -->
+<div class="mob-menu" id="mobMenu">
+  <button class="mob-close" id="mobClose">✕</button>
+  <a href="#">Home</a>
+  <a href="#">Find Hospitals</a>
+  <a href="#">Doctors</a>
+  <a href="#">Lab Tests</a>
+  <a href="#">Membership</a>
+</div>
+
+<!-- ════════ TOAST ════════ -->
+<div id="toast">
+  <span id="toastIcon">✅</span>
+  <span id="toastMsg">Done</span>
+</div>
+
+<!-- ════════ NAVBAR ════════ -->
+<header class="navbar">
+  <div class="nav-inner">
+    <a href="#" class="nav-brand">
+       
+      
+<img src="assets/logo.png" width="200" height="50" viewBox="0 0 24 24" fill="none"/>
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="hospitals.html" class="active">Hospitals</a></li>
+      <li><a href="doctors.html">Doctors</a></li>
+      <li><a href="lab .html">Lab Tests</a></li>
+      <li><a href="membership.html">Membership</a></li>
+    </ul>
+    <div class="nav-right">
+      
+      <button class="hamburger" id="hamburger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- ════════ BREADCRUMB ════════ -->
+<div class="breadcrumb-bar">
+  <div class="breadcrumb">
+    <a href="#">Home</a> ›
+    <a href="#">Hospitals</a> ›
+    <a href="#">New Delhi</a> ›
+    <span>St. Metropolitan Medical Center</span>
+  </div>
+</div>
+
+<!-- ════════ HERO COVER ════════ -->
+<div class="hero-cover">
+  <div class="hero-cover-inner">
+    <!-- Decorative content inside cover if needed -->
+  </div>
+</div>
+
+<!-- ════════ HOSPITAL HEADER ════════ -->
+<div class="hosp-header-wrap">
+  <div class="hosp-header-card">
+    <div class="hosp-logo-box">🏥</div>
+
+    <div class="hosp-main">
+      <div class="hosp-badges">
+        <span class="badge badge-open">● Open Now</span>
+        <span class="badge badge-nabl">NABL Accredited</span>
+        <span class="badge badge-iso">ISO 9001:2015</span>
+        <span class="badge badge-jci">JCI Certified</span>
+      </div>
+      <h1 class="hosp-name">St. Metropolitan Medical Center</h1>
+      <div class="hosp-type">Multi-Specialty Tertiary Care Hospital</div>
+      <div class="hosp-meta">
+        <div class="hosp-meta-item">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          Saket, New Delhi – 110017
+        </div>
+        <div class="hosp-meta-item">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2A19.79 19.79 0 0 1 11.63 18a19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.12 3.18 2 2 0 0 1 4.11 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 8.91A16 16 0 0 0 14 14.91l1.27-.89a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          +91 11 4600 0000
+        </div>
+        <div class="hosp-meta-item">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          Open 24 Hours · Emergency Available
+        </div>
+        <div class="hosp-meta-item">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+          Established 1998 · 25+ Years of Excellence
+        </div>
+      </div>
+    </div>
+
+    <div class="hosp-rating">
+      <span class="rating-star">★</span>
+      <div>
+        <div class="rating-val">4.8</div>
+        <div class="rating-count">2,140 reviews</div>
+      </div>
+    </div>
+
+    <div class="hosp-actions">
+      <button class="btn-appt" onclick="scrollToAppt()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        Book Appointment
+      </button>
+      <button class="btn-call" onclick="showToast('📞','Calling +91 11 4600 0000…')">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2A19.79 19.79 0 0 1 11.63 18a19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.12 3.18 2 2 0 0 1 4.11 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 8.91A16 16 0 0 0 14 14.91l1.27-.89a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        Call Now
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ════════ STATS STRIP ════════ -->
+<div class="stats-strip">
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      </div>
+      <div>
+        <div class="stat-val">350+</div>
+        <div class="stat-lbl">Expert Doctors</div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      </div>
+      <div>
+        <div class="stat-val">700</div>
+        <div class="stat-lbl">Beds Available</div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+      </div>
+      <div>
+        <div class="stat-val">40+</div>
+        <div class="stat-lbl">Specialities</div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="9 12 11 14 15 10"/></svg>
+      </div>
+      <div>
+        <div class="stat-val">98%</div>
+        <div class="stat-lbl">Success Rate</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════ MAIN LAYOUT ════════ -->
+<div class="page-wrap" id="mainWrap">
+
+  <!-- ===== LEFT: TABS ===== -->
+  <div class="left-col">
+
+    <!-- Tabs -->
+    <div class="tabs" role="tablist">
+      <button class="tab-btn active" onclick="switchTab('about',this)"    role="tab">Overview</button>
+      <button class="tab-btn"        onclick="switchTab('depts',this)"    role="tab">Departments</button>
+      <button class="tab-btn"        onclick="switchTab('doctors',this)"  role="tab">Doctors</button>
+      <button class="tab-btn"        onclick="switchTab('reviews',this)"  role="tab">Reviews</button>
+      <button class="tab-btn"        onclick="switchTab('gallery',this)"  role="tab">Gallery</button>
+    </div>
+
+    <!-- ── OVERVIEW ── -->
+    <div class="tab-panel active" id="tab-about">
+      <div class="sec-card">
+        <h2 class="sec-title">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          About the Hospital
+        </h2>
+        <p class="about-text">
+          St. Metropolitan Medical Center is one of Delhi's most trusted multi-specialty hospitals,
+          serving over 5 lakh patients annually since 1998. Equipped with state-of-the-art
+          technology across 40+ specialties, our 350+ expert doctors deliver compassionate,
+          evidence-based care under one roof.
+        </p>
+        <p class="about-text">
+          Our hospital features a 24-hour emergency department, advanced robotic surgery theatre,
+          NABL-accredited diagnostic labs, Level III ICU, and a dedicated mother & child centre —
+          all designed to provide holistic, world-class treatment.
+        </p>
+        <div class="about-highlights">
+          <div class="hl-item">
+            <div class="hl-icon">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            </div>
+            <div>
+              <div class="hl-title">24/7 Emergency Care</div>
+              <div class="hl-desc">Always ready trauma & critical care unit</div>
+            </div>
+          </div>
+          <div class="hl-item">
+            <div class="hl-icon">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg>
+            </div>
+            <div>
+              <div class="hl-title">Digital Health Records</div>
+              <div class="hl-desc">Secure, lifetime access to your reports</div>
+            </div>
+          </div>
+          <div class="hl-item">
+            <div class="hl-icon">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            </div>
+            <div>
+              <div class="hl-title">Online Appointment</div>
+              <div class="hl-desc">Book in 60 seconds, no waiting queue</div>
+            </div>
+          </div>
+          <div class="hl-item">
+            <div class="hl-icon">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+            </div>
+            <div>
+              <div class="hl-title">Robotic Surgery</div>
+              <div class="hl-desc">Minimally invasive precision procedures</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── DEPARTMENTS ── -->
+    <div class="tab-panel" id="tab-depts">
+      <div class="sec-card">
+        <h2 class="sec-title">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+          All Departments
+        </h2>
+        <div class="dept-grid" id="deptGrid"></div>
+      </div>
+    </div>
+
+    <!-- ── DOCTORS ── -->
+    <div class="tab-panel" id="tab-doctors">
+      <div class="sec-card">
+        <h2 class="sec-title">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          Our Specialist Doctors
+        </h2>
+        <div id="doctorsContainer"></div>
+      </div>
+    </div>
+
+    <!-- ── REVIEWS ── -->
+    <div class="tab-panel" id="tab-reviews">
+      <div class="sec-card">
+        <h2 class="sec-title">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          Patient Reviews
+        </h2>
+
+        <div class="review-overall">
+          <div>
+            <div class="review-big-val">4.8</div>
+            <div class="review-big-stars">★★★★★</div>
+            <div class="review-big-count">Based on 2,140 reviews</div>
+          </div>
+          <div class="review-bars">
+            <div class="bar-row">
+              <span class="bar-label">5 ★</span>
+              <div class="bar-track"><div class="bar-fill" style="width:80%"></div></div>
+              <span class="bar-pct">80%</span>
+            </div>
+            <div class="bar-row">
+              <span class="bar-label">4 ★</span>
+              <div class="bar-track"><div class="bar-fill" style="width:12%"></div></div>
+              <span class="bar-pct">12%</span>
+            </div>
+            <div class="bar-row">
+              <span class="bar-label">3 ★</span>
+              <div class="bar-track"><div class="bar-fill" style="width:5%"></div></div>
+              <span class="bar-pct">5%</span>
+            </div>
+            <div class="bar-row">
+              <span class="bar-label">2 ★</span>
+              <div class="bar-track"><div class="bar-fill" style="width:2%"></div></div>
+              <span class="bar-pct">2%</span>
+            </div>
+            <div class="bar-row">
+              <span class="bar-label">1 ★</span>
+              <div class="bar-track"><div class="bar-fill" style="width:1%"></div></div>
+              <span class="bar-pct">1%</span>
+            </div>
+          </div>
+        </div>
+
+        <div id="reviewsContainer"></div>
+      </div>
+    </div>
+
+    <!-- ── GALLERY ── -->
+    <div class="tab-panel" id="tab-gallery">
+      <div class="sec-card">
+        <h2 class="sec-title">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+          Hospital Gallery
+        </h2>
+        <div class="gallery-grid">
+          <div class="gallery-item" onclick="showToast('🏥','Viewing Main Building…')">🏥</div>
+          <div class="gallery-item" onclick="showToast('🔬','Viewing Diagnostic Lab…')">🔬</div>
+          <div class="gallery-item" onclick="showToast('🛏️','Viewing Patient Room…')">🛏️</div>
+          <div class="gallery-item" onclick="showToast('🚑','Viewing Emergency Wing…')">🚑</div>
+          <div class="gallery-item" onclick="showToast('💊','Viewing Pharmacy…')">💊</div>
+          <div class="gallery-item" onclick="showToast('🩺','Viewing OPD…')">🩺</div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /.left-col -->
+
+  <!-- ===== RIGHT: SIDEBAR ===== -->
+  <div class="sidebar" id="apptSidebar">
+
+    <!-- Appointment Booking Card -->
+    <div class="appt-card">
+      <div class="appt-card-head">
+        <h3>Book an Appointment</h3>
+        <p>Confirm in under 60 seconds</p>
+      </div>
+      <div class="appt-card-body">
+
+        <div class="form-group">
+          <label class="form-label">Your Name</label>
+          <input type="text" class="form-control" placeholder="e.g. Priya Sharma" id="aptName"/>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Department</label>
+          <select class="form-control" id="aptDept">
+            <option value="">Select Department</option>
+            <option>Cardiology</option>
+            <option>Orthopaedics</option>
+            <option>Neurology</option>
+            <option>Oncology</option>
+            <option>Gynaecology</option>
+            <option>Paediatrics</option>
+            <option>General Medicine</option>
+            <option>ENT</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Preferred Date</label>
+          <input type="date" class="form-control" id="aptDate"/>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Select Time Slot</label>
+          <div class="time-slots">
+            <div class="time-slot" onclick="selectSlot(this)">9:00 AM</div>
+            <div class="time-slot" onclick="selectSlot(this)">9:30 AM</div>
+            <div class="time-slot unavailable">10:00 AM</div>
+            <div class="time-slot" onclick="selectSlot(this)">10:30 AM</div>
+            <div class="time-slot" onclick="selectSlot(this)">11:00 AM</div>
+            <div class="time-slot unavailable">11:30 AM</div>
+            <div class="time-slot" onclick="selectSlot(this)">2:00 PM</div>
+            <div class="time-slot" onclick="selectSlot(this)">2:30 PM</div>
+            <div class="time-slot" onclick="selectSlot(this)">3:00 PM</div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Mobile Number</label>
+          <input type="tel" class="form-control" placeholder="+91 98765 43210" id="aptPhone"/>
+        </div>
+
+        <button class="btn-confirm" id="confirmBtn" onclick="confirmAppointment()">
+          Confirm Appointment
+        </button>
+        <div class="appt-note">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          HIPAA secure · No advance payment required
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Hospital Info -->
+    <div class="info-box">
+      <div class="info-box-title">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        Quick Info
+      </div>
+      <div class="info-row">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        <div>
+          <div class="info-label">Working Hours</div>
+          <div class="info-val">24 Hours / 7 Days</div>
+        </div>
+      </div>
+      <div class="info-row">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2A19.79 19.79 0 0 1 11.63 18a19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.12 3.18 2 2 0 0 1 4.11 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 8.91A16 16 0 0 0 14 14.91l1.27-.89a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        <div>
+          <div class="info-label">Phone</div>
+          <div class="info-val">+91 11 4600 0000</div>
+        </div>
+      </div>
+      <div class="info-row">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        <div>
+          <div class="info-label">Email</div>
+          <div class="info-val">care@stmetro.in</div>
+        </div>
+      </div>
+      <div class="info-row">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        <div>
+          <div class="info-label">Address</div>
+          <div class="info-val">12 Press Enclave Rd, Saket, New Delhi – 110017</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Map -->
+    <div class="info-box">
+      <div class="info-box-title">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg>
+        Location & Directions
+      </div>
+      <div class="map-box" onclick="showToast('🗺️','Opening Google Maps…')">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        <p>View on Google Maps</p>
+      </div>
+      <div style="margin-top:12px;display:flex;gap:8px">
+        <button onclick="showToast('🚗','Getting driving directions…')" style="flex:1;padding:9px;border-radius:6px;border:1.5px solid var(--border2);background:var(--white);font-size:12.5px;font-weight:600;color:var(--text2);cursor:pointer;transition:var(--transition)" onmouseover="this.style.borderColor='var(--teal)';this.style.color='var(--teal)'" onmouseout="this.style.borderColor='var(--border2)';this.style.color='var(--text2)'">🚗 Drive</button>
+        <button onclick="showToast('🚌','Getting transit info…')" style="flex:1;padding:9px;border-radius:6px;border:1.5px solid var(--border2);background:var(--white);font-size:12.5px;font-weight:600;color:var(--text2);cursor:pointer;transition:var(--transition)" onmouseover="this.style.borderColor='var(--teal)';this.style.color='var(--teal)'" onmouseout="this.style.borderColor='var(--border2)';this.style.color='var(--text2)'">🚌 Transit</button>
+        <button onclick="showToast('🚶','Getting walk directions…')" style="flex:1;padding:9px;border-radius:6px;border:1.5px solid var(--border2);background:var(--white);font-size:12.5px;font-weight:600;color:var(--text2);cursor:pointer;transition:var(--transition)" onmouseover="this.style.borderColor='var(--teal)';this.style.color='var(--teal)'" onmouseout="this.style.borderColor='var(--border2)';this.style.color='var(--text2)'">🚶 Walk</button>
+      </div>
+    </div>
+
+  </div><!-- /.sidebar -->
+</div><!-- /.page-wrap -->
+
+<!-- ════════ FOOTER ════════ -->
+<footer style="background:#111827;color:#fff;padding:40px 24px 24px">
+  <div style="max-width:1280px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:36px;padding-bottom:28px;border-bottom:1px solid rgba(255,255,255,.1)">
+    <div>
+      <div style="display:flex;align-items:center;gap:8px;font-size:17px;font-weight:800;margin-bottom:12px">
+        <div style="width:26px;height:26px;border-radius:6px;background:var(--teal);display:flex;align-items:center;justify-content:center">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+        </div>PulseOne
+      </div>
+      <p style="font-size:12.5px;color:rgba(255,255,255,.5);line-height:1.7;max-width:240px">Leading healthcare aggregator connecting patients with trusted hospitals and doctors across India.</p>
+    </div>
+    <div>
+      <p style="font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.35);margin-bottom:14px">Services</p>
+      <div style="display:flex;flex-direction:column;gap:9px">
+        <a href="#" style="font-size:13px;color:rgba(255,255,255,.6)" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,.6)'">Find Hospitals</a>
+        <a href="#" style="font-size:13px;color:rgba(255,255,255,.6)" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,.6)'">Book Doctors</a>
+        <a href="#" style="font-size:13px;color:rgba(255,255,255,.6)" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,.6)'">Lab Tests</a>
+        <a href="#" style="font-size:13px;color:rgba(255,255,255,.6)" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,.6)'">Membership</a>
+      </div>
+    </div>
+    <div>
+      <p style="font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.35);margin-bottom:14px">Company</p>
+      <div style="display:flex;flex-direction:column;gap:9px">
+        <a href="#" style="font-size:13px;color:rgba(255,255,255,.6)" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,.6)'">About Us</a>
+        <a href="#" style="font-size:13px;color:rgba(255,255,255,.6)" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,.6)'">Careers</a>
+        <a href="#" style="font-size:13px;color:rgba(255,255,255,.6)" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,.6)'">Partners</a>
+        <a href="#" style="font-size:13px;color:rgba(255,255,255,.6)" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,.6)'">Blog</a>
+      </div>
+    </div>
+    <div>
+      <p style="font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.35);margin-bottom:14px">Legal</p>
+      <div style="display:flex;flex-direction:column;gap:9px">
+        <a href="#" style="font-size:13px;color:rgba(255,255,255,.6)" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,.6)'">Privacy Policy</a>
+        <a href="#" style="font-size:13px;color:rgba(255,255,255,.6)" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,.6)'">Terms of Service</a>
+        <a href="#" style="font-size:13px;color:rgba(255,255,255,.6)" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,.6)'">HIPAA Compliance</a>
+        <a href="#" style="font-size:13px;color:rgba(255,255,255,.6)" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,.6)'">Data Security</a>
+      </div>
+    </div>
+  </div>
+  <div style="max-width:1280px;margin:18px auto 0;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px">
+    <p style="font-size:12.5px;color:rgba(255,255,255,.3)">© 2025 PulseOne Healthcare. All rights reserved.</p>
+    <p style="font-size:12.5px;color:rgba(255,255,255,.3)">Made with ❤️ for better healthcare access</p>
+  </div>
+</footer>
+
+<!-- ════════════════════════════════════════
+   JAVASCRIPT
+════════════════════════════════════════ -->
+<script>
+/* ──────────────────────────────
+   DATA
+────────────────────────────── */
+const DEPARTMENTS = [
+  { icon:'❤️',  name:'Cardiology',       count:'28 doctors' },
+  { icon:'🧠',  name:'Neurology',        count:'16 doctors' },
+  { icon:'🦴',  name:'Orthopaedics',     count:'22 doctors' },
+  { icon:'🎗️', name:'Oncology',          count:'20 doctors' },
+  { icon:'👁️', name:'Ophthalmology',     count:'12 doctors' },
+  { icon:'👶',  name:'Paediatrics',      count:'18 doctors' },
+  { icon:'🫁',  name:'Pulmonology',      count:'10 doctors' },
+  { icon:'🦷',  name:'Dental',           count:'14 doctors' },
+  { icon:'🤰',  name:'Gynaecology',      count:'16 doctors' },
+  { icon:'🧬',  name:'Genetics',         count:'6 doctors'  },
+  { icon:'🩺',  name:'General Medicine', count:'34 doctors' },
+  { icon:'👂',  name:'ENT',              count:'8 doctors'  },
+  { icon:'💉',  name:'Diabetology',      count:'10 doctors' },
+  { icon:'🦋',  name:'Endocrinology',    count:'9 doctors'  },
+  { icon:'🩹',  name:'Dermatology',      count:'12 doctors' },
+  { icon:'🚑',  name:'Emergency Med.',   count:'40 doctors' },
+  { icon:'🧪',  name:'Pathology',        count:'15 doctors' },
+  { icon:'🏋️', name:'Physiotherapy',    count:'20 doctors' },
+];
+
+const DOCTORS = [
+  { emoji:'👨‍⚕️', name:'Dr. Arun Mehta',      spec:'Senior Cardiologist',    exp:'22 yrs', fee:'₹1,200', rating:'4.9', reviews:'840' },
+  { emoji:'👩‍⚕️', name:'Dr. Priya Sharma',    spec:'Neurologist',            exp:'18 yrs', fee:'₹1,000', rating:'4.8', reviews:'620' },
+  { emoji:'👨‍⚕️', name:'Dr. Vivek Kapoor',    spec:'Orthopaedic Surgeon',   exp:'20 yrs', fee:'₹1,500', rating:'4.9', reviews:'950' },
+  { emoji:'👩‍⚕️', name:'Dr. Sneha Gupta',     spec:'Oncologist',             exp:'15 yrs', fee:'₹1,800', rating:'4.7', reviews:'410' },
+  { emoji:'👨‍⚕️', name:'Dr. Rajiv Nair',      spec:'Paediatrician',          exp:'12 yrs', fee:'₹800',  rating:'4.9', reviews:'730' },
+  { emoji:'👩‍⚕️', name:'Dr. Ananya Bose',     spec:'Gynaecologist',          exp:'16 yrs', fee:'₹1,100', rating:'4.8', reviews:'510' },
+  { emoji:'👨‍⚕️', name:'Dr. Siddharth Rao',  spec:'Pulmonologist',          exp:'14 yrs', fee:'₹900',  rating:'4.7', reviews:'380' },
+  { emoji:'👩‍⚕️', name:'Dr. Leena Mathew',    spec:'Endocrinologist',        exp:'10 yrs', fee:'₹950',  rating:'4.8', reviews:'290' },
+];
+
+const REVIEWS = [
+  { emoji:'😊', name:'Rahul Srivastava', date:'15 Jan 2025', stars:5, text:'Exceptional care from Dr. Mehta. The staff was warm, facilities pristine, and the entire process from booking to discharge was seamless. Highly recommend PulseOne for booking here!' },
+  { emoji:'🧕', name:'Fatima Shaikh',    date:'28 Dec 2024', stars:5, text:'Best hospital experience ever! Dr. Sharma's expertise in Neurology is unmatched. Reports were delivered digitally within hours. World-class infrastructure.' },
+  { emoji:'👴', name:'Suresh Pillai',    date:'10 Jan 2025', stars:4, text:'Very good treatment overall. Waiting times were slightly longer at OPD but quality of medical advice was top-notch. Clean and hygienic premises.' },
+  { emoji:'👩', name:'Ananya Rao',       date:'2 Jan 2025',  stars:5, text:'Had a robotic surgery here — completely painless recovery. The surgical team explained every step clearly. Absolutely zero complications. Thank you St. Metropolitan!' },
+  { emoji:'👦', name:'Karan Mehta',      date:'5 Jan 2025',  stars:5, text:'The emergency department saved my life. Response was immediate, doctors knowledgeable, and the ICU staff monitored me every hour. Forever grateful.' },
+];
+
+/* ──────────────────────────────
+   RENDER
+────────────────────────────── */
+function renderDepts() {
+  document.getElementById('deptGrid').innerHTML = DEPARTMENTS.map(d => `
+    <div class="dept-card" onclick="showToast('${d.icon}','Opening ${d.name} department…')">
+      <div class="dept-icon">${d.icon}</div>
+      <div class="dept-name">${d.name}</div>
+      <div class="dept-count">${d.count}</div>
+    </div>
+  `).join('');
+}
+
+function renderDoctors() {
+  document.getElementById('doctorsContainer').innerHTML = DOCTORS.map((d,i) => `
+    <div class="doctor-card" id="doc-${i}">
+      <div class="doctor-avatar">${d.emoji}</div>
+      <div style="flex:1;min-width:0">
+        <div class="doctor-name">${d.name}</div>
+        <div class="doctor-spec">${d.spec}</div>
+        <div class="doctor-meta">
+          <div class="doctor-meta-item">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            ${d.exp} exp
+          </div>
+          <div class="doctor-meta-item">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+            Consult ${d.fee}
+          </div>
+          <div class="doc-rating">
+            <span class="doc-star">★</span>
+            <span class="doc-rating-val">${d.rating}</span>
+            <span style="color:var(--text3)">(${d.reviews})</span>
+          </div>
+        </div>
+      </div>
+      <button class="btn-book-doc" onclick="bookDoctor('${d.name}',event)">Book</button>
+    </div>
+  `).join('');
+}
+
+function renderReviews() {
+  document.getElementById('reviewsContainer').innerHTML = REVIEWS.map(r => `
+    <div class="review-card">
+      <div class="review-header">
+        <div class="review-avatar">${r.emoji}</div>
+        <div style="flex:1">
+          <div class="review-author">${r.name}</div>
+          <div class="review-date">${r.date}</div>
+        </div>
+        <div class="review-stars">${'★'.repeat(r.stars)}${'☆'.repeat(5-r.stars)}</div>
+      </div>
+      <div class="review-text">${r.text}</div>
+    </div>
+  `).join('');
+}
+
+/* ──────────────────────────────
+   TABS
+────────────────────────────── */
+function switchTab(id, btn) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  btn.classList.add('active');
+}
+
+/* ──────────────────────────────
+   TIME SLOT
+────────────────────────────── */
+function selectSlot(el) {
+  if (el.classList.contains('unavailable')) return;
+  document.querySelectorAll('.time-slot').forEach(s => s.classList.remove('selected'));
+  el.classList.add('selected');
+}
+
+/* ──────────────────────────────
+   CONFIRM APPOINTMENT
+────────────────────────────── */
+function confirmAppointment() {
+  const name  = document.getElementById('aptName').value.trim();
+  const dept  = document.getElementById('aptDept').value;
+  const date  = document.getElementById('aptDate').value;
+  const phone = document.getElementById('aptPhone').value.trim();
+  const slot  = document.querySelector('.time-slot.selected');
+
+  if (!name)  { showToast('⚠️','Please enter your name'); return; }
+  if (!dept)  { showToast('⚠️','Please select a department'); return; }
+  if (!date)  { showToast('⚠️','Please pick a date'); return; }
+  if (!slot)  { showToast('⚠️','Please choose a time slot'); return; }
+  if (!phone) { showToast('⚠️','Please enter your mobile number'); return; }
+
+  const btn = document.getElementById('confirmBtn');
+  btn.disabled = true;
+  btn.textContent = 'Booking…';
+
+  setTimeout(() => {
+    btn.textContent = '✓ Appointment Confirmed!';
+    btn.style.background = 'var(--green)';
+    showToast('🎉', `Appointment confirmed for ${name} on ${date} at ${slot.textContent}`);
+    setTimeout(() => {
+      btn.disabled = false;
+      btn.textContent = 'Confirm Appointment';
+      btn.style.background = '';
+    }, 4000);
+  }, 1400);
+}
+
+/* ──────────────────────────────
+   BOOK DOCTOR
+────────────────────────────── */
+function bookDoctor(name, e) {
+  e.stopPropagation();
+  scrollToAppt();
+  showToast('👨‍⚕️', `Booking with ${name}. Select your slot below.`);
+}
+
+function scrollToAppt() {
+  document.getElementById('apptSidebar').scrollIntoView({ behavior:'smooth', block:'start' });
+}
+
+/* ──────────────────────────────
+   TOAST
+────────────────────────────── */
+let _toastT;
+function showToast(icon, msg) {
+  document.getElementById('toastIcon').textContent = icon;
+  document.getElementById('toastMsg').textContent  = msg;
+  const t = document.getElementById('toast');
+  t.classList.add('show');
+  clearTimeout(_toastT);
+  _toastT = setTimeout(() => t.classList.remove('show'), 3200);
+}
+
+/* ──────────────────────────────
+   HAMBURGER / MOBILE MENU
+────────────────────────────── */
+document.getElementById('hamburger').addEventListener('click', () => {
+  document.getElementById('mobMenu').classList.add('open');
+  document.body.style.overflow = 'hidden';
+});
+document.getElementById('mobClose').addEventListener('click', () => {
+  document.getElementById('mobMenu').classList.remove('open');
+  document.body.style.overflow = '';
+});
+
+/* ──────────────────────────────
+   DATE MIN
+────────────────────────────── */
+document.getElementById('aptDate').min = new Date().toISOString().split('T')[0];
+
+/* ──────────────────────────────
+   INIT
+────────────────────────────── */
+renderDepts();
+renderDoctors();
+renderReviews();
+</script>
+</body>
+</html>
+ 

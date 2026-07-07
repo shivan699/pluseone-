@@ -1,0 +1,1143 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Patient Dashboard | CareLine Health</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  /* ============ Design tokens ============ */
+  :root{
+    --brand-50:#eef5ff;
+    --brand-100:#dbeafe;
+    --brand-200:#bfdbfe;
+    --brand-400:#043c13;
+    --brand-500:#053213;
+    --brand-600:#053b1a;
+    --brand-700:#053412;
+    --brand-900:#033414;
+
+    --mint-50:#effcf6;
+    --mint-100:#d7f7e9;
+    --mint-500:#12b981;
+    --mint-600:#0e9d6d;
+
+    --amber-50:#fffbeb;
+    --amber-200:#fde68a;
+    --amber-400:#fbbf24;
+    --amber-600:#d97706;
+
+    --rose-50:#fff1f2;
+    --rose-200:#fecdd3;
+    --rose-500:#f43f5e;
+    --rose-600:#e11d48;
+
+    --slate-50:#f8fafc;
+    --slate-100:#f1f5f9;
+    --slate-200:#e2e8f0;
+    --slate-400:#94a3b8;
+    --slate-500:#64748b;
+    --slate-600:#475569;
+    --slate-700:#334155;
+    --slate-800:#1e293b;
+
+    --radius-lg:16px;
+    --radius-md:12px;
+    --radius-sm:8px;
+    --shadow-card:0 1px 2px rgba(19,42,99,0.04), 0 8px 24px -12px rgba(19,42,99,0.12);
+    --shadow-card-hover:0 4px 8px rgba(19,42,99,0.06), 0 16px 32px -12px rgba(19,42,99,0.18);
+  }
+
+  *{ box-sizing:border-box; }
+  html{ scroll-behavior:smooth; }
+  body{
+    margin:0;
+    font-family:'Inter', sans-serif;
+    background:#f4f7fc;
+    color:var(--slate-800);
+  }
+  .font-display{ font-family:'Manrope', sans-serif; }
+  a{ color:inherit; text-decoration:none; }
+  ul{ list-style:none; margin:0; padding:0; }
+  img{ max-width:100%; display:block; }
+  button{ font-family:inherit; cursor:pointer; }
+  button:focus-visible, a:focus-visible{ outline:2px solid var(--brand-500); outline-offset:2px; }
+  svg{ display:block; }
+
+  ::-webkit-scrollbar{ width:8px; height:8px; }
+  ::-webkit-scrollbar-thumb{ background:#cbd8f2; border-radius:8px; }
+  ::-webkit-scrollbar-track{ background:transparent; }
+
+  @keyframes pulseSoft{
+    0%,100%{ opacity:1; }
+    50%{ opacity:.55; }
+  }
+  .skeleton{
+    animation:pulseSoft 1.4s ease-in-out infinite;
+    background:linear-gradient(90deg,#e7edf9,#eef2fb,#e7edf9);
+    border-radius:8px;
+  }
+
+  @keyframes fadeUp{
+    from{ opacity:0; transform:translateY(10px); }
+    to{ opacity:1; transform:translateY(0); }
+  }
+  .fade-up{ animation:fadeUp .45s ease both; }
+
+  /* ============ Layout shell ============ */
+  .app-shell{ min-height:100vh; }
+  .layout{
+    max-width:1400px;
+    margin:0 auto;
+    display:flex;
+    flex-direction:column;
+  }
+  .main-col{ flex:1; min-width:0; }
+  .main-content{
+    padding:16px;
+    display:flex;
+    flex-direction:column;
+    gap:24px;
+  }
+  .two-col{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:24px;
+  }
+
+  @media (min-width:1024px){
+    .layout{ flex-direction:row; gap:24px; padding:24px; }
+    .main-content{ padding:0; padding-top:24px; }
+    .two-col{ grid-template-columns:1fr 1fr; }
+  }
+
+  /* ============ Header ============ */
+  .header{
+    position:sticky;
+    top:0;
+    z-index:20;
+    background:rgba(255,255,255,.85);
+    backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--slate-100);
+    padding:14px 16px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+  }
+  @media (min-width:640px){ .header{ padding:14px 24px; } }
+
+  .header-left{ display:flex; align-items:center; gap:12px; }
+  .icon-btn{
+    background:none;
+    border:none;
+    color:var(--slate-500);
+    display:flex;
+    padding:6px;
+    border-radius:8px;
+  }
+  .icon-btn:hover{ background:var(--slate-50); }
+  .menu-btn{ display:flex; }
+  @media (min-width:1024px){ .menu-btn{ display:none; } }
+
+  .welcome-label{ font-size:12px; color:var(--slate-400); font-weight:500; margin:0; }
+  .patient-name-header{ font-weight:700; font-size:18px; margin:0; line-height:1.2; }
+
+  .header-right{ display:flex; align-items:center; gap:12px; }
+  @media (min-width:640px){ .header-right{ gap:16px; } }
+
+  .bell-btn{
+    position:relative;
+    width:40px; height:40px;
+    border-radius:999px;
+    background:var(--slate-50);
+    border:none;
+    color:var(--slate-500);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    transition:background .2s;
+  }
+  .bell-btn:hover{ background:var(--slate-100); }
+  .bell-dot{
+    position:absolute; top:8px; right:10px;
+    width:8px; height:8px; border-radius:999px;
+    background:var(--rose-500);
+    box-shadow:0 0 0 2px #fff;
+  }
+  .avatar-header{
+    width:40px; height:40px;
+    border-radius:999px;
+    object-fit:cover;
+    box-shadow:0 0 0 2px var(--brand-100);
+  }
+
+  /* ============ Sidebar ============ */
+  .sidebar-overlay{
+    position:fixed; inset:0;
+    background:rgba(15,23,42,.4);
+    z-index:30;
+    border:none;
+    padding:0;
+  }
+  @media (min-width:1024px){ .sidebar-overlay{ display:none; } }
+
+  .sidebar{
+    position:fixed;
+    z-index:40;
+    top:0; left:0;
+    height:100%;
+    width:280px;
+    background:#fff;
+    transform:translateX(-100%);
+    transition:transform .3s ease;
+  }
+  .sidebar.open{ transform:translateX(0); }
+
+  @media (min-width:1024px){
+    .sidebar{
+      position:sticky;
+      top:24px;
+      height:auto;
+      width:260px;
+      flex-shrink:0;
+      transform:none;
+      border-radius:var(--radius-lg);
+      box-shadow:var(--shadow-card);
+    }
+  }
+
+  .sidebar-inner{
+    height:100%;
+    padding:20px;
+    display:flex;
+    flex-direction:column;
+    overflow-y:auto;
+  }
+  @media (min-width:1024px){ .sidebar-inner{ height:auto; } }
+
+  .sidebar-top{
+    display:flex; align-items:center; justify-content:space-between;
+    margin-bottom:28px;
+  }
+  @media (min-width:1024px){ .sidebar-top{ margin-bottom:20px; } }
+
+  .brand-mark{ display:flex; align-items:center; gap:8px; }
+  .brand-logo{
+    width:36px; height:36px; border-radius:12px;
+    background:var(--brand-500); color:#fff;
+    display:flex; align-items:center; justify-content:center;
+    font-weight:800;
+  }
+  .brand-name{ font-weight:800; font-size:18px; }
+  .sidebar-close{ display:flex; color:var(--slate-400); background:none; border:none; padding:4px; }
+  @media (min-width:1024px){ .sidebar-close{ display:none; } }
+
+  .nav-list{ flex:1; display:flex; flex-direction:column; gap:4px; }
+  .nav-item{
+    display:flex; align-items:center; gap:12px;
+    padding:10px 12px;
+    border-radius:12px;
+    font-size:14px; font-weight:500;
+    color:var(--slate-500);
+    transition:background .15s, color .15s;
+  }
+  .nav-item:hover{ background:var(--slate-50); color:var(--slate-700); }
+  .nav-item.active{ background:var(--brand-50); color:var(--brand-600); }
+  .nav-item .nav-icon{ color:var(--slate-400); display:flex; }
+  .nav-item.active .nav-icon{ color:var(--brand-600); }
+
+  .sidebar-cta{
+    margin-top:24px;
+    border-radius:14px;
+    padding:16px;
+    color:#fff;
+    background:linear-gradient(135deg,var(--brand-500),var(--brand-700));
+  }
+  .sidebar-cta-eyebrow{ font-size:11px; text-transform:uppercase; letter-spacing:.04em; font-weight:700; color:var(--brand-100); margin:0 0 4px; }
+  .sidebar-cta-text{ font-size:14px; font-weight:500; margin:0 0 12px; }
+
+  /* ============ Buttons ============ */
+  .btn{
+    display:inline-flex; align-items:center; justify-content:center; gap:6px;
+    font-size:14px; font-weight:600;
+    padding:9px 14px;
+    border-radius:10px;
+    border:none;
+    transition:all .2s;
+  }
+  .btn:active{ transform:scale(.97); }
+  .btn-primary{ background:var(--brand-500); color:#fff; box-shadow:0 2px 6px rgba(47,111,237,.25); }
+  .btn-primary:hover{ background:var(--brand-600); }
+  .btn-ghost{ background:none; color:var(--brand-600); padding:6px 8px; }
+  .btn-ghost:hover{ background:var(--brand-50); }
+  .btn-outline{ background:none; border:1px solid var(--slate-200); color:var(--slate-600); }
+  .btn-outline:hover{ border-color:var(--brand-200); color:var(--brand-600); }
+  .btn-outline-white{ background:none; border:1px solid rgba(255,255,255,.4); color:#fff; width:100%; }
+  .btn-outline-white:hover{ background:rgba(255,255,255,.1); }
+
+  /* ============ Card ============ */
+  .card{
+    scroll-margin-top:96px;
+    background:#fff;
+    border-radius:var(--radius-lg);
+    box-shadow:var(--shadow-card);
+    padding:20px;
+    transition:box-shadow .3s;
+  }
+  .card:hover{ box-shadow:var(--shadow-card-hover); }
+  @media (min-width:640px){ .card{ padding:24px; } }
+
+  .card-head{
+    display:flex; align-items:center; justify-content:space-between;
+    margin-bottom:20px;
+    flex-wrap:wrap;
+    gap:10px;
+  }
+  .card-head-left{ display:flex; align-items:center; gap:10px; }
+  .card-icon{
+    width:36px; height:36px; border-radius:12px;
+    background:var(--brand-50); color:var(--brand-600);
+    display:flex; align-items:center; justify-content:center;
+  }
+  .card-title{ font-weight:700; font-size:16px; margin:0; }
+  @media (min-width:640px){ .card-title{ font-size:18px; } }
+
+  /* ============ Badge ============ */
+  .badge{
+    display:inline-flex; align-items:center; gap:6px;
+    padding:4px 10px; border-radius:999px;
+    font-size:12px; font-weight:600;
+    white-space:nowrap;
+  }
+  .badge-dot{ width:6px; height:6px; border-radius:999px; background:currentColor; }
+  .badge-upcoming, .badge-active{ background:var(--brand-50); color:var(--brand-600); box-shadow:inset 0 0 0 1px var(--brand-200); }
+  .badge-completed, .badge-approved, .badge-verified{ background:var(--mint-50); color:var(--mint-600); box-shadow:inset 0 0 0 1px var(--mint-100); }
+  .badge-cancelled, .badge-rejected, .badge-discrepancy{ background:var(--rose-50); color:var(--rose-600); box-shadow:inset 0 0 0 1px var(--rose-200); }
+  .badge-review, .badge-progress{ background:var(--amber-50); color:var(--amber-600); box-shadow:inset 0 0 0 1px var(--amber-200); }
+  .badge-default{ background:var(--slate-100); color:var(--slate-600); }
+
+  /* ============ Skeleton rows ============ */
+  .skeleton-rows{ display:flex; flex-direction:column; gap:12px; }
+  .skeleton-row{ display:flex; align-items:center; gap:12px; }
+  .skeleton-circle{ width:40px; height:40px; border-radius:999px; flex-shrink:0; }
+  .skeleton-lines{ flex:1; display:flex; flex-direction:column; gap:8px; }
+  .skeleton-line-1{ height:12px; width:65%; }
+  .skeleton-line-2{ height:12px; width:35%; }
+
+  /* ============ Profile section ============ */
+  .profile-grid{ display:grid; grid-template-columns:1fr; gap:24px; }
+  @media (min-width:768px){ .profile-grid{ grid-template-columns:1fr 2fr; } }
+
+  .profile-avatar-col{
+    display:flex; flex-direction:column; align-items:center; text-align:center;
+  }
+  @media (min-width:768px){
+    .profile-avatar-col{ border-right:1px solid var(--slate-100); padding-right:24px; }
+  }
+  .avatar-lg{
+    width:96px; height:96px; border-radius:20px; object-fit:cover;
+    box-shadow:0 0 0 4px var(--brand-50);
+    margin-bottom:12px;
+  }
+  .profile-name{ margin:0; font-weight:700; }
+  .profile-id{ font-size:12px; color:var(--slate-400); margin:4px 0 0; }
+  .profile-tags{ display:flex; gap:8px; margin-top:12px; }
+  .profile-tag{ background:var(--slate-50); color:var(--slate-500); font-size:12px; font-weight:500; padding:4px 10px; border-radius:999px; }
+
+  .info-grid{ display:grid; grid-template-columns:1fr; gap:16px 24px; }
+  @media (min-width:480px){ .info-grid{ grid-template-columns:1fr 1fr; } }
+  .info-row-full{ grid-column:1 / -1; }
+  .info-label{
+    display:flex; align-items:center; gap:6px;
+    font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.03em;
+    color:var(--slate-400); margin:0 0 4px;
+  }
+  .info-label .info-icon{ color:var(--brand-400); display:flex; }
+  .info-value{ font-size:14px; color:var(--slate-700); margin:0; }
+
+  .household-title{
+    display:flex; align-items:center; gap:8px;
+    font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.03em;
+    color:var(--slate-400); margin:8px 0 8px;
+  }
+  .household-tags{ display:flex; flex-wrap:wrap; gap:8px; }
+  .household-tag{ background:var(--slate-50); padding:7px 12px; border-radius:12px; font-size:14px; color:var(--slate-600); }
+  .household-tag strong{ color:var(--slate-700); font-weight:600; }
+
+  /* ============ Tabs ============ */
+  .tabs{ display:flex; background:var(--slate-50); border-radius:10px; padding:4px; font-size:12px; font-weight:600; }
+  .tab-btn{ background:none; border:none; padding:6px 12px; border-radius:8px; color:var(--slate-400); }
+  .tab-btn.active{ background:#fff; color:var(--brand-600); box-shadow:0 1px 2px rgba(0,0,0,.06); }
+
+  /* ============ Appointments ============ */
+  .list{ display:flex; flex-direction:column; gap:12px; }
+  .empty-msg{ text-align:center; color:var(--slate-400); font-size:14px; padding:24px 0; }
+
+  .appt-item{
+    display:flex; flex-direction:column; gap:12px;
+    padding:16px; border-radius:14px; border:1px solid var(--slate-100);
+    transition:border-color .2s, background .2s;
+  }
+  .appt-item:hover{ border-color:var(--brand-200); background:rgba(238,245,255,.4); }
+  @media (min-width:640px){ .appt-item{ flex-direction:row; align-items:center; gap:16px; } }
+
+  .appt-avatar{
+    width:44px; height:44px; border-radius:14px; flex-shrink:0;
+    background:var(--brand-50); color:var(--brand-600);
+    display:flex; align-items:center; justify-content:center;
+    font-weight:700; font-size:13px;
+  }
+  .appt-body{ flex:1; min-width:0; }
+  .appt-doctor{ font-weight:600; font-size:14px; margin:0; }
+  .appt-doctor span{ color:var(--slate-400); font-weight:400; }
+  .appt-hospital{ font-size:12px; color:var(--slate-500); margin:2px 0 0; }
+  .appt-time{ font-size:12px; color:var(--slate-400); margin:2px 0 0; display:flex; align-items:center; gap:4px; }
+
+  .appt-meta{ display:flex; align-items:center; gap:12px; }
+  @media (min-width:640px){ .appt-meta{ flex-direction:column; align-items:flex-end; } }
+
+  /* ============ Financial applications ============ */
+  .fin-item{ padding:16px; border-radius:14px; border:1px solid var(--slate-100); transition:border-color .2s; }
+  .fin-item:hover{ border-color:var(--brand-200); }
+  .fin-head{ display:flex; flex-wrap:wrap; align-items:flex-start; justify-content:space-between; gap:8px; }
+  .fin-name{ font-weight:600; font-size:14px; margin:0; }
+  .fin-meta{ font-size:12px; color:var(--slate-400); margin:2px 0 0; }
+  .fin-footer{ display:flex; justify-content:flex-end; margin-top:12px; }
+
+  .mini-timeline{ display:flex; align-items:flex-start; width:100%; margin-top:14px; }
+  .mt-step{ display:flex; flex-direction:column; align-items:center; text-align:center; width:70px; }
+  .mt-circle{
+    width:24px; height:24px; border-radius:999px;
+    display:flex; align-items:center; justify-content:center;
+    font-size:10px; font-weight:700; color:#fff;
+    box-shadow:0 0 0 4px #fff;
+  }
+  .mt-circle.done{ background:var(--mint-500); }
+  .mt-circle.current{ background:var(--amber-400); }
+  .mt-circle.pending{ background:var(--slate-200); color:var(--slate-400); }
+  .mt-circle.rejected{ background:var(--rose-500); }
+  .mt-label{ font-size:11px; margin-top:6px; font-weight:500; color:var(--slate-400); }
+  .mt-label.current{ color:var(--amber-600); }
+  .mt-connector{ flex:1; height:2px; border-radius:2px; background:var(--slate-200); margin-top:11px; }
+  .mt-connector.done{ background:var(--mint-500); opacity:.5; }
+
+  /* ============ Bill table ============ */
+  .table-wrap{ overflow-x:auto; }
+  table.bill-table{ width:100%; border-collapse:collapse; font-size:14px; min-width:560px; }
+  .bill-table thead th{
+    text-align:left; font-size:11px; text-transform:uppercase; letter-spacing:.03em;
+    color:var(--slate-400); font-weight:700; padding:8px 12px;
+  }
+  .bill-table tbody tr{ border-top:1px solid var(--slate-50); transition:background .2s; }
+  .bill-table tbody tr:hover{ background:rgba(248,250,252,.7); }
+  .bill-table td{ padding:12px; white-space:nowrap; }
+  .bill-num{ font-weight:600; color:var(--slate-700); }
+  .bill-hospital{ color:var(--slate-500); }
+  .bill-amount{ font-weight:700; color:var(--slate-700); }
+  .bill-date{ color:var(--slate-400); }
+  .text-right{ text-align:right; }
+
+  /* ============ Surgery stepper ============ */
+  .surgery-intro{ font-size:14px; color:var(--slate-500); margin:0 0 24px; }
+  .surgery-intro strong{ color:var(--slate-700); }
+  .surgery-intro .highlight{ color:var(--brand-600); font-weight:600; }
+
+  .stepper-h{ display:none; align-items:flex-start; }
+  @media (min-width:640px){ .stepper-h{ display:flex; } }
+  .sh-step{ display:flex; flex-direction:column; align-items:center; text-align:center; width:100px; }
+  .sh-circle{
+    width:36px; height:36px; border-radius:999px;
+    display:flex; align-items:center; justify-content:center;
+    font-weight:700; font-size:13px; color:var(--slate-400);
+    background:var(--slate-100); transition:all .2s;
+  }
+  .sh-circle.done{ background:var(--mint-500); color:#fff; }
+  .sh-circle.current{ background:var(--brand-500); color:#fff; box-shadow:0 0 0 6px var(--brand-100); transform:scale(1.1); }
+  .sh-label{ font-size:11px; margin-top:8px; font-weight:500; color:var(--slate-400); line-height:1.2; }
+  .sh-label.done{ color:var(--slate-600); }
+  .sh-label.current{ color:var(--brand-600); }
+  .sh-connector{ flex:1; height:2px; border-radius:2px; background:var(--slate-200); margin-top:18px; }
+  .sh-connector.done{ background:var(--mint-500); }
+
+  .stepper-v{ display:flex; flex-direction:column; }
+  @media (min-width:640px){ .stepper-v{ display:none; } }
+  .sv-row{ display:flex; gap:12px; }
+  .sv-col{ display:flex; flex-direction:column; align-items:center; }
+  .sv-circle{
+    width:28px; height:28px; border-radius:999px; flex-shrink:0;
+    display:flex; align-items:center; justify-content:center;
+    font-size:11px; font-weight:700; color:var(--slate-400);
+    background:var(--slate-100);
+  }
+  .sv-circle.done{ background:var(--mint-500); color:#fff; }
+  .sv-circle.current{ background:var(--brand-500); color:#fff; box-shadow:0 0 0 4px var(--brand-100); }
+  .sv-connector{ width:2px; flex:1; margin:2px 0; background:var(--slate-200); }
+  .sv-connector.done{ background:var(--mint-500); }
+  .sv-label{ font-size:14px; padding-bottom:20px; color:var(--slate-400); }
+  .sv-label.done{ color:var(--slate-600); }
+  .sv-label.current{ color:var(--brand-600); font-weight:600; }
+
+  /* ============ Subscription ============ */
+  .sub-grid{ display:grid; grid-template-columns:1fr; gap:24px; }
+  @media (min-width:640px){ .sub-grid{ grid-template-columns:1fr 1fr; } }
+
+  .sub-card{
+    border-radius:18px; color:#fff; padding:20px;
+    background:linear-gradient(135deg,var(--brand-500),var(--brand-700));
+    display:flex; flex-direction:column; justify-content:space-between;
+  }
+  .sub-eyebrow{ font-size:11px; text-transform:uppercase; letter-spacing:.04em; font-weight:700; color:var(--brand-100); margin:0; }
+  .sub-plan-name{ font-size:26px; font-weight:800; margin:4px 0 0; }
+  .sub-badge-wrap{ margin-top:10px; }
+  .sub-dates{ display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:24px; font-size:12px; }
+  .sub-date-label{ color:var(--brand-100); margin:0; }
+  .sub-date-value{ font-weight:700; margin:2px 0 0; }
+  .sub-renew-btn{ margin-top:20px; }
+
+  .benefits-title{ font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.03em; color:var(--slate-400); margin:0 0 12px; }
+  .benefits-list{ display:flex; flex-direction:column; gap:10px; }
+  .benefit-item{ display:flex; align-items:flex-start; gap:8px; font-size:14px; color:var(--slate-600); }
+  .benefit-check{
+    width:20px; height:20px; border-radius:999px; flex-shrink:0; margin-top:2px;
+    background:var(--mint-50); color:var(--mint-600);
+    display:flex; align-items:center; justify-content:center;
+  }
+
+  /* ============ AI chats ============ */
+  .chat-item{
+    display:flex; align-items:flex-start; gap:12px;
+    padding:16px; border-radius:14px; border:1px solid var(--slate-100);
+    transition:border-color .2s, background .2s;
+  }
+  .chat-item:hover{ border-color:var(--brand-200); background:rgba(238,245,255,.4); }
+  .chat-avatar{
+    width:36px; height:36px; border-radius:999px; flex-shrink:0;
+    background:var(--brand-50); color:var(--brand-600);
+    display:flex; align-items:center; justify-content:center;
+  }
+  .chat-body{ flex:1; min-width:0; }
+  .chat-title{
+    font-weight:600; font-size:14px; margin:0;
+    white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+  }
+  .chat-date{ font-size:12px; color:var(--slate-400); margin:2px 0 0; }
+  .chat-preview{
+    font-size:12px; color:var(--slate-500); margin:4px 0 0;
+    white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+  }
+
+  .page-footer{ text-align:center; font-size:12px; color:var(--slate-400); padding:24px 0; }
+</style>
+</head>
+
+<body>
+<div id="root"></div>
+
+<script>
+"use strict";
+
+/* =========================================================
+   ICONS (plain SVG strings — no external icon package)
+   ========================================================= */
+function icon(pathsHtml, opts) {
+  opts = opts || {};
+  var size = opts.size || 20;
+  var strokeWidth = opts.strokeWidth != null ? opts.strokeWidth : 1.8;
+  return '<svg width="' + size + '" height="' + size + '" viewBox="0 0 24 24" fill="none" ' +
+    'stroke="currentColor" stroke-width="' + strokeWidth + '" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+    pathsHtml + '</svg>';
+}
+
+var icons = {
+  menu: icon('<line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>'),
+  close: icon('<line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>'),
+  bell: icon('<path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/>'),
+  user: icon('<circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/>'),
+  users: icon('<circle cx="9" cy="8" r="3.2"/><path d="M2.5 20c0-3.6 2.9-6 6.5-6s6.5 2.4 6.5 6"/><circle cx="17.2" cy="8.5" r="2.5"/><path d="M15.5 14.2c2.7.4 4.5 2.5 4.5 5.8"/>'),
+  calendar: icon('<rect x="3" y="5" width="18" height="16" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="8" y1="3" x2="8" y2="7"/><line x1="16" y1="3" x2="16" y2="7"/>'),
+  fileCheck: icon('<path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M9 15l2 2 4-4"/>'),
+  receipt: icon('<path d="M6 3h12v18l-3-2-3 2-3-2-3 2z"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="9" y1="12" x2="15" y2="12"/>'),
+  activity: icon('<path d="M3 12h4l2 8 4-16 2 8h6"/>'),
+  award: icon('<circle cx="12" cy="8" r="5"/><path d="M8.5 12.5 7 21l5-3 5 3-1.5-8.5"/>'),
+  chat: icon('<path d="M21 11.5a8.5 8.5 0 0 1-8.5 8.5H8l-5 2 1.5-4.5A8.5 8.5 0 1 1 21 11.5z"/>'),
+  phone: icon('<path d="M6.6 10.8a15 15 0 0 0 6.6 6.6l2.2-2.2a1.3 1.3 0 0 1 1.4-.3c1 .4 2.1.6 3.2.6a1.3 1.3 0 0 1 1.3 1.3V20a1.3 1.3 0 0 1-1.3 1.3C11.9 21.3 2.7 12.1 2.7 4.3A1.3 1.3 0 0 1 4 3h3.2a1.3 1.3 0 0 1 1.3 1.3c0 1.1.2 2.2.6 3.2a1.3 1.3 0 0 1-.3 1.4z"/>'),
+  mail: icon('<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/>'),
+  pin: icon('<path d="M12 22s7-6.6 7-12a7 7 0 1 0-14 0c0 5.4 7 12 7 12z"/><circle cx="12" cy="10" r="2.5"/>'),
+  chevron: icon('<polyline points="9 18 15 12 9 6"/>', { size: 16 }),
+  check: icon('<polyline points="20 6 9 17 4 12"/>', { size: 14, strokeWidth: 2.4 }),
+  x: icon('<line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>', { size: 14, strokeWidth: 2.4 }),
+  clock: icon('<circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15.5 14"/>', { size: 14 }),
+  refresh: icon('<polyline points="23 4 23 10 17 10"/><path d="M20.5 15a9 9 0 1 1-2.3-9.4L23 10"/>', { size: 16 })
+};
+
+/* =========================================================
+   MOCK DATA
+   ========================================================= */
+var patient = {
+  name: "Ananya Sharma",
+  patientId: "PT-2026-00417",
+  age: 34,
+  gender: "Female",
+  contact: "+91 98765 43210",
+  email: "ananya.sharma@example.com",
+  address: "B-42, Green Meadows Society, Sector 62, Noida, UP 201301",
+  avatar: "https://api.dicebear.com/7.x/notionists/svg?seed=Ananya&backgroundColor=cfe3ff",
+  household: [
+    { name: "Rohan Sharma", relation: "Spouse", age: 37 },
+    { name: "Ira Sharma", relation: "Daughter", age: 6 },
+    { name: "Meena Devi", relation: "Mother", age: 62 }
+  ],
+  emergencyContact: { name: "Rohan Sharma", relation: "Spouse", phone: "+91 98111 22334" }
+};
+
+var appointments = [
+  { id: "AP-1042", doctor: "Dr. Kavita Rao", speciality: "Cardiology", hospital: "Fortis Hospital, Noida", date: "12 Jul 2026", time: "10:30 AM", status: "Upcoming" },
+  { id: "AP-1039", doctor: "Dr. Sameer Khan", speciality: "Orthopedics", hospital: "Apollo Hospital, Delhi", date: "18 Jun 2026", time: "4:00 PM", status: "Completed" },
+  { id: "AP-1031", doctor: "Dr. Neha Kapoor", speciality: "Dermatology", hospital: "Max Healthcare, Gurugram", date: "02 Jun 2026", time: "11:15 AM", status: "Cancelled" },
+  { id: "AP-1025", doctor: "Dr. Kavita Rao", speciality: "Cardiology", hospital: "Fortis Hospital, Noida", date: "20 May 2026", time: "9:00 AM", status: "Completed" }
+];
+
+var financialApplications = [
+  { id: "FA-3081", name: "Cardiac Surgery Assistance Fund", appliedDate: "01 Jun 2026", status: "Under Review", stages: ["Applied", "Under Review", "Decision"], currentStage: 1 },
+  { id: "FA-2977", name: "Government Health Subsidy Scheme", appliedDate: "14 Apr 2026", status: "Approved", stages: ["Applied", "Under Review", "Decision"], currentStage: 2, outcome: "Approved" },
+  { id: "FA-2810", name: "NGO Medical Relief Grant", appliedDate: "02 Feb 2026", status: "Rejected", stages: ["Applied", "Under Review", "Decision"], currentStage: 2, outcome: "Rejected" }
+];
+
+var bills = [
+  { billNo: "BL-99231", hospital: "Fortis Hospital, Noida", amount: "₹1,84,500", status: "Discrepancy Found", date: "15 Jun 2026" },
+  { billNo: "BL-98110", hospital: "Apollo Hospital, Delhi", amount: "₹42,300", status: "Verified", date: "20 May 2026" },
+  { billNo: "BL-96654", hospital: "Max Healthcare, Gurugram", amount: "₹8,750", status: "In Progress", date: "03 May 2026" }
+];
+
+var surgeryStages = ["Registration", "Consultation", "Pre-Operation", "Surgery", "Post-Operation", "Recovery", "Discharged"];
+var currentSurgeryStage = 3; // 0-indexed => "Surgery"
+
+var subscription = {
+  plan: "CareLine Gold",
+  status: "Active",
+  startDate: "10 Jan 2026",
+  expiryDate: "09 Jan 2027",
+  benefits: [
+    "Priority appointment scheduling",
+    "Free annual health checkup",
+    "24/7 AI health assistant access",
+    "10% discount on bill audits"
+  ]
+};
+
+var aiChats = [
+  { id: "CH-501", title: "Understanding my cardiac test results", date: "28 Jun 2026, 6:40 PM", preview: "Your troponin levels are within the normal range, but let's talk about..." },
+  { id: "CH-497", title: "Diet plan after surgery", date: "22 Jun 2026, 9:12 AM", preview: "A high-protein, low-sodium diet can support your recovery over..." },
+  { id: "CH-486", title: "Questions about the subsidy scheme", date: "10 Jun 2026, 2:05 PM", preview: "Here's how the government health subsidy scheme evaluates eligibility..." }
+];
+
+var navItems = [
+  { id: "profile", label: "Profile", icon: icons.user },
+  { id: "appointments", label: "Appointments", icon: icons.calendar },
+  { id: "financial", label: "Financial Applications", icon: icons.fileCheck },
+  { id: "bills", label: "Bill Audit", icon: icons.receipt },
+  { id: "surgery", label: "Surgery Tracker", icon: icons.activity },
+  { id: "subscription", label: "Subscription", icon: icons.award },
+  { id: "aichat", label: "AI Conversations", icon: icons.chat }
+];
+
+var badgeClass = {
+  "Upcoming": "badge-upcoming",
+  "Completed": "badge-completed",
+  "Cancelled": "badge-cancelled",
+  "Approved": "badge-approved",
+  "Rejected": "badge-rejected",
+  "Under Review": "badge-review",
+  "Verified": "badge-verified",
+  "In Progress": "badge-progress",
+  "Discrepancy Found": "badge-discrepancy",
+  "Active": "badge-active"
+};
+
+/* =========================================================
+   SMALL HELPERS
+   ========================================================= */
+function escapeHtml(str) {
+  return String(str)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
+
+function badge(status) {
+  var cls = badgeClass[status] || "badge-default";
+  return '<span class="badge ' + cls + '"><span class="badge-dot"></span>' + escapeHtml(status) + '</span>';
+}
+
+function skeletonLines(rows) {
+  var html = '<div class="skeleton-rows">';
+  for (var i = 0; i < rows; i++) {
+    html += '<div class="skeleton-row">' +
+      '<div class="skeleton skeleton-circle"></div>' +
+      '<div class="skeleton-lines">' +
+        '<div class="skeleton skeleton-line-1"></div>' +
+        '<div class="skeleton skeleton-line-2"></div>' +
+      '</div>' +
+    '</div>';
+  }
+  html += '</div>';
+  return html;
+}
+
+function card(id, title, iconHtml, actionHtml, innerHtml) {
+  return (
+    '<section id="' + id + '" class="card fade-up">' +
+      '<div class="card-head">' +
+        '<div class="card-head-left">' +
+          '<div class="card-icon">' + iconHtml + '</div>' +
+          '<h2 class="card-title font-display">' + escapeHtml(title) + '</h2>' +
+        '</div>' +
+        (actionHtml || '') +
+      '</div>' +
+      innerHtml +
+    '</section>'
+  );
+}
+
+function initials(name) {
+  var parts = name.split(" ");
+  return parts.slice(-2).map(function (n) { return n[0]; }).join("");
+}
+
+/* =========================================================
+   APP STATE
+   ========================================================= */
+var state = {
+  loading: true,
+  sidebarOpen: false,
+  active: "profile",
+  apptTab: "Upcoming"
+};
+
+/* =========================================================
+   SIDEBAR
+   ========================================================= */
+function renderSidebar() {
+  var overlay = state.sidebarOpen ? '<button class="sidebar-overlay" data-action="close-sidebar" aria-label="Close menu"></button>' : '';
+
+  var navHtml = navItems.map(function (item) {
+    var activeClass = state.active === item.id ? " active" : "";
+    return (
+      '<a href="#' + item.id + '" class="nav-item' + activeClass + '" data-nav="' + item.id + '">' +
+        '<span class="nav-icon">' + item.icon + '</span>' + escapeHtml(item.label) +
+      '</a>'
+    );
+  }).join("");
+
+  return (
+    overlay +
+    '<aside class="sidebar' + (state.sidebarOpen ? " open" : "") + '">' +
+      '<div class="sidebar-inner">' +
+        '<div class="sidebar-top">' +
+          '<div class="brand-mark">' +
+            
+        
+            '<span class="brand-name font-display">Pulseone</span>' +
+          '</div>' +
+          '<button class="sidebar-close" data-action="close-sidebar" aria-label="Close menu">' + icons.close + '</button>' +
+        '</div>' +
+        '<nav class="nav-list">' + navHtml + '</nav>' +
+        '<div class="sidebar-cta">' +
+          '<p class="sidebar-cta-eyebrow">Need help?</p>' +
+          '<p class="sidebar-cta-text">Talk to our AI health assistant anytime.</p>' +
+          '<button class="btn btn-outline-white" type="button">' + icons.chat + ' Start a chat</button>' +
+        '</div>' +
+      '</div>' +
+    '</aside>'
+  );
+}
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+function renderHeader() {
+  return (
+    '<header class="header">' +
+      '<div class="header-left">' +
+        '<button class="icon-btn menu-btn" data-action="open-sidebar" aria-label="Open menu">' + icons.menu + '</button>' +
+        '<div>' +
+          '<p class="welcome-label">Welcome back,</p>' +
+          '<h1 class="patient-name-header font-display">' + escapeHtml(patient.name) + '</h1>' +
+        '</div>' +
+      '</div>' +
+      '<div class="header-right">' +
+        '<button class="bell-btn" aria-label="Notifications">' + icons.bell + '<span class="bell-dot"></span></button>' +
+        '<img src="' + patient.avatar + '" alt="' + escapeHtml(patient.name) + ' avatar" class="avatar-header" />' +
+      '</div>' +
+    '</header>'
+  );
+}
+
+/* =========================================================
+   SECTION: PROFILE
+   ========================================================= */
+function infoRow(iconHtml, label, value, full) {
+  return (
+    '<div class="' + (full ? "info-row-full" : "") + '">' +
+      '<p class="info-label"><span class="info-icon">' + iconHtml + '</span>' + escapeHtml(label) + '</p>' +
+      '<p class="info-value">' + escapeHtml(value) + '</p>' +
+    '</div>'
+  );
+}
+
+function renderProfileSection() {
+  var inner;
+  if (state.loading) {
+    inner = skeletonLines(4);
+  } else {
+    var householdTags = patient.household.map(function (m) {
+      return '<span class="household-tag"><strong>' + escapeHtml(m.name) + '</strong> · ' + escapeHtml(m.relation) + ', ' + m.age + 'y</span>';
+    }).join("");
+
+    inner =
+      '<div class="profile-grid">' +
+        '<div class="profile-avatar-col">' +
+          '<img src="' + patient.avatar + '" alt="' + escapeHtml(patient.name) + '" class="avatar-lg" />' +
+          '<h3 class="font-display profile-name">' + escapeHtml(patient.name) + '</h3>' +
+          '<p class="profile-id">' + escapeHtml(patient.patientId) + '</p>' +
+          '<div class="profile-tags">' +
+            '<span class="profile-tag">' + patient.age + ' yrs</span>' +
+            '<span class="profile-tag">' + escapeHtml(patient.gender) + '</span>' +
+          '</div>' +
+        '</div>' +
+        '<div class="info-grid">' +
+          infoRow(icons.phone, "Contact Number", patient.contact) +
+          infoRow(icons.mail, "Email", patient.email) +
+          infoRow(icons.pin, "Address", patient.address, true) +
+          infoRow(icons.phone, "Emergency Contact", patient.emergencyContact.name + " (" + patient.emergencyContact.relation + ") · " + patient.emergencyContact.phone, true) +
+          '<div class="info-row-full">' +
+            '<p class="household-title"><span style="display:flex">' + icons.users + '</span> Household / Family Members</p>' +
+            '<div class="household-tags">' + householdTags + '</div>' +
+          '</div>' +
+        '</div>' +
+      '</div>';
+  }
+  return card("profile", "Patient Profile", icons.user, "", inner);
+}
+
+/* =========================================================
+   SECTION: APPOINTMENTS
+   ========================================================= */
+function renderAppointmentsSection() {
+  var action =
+    '<div class="tabs">' +
+      ["Upcoming", "Previous"].map(function (t) {
+        return '<button type="button" class="tab-btn' + (state.apptTab === t ? " active" : "") + '" data-tab="' + t + '">' + t + '</button>';
+      }).join("") +
+    '</div>';
+
+  var inner;
+  if (state.loading) {
+    inner = skeletonLines(3);
+  } else {
+    var filtered = appointments.filter(function (a) {
+      return state.apptTab === "Upcoming" ? a.status === "Upcoming" : a.status !== "Upcoming";
+    });
+
+    var itemsHtml = filtered.length === 0
+      ? '<p class="empty-msg">No ' + state.apptTab.toLowerCase() + ' appointments.</p>'
+      : filtered.map(function (a) {
+          return (
+            '<div class="appt-item">' +
+              '<div class="appt-avatar font-display">' + escapeHtml(initials(a.doctor)) + '</div>' +
+              '<div class="appt-body">' +
+                '<p class="appt-doctor">' + escapeHtml(a.doctor) + ' <span>· ' + escapeHtml(a.speciality) + '</span></p>' +
+                '<p class="appt-hospital">' + escapeHtml(a.hospital) + '</p>' +
+                '<p class="appt-time">' + icons.clock + ' ' + escapeHtml(a.date) + ' at ' + escapeHtml(a.time) + '</p>' +
+              '</div>' +
+              '<div class="appt-meta">' +
+                badge(a.status) +
+                '<button type="button" class="btn btn-ghost">View Details ' + icons.chevron + '</button>' +
+              '</div>' +
+            '</div>'
+          );
+        }).join("");
+
+    inner = '<div class="list">' + itemsHtml + '</div>';
+  }
+
+  return card("appointments", "My Appointments", icons.calendar, action, inner);
+}
+
+/* =========================================================
+   SECTION: FINANCIAL APPLICATIONS
+   ========================================================= */
+function miniTimeline(stages, currentStage, outcome) {
+  var html = '<div class="mini-timeline">';
+  stages.forEach(function (s, i) {
+    var done = i < currentStage || (i === currentStage && outcome);
+    var isCurrent = i === currentStage && !outcome;
+    var rejected = outcome === "Rejected" && i === stages.length - 1;
+    var circleClass = rejected ? "rejected" : done ? "done" : isCurrent ? "current" : "pending";
+    var circleContent = rejected ? icons.x : done ? icons.check : (i + 1);
+    var label = (i === stages.length - 1 && outcome) ? outcome : s;
+
+    html += '<div class="mt-step">' +
+      '<div class="mt-circle ' + circleClass + '">' + circleContent + '</div>' +
+      '<p class="mt-label' + (isCurrent ? " current" : "") + '">' + escapeHtml(label) + '</p>' +
+    '</div>';
+
+    if (i < stages.length - 1) {
+      html += '<div class="mt-connector' + (i < currentStage ? " done" : "") + '"></div>';
+    }
+  });
+  html += '</div>';
+  return html;
+}
+
+function renderFinancialSection() {
+  var inner;
+  if (state.loading) {
+    inner = skeletonLines(3);
+  } else {
+    var itemsHtml = financialApplications.map(function (f) {
+      return (
+        '<div class="fin-item">' +
+          '<div class="fin-head">' +
+            '<div>' +
+              '<p class="fin-name">' + escapeHtml(f.name) + '</p>' +
+              '<p class="fin-meta">' + escapeHtml(f.id) + ' · Applied ' + escapeHtml(f.appliedDate) + '</p>' +
+            '</div>' +
+            badge(f.status) +
+          '</div>' +
+          miniTimeline(f.stages, f.currentStage, f.outcome) +
+          '<div class="fin-footer"><button type="button" class="btn btn-ghost">View Details ' + icons.chevron + '</button></div>' +
+        '</div>'
+      );
+    }).join("");
+    inner = '<div class="list">' + itemsHtml + '</div>';
+  }
+  return card("financial", "My Financial Applications", icons.fileCheck, "", inner);
+}
+
+/* =========================================================
+   SECTION: BILL AUDIT HISTORY
+   ========================================================= */
+function renderBillsSection() {
+  var inner;
+  if (state.loading) {
+    inner = skeletonLines(3);
+  } else {
+    var rowsHtml = bills.map(function (b) {
+      return (
+        '<tr>' +
+          '<td class="bill-num">' + escapeHtml(b.billNo) + '</td>' +
+          '<td class="bill-hospital">' + escapeHtml(b.hospital) + '</td>' +
+          '<td class="bill-amount">' + escapeHtml(b.amount) + '</td>' +
+          '<td class="bill-date">' + escapeHtml(b.date) + '</td>' +
+          '<td>' + badge(b.status) + '</td>' +
+          '<td class="text-right"><button type="button" class="btn btn-ghost">View Report</button></td>' +
+        '</tr>'
+      );
+    }).join("");
+
+    inner =
+      '<div class="table-wrap">' +
+        '<table class="bill-table">' +
+          '<thead><tr>' +
+            '<th>Bill No.</th><th>Hospital</th><th>Amount</th><th>Date</th><th>Status</th><th class="text-right">Report</th>' +
+          '</tr></thead>' +
+          '<tbody>' + rowsHtml + '</tbody>' +
+        '</table>' +
+      '</div>';
+  }
+  return card("bills", "Bill Audit History", icons.receipt, "", inner);
+}
+
+/* =========================================================
+   SECTION: SURGERY CASE TRACKER
+   ========================================================= */
+function renderSurgerySection() {
+  var inner;
+  if (state.loading) {
+    inner = skeletonLines(2);
+  } else {
+    var horizontalHtml = '<div class="stepper-h">';
+    var verticalHtml = '<div class="stepper-v">';
+
+    surgeryStages.forEach(function (s, i) {
+      var done = i < currentSurgeryStage;
+      var isCurrent = i === currentSurgeryStage;
+      var state_ = done ? "done" : isCurrent ? "current" : "";
+      var circleContent = done ? icons.check : (i + 1);
+
+      horizontalHtml += '<div class="sh-step">' +
+        '<div class="sh-circle ' + state_ + '">' + circleContent + '</div>' +
+        '<p class="sh-label ' + state_ + '">' + escapeHtml(s) + '</p>' +
+      '</div>';
+      if (i < surgeryStages.length - 1) {
+        horizontalHtml += '<div class="sh-connector' + (i < currentSurgeryStage ? " done" : "") + '"></div>';
+      }
+
+      verticalHtml += '<div class="sv-row">' +
+        '<div class="sv-col">' +
+          '<div class="sv-circle ' + state_ + '">' + circleContent + '</div>' +
+          (i < surgeryStages.length - 1 ? '<div class="sv-connector' + (done ? " done" : "") + '"></div>' : '') +
+        '</div>' +
+        '<p class="sv-label ' + state_ + '">' + escapeHtml(s) + '</p>' +
+      '</div>';
+    });
+
+    horizontalHtml += '</div>';
+    verticalHtml += '</div>';
+
+    inner =
+      '<div>' +
+        '<p class="surgery-intro">Case <strong>SG-6620</strong> is currently at' +
+          '<span class="highlight"> ' + escapeHtml(surgeryStages[currentSurgeryStage]) + '</span> stage.</p>' +
+        horizontalHtml +
+        verticalHtml +
+      '</div>';
+  }
+  return card("surgery", "Surgery Case Tracker", icons.activity, "", inner);
+}
+
+/* =========================================================
+   SECTION: ROYALTY SUBSCRIPTION
+   ========================================================= */
+function renderSubscriptionSection() {
+  var inner;
+  if (state.loading) {
+    inner = skeletonLines(3);
+  } else {
+    var benefitsHtml = subscription.benefits.map(function (b) {
+      return '<li class="benefit-item"><span class="benefit-check">' + icons.check + '</span>' + escapeHtml(b) + '</li>';
+    }).join("");
+
+    inner =
+      '<div class="sub-grid">' +
+        '<div class="sub-card">' +
+          '<div>' +
+            '<p class="sub-eyebrow">Current Plan</p>' +
+            '<h3 class="sub-plan-name font-display">' + escapeHtml(subscription.plan) + '</h3>' +
+            '<div class="sub-badge-wrap">' + badge(subscription.status) + '</div>' +
+          '</div>' +
+          '<div class="sub-dates">' +
+            '<div><p class="sub-date-label">Start Date</p><p class="sub-date-value">' + escapeHtml(subscription.startDate) + '</p></div>' +
+            '<div><p class="sub-date-label">Expiry Date</p><p class="sub-date-value">' + escapeHtml(subscription.expiryDate) + '</p></div>' +
+          '</div>' +
+          '<button type="button" class="btn btn-outline-white sub-renew-btn">' + icons.refresh + ' Renew Subscription</button>' +
+        '</div>' +
+        '<div>' +
+          '<p class="benefits-title">Plan Benefits</p>' +
+          '<ul class="benefits-list">' + benefitsHtml + '</ul>' +
+        '</div>' +
+      '</div>';
+  }
+  return card("subscription", "Royalty Subscription", icons.award, "", inner);
+}
+
+/* =========================================================
+   SECTION: AI CONVERSATION HISTORY
+   ========================================================= */
+function renderAIChatSection() {
+  var inner;
+  if (state.loading) {
+    inner = skeletonLines(3);
+  } else {
+    var itemsHtml = aiChats.map(function (c) {
+      return (
+        '<div class="chat-item">' +
+          '<div class="chat-avatar">' + icons.chat + '</div>' +
+          '<div class="chat-body">' +
+            '<p class="chat-title">' + escapeHtml(c.title) + '</p>' +
+            '<p class="chat-date">' + escapeHtml(c.date) + '</p>' +
+            '<p class="chat-preview">' + escapeHtml(c.preview) + '</p>' +
+          '</div>' +
+          '<button type="button" class="btn btn-ghost">Open ' + icons.chevron + '</button>' +
+        '</div>'
+      );
+    }).join("");
+    inner = '<div class="list">' + itemsHtml + '</div>';
+  }
+  return card("aichat", "AI Conversation History", icons.chat, "", inner);
+}
+
+/* =========================================================
+   APP RENDER
+   ========================================================= */
+function render() {
+  var html =
+    '<div class="app-shell">' +
+      '<div class="layout">' +
+        renderSidebar() +
+        '<div class="main-col">' +
+          renderHeader() +
+          '<main class="main-content">' +
+            renderProfileSection() +
+            renderAppointmentsSection() +
+            '<div class="two-col">' + renderFinancialSection() + renderBillsSection() + '</div>' +
+            renderSurgerySection() +
+            '<div class="two-col">' + renderSubscriptionSection() + renderAIChatSection() + '</div>' +
+            '<footer class="page-footer">CareLine Health · Patient Dashboard (demo data only)</footer>' +
+          '</main>' +
+        '</div>' +
+      '</div>' +
+    '</div>';
+
+  document.getElementById("root").innerHTML = html;
+}
+
+/* =========================================================
+   EVENT DELEGATION (attached once)
+   ========================================================= */
+document.addEventListener("click", function (e) {
+  var openBtn = e.target.closest('[data-action="open-sidebar"]');
+  if (openBtn) {
+    state.sidebarOpen = true;
+    render();
+    return;
+  }
+
+  var closeBtn = e.target.closest('[data-action="close-sidebar"]');
+  if (closeBtn) {
+    state.sidebarOpen = false;
+    render();
+    return;
+  }
+
+  var navLink = e.target.closest('[data-nav]');
+  if (navLink) {
+    state.active = navLink.getAttribute("data-nav");
+    state.sidebarOpen = false;
+    render();
+    return; // let the default anchor jump scroll to the section
+  }
+
+  var tabBtn = e.target.closest('[data-tab]');
+  if (tabBtn) {
+    state.apptTab = tabBtn.getAttribute("data-tab");
+    render();
+    return;
+  }
+});
+
+/* Close the mobile sidebar with the Escape key */
+document.addEventListener("keydown", function (e) {
+  if (e.key === "Escape" && state.sidebarOpen) {
+    state.sidebarOpen = false;
+    render();
+  }
+});
+
+/* =========================================================
+   INITIAL RENDER + SIMULATED LOADING
+   ========================================================= */
+render();
+setTimeout(function () {
+  state.loading = false;
+  render();
+}, 1100);
+</script>
+</body>
+</html>

@@ -1,0 +1,1044 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>PulseOne — Payment</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+/* ── Reset ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 14px; }
+body {
+  font-family: 'Inter', sans-serif;
+  background: #f5f7f6;
+  color: #111827;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── Variables ── */
+:root {
+  --green:       #1a6b4a;
+  --green-dark:  #0f4a32;
+  --green-mid:   #2d8c5e;
+  --green-pale:  #e8f5ee;
+  --teal:        #0d7a5f;
+  --border:      #e5e7eb;
+  --bg:          #f5f7f6;
+  --surface:     #ffffff;
+  --text-1:      #111827;
+  --text-2:      #4b5563;
+  --text-3:      #9ca3af;
+  --blue-link:   #2563eb;
+  --shadow-sm:   0 1px 3px rgba(0,0,0,0.07);
+  --shadow-md:   0 4px 16px rgba(0,0,0,0.08);
+}
+
+/* ══════════════════════════════
+   TOP BAR
+══════════════════════════════ */
+.topbar {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 32px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.topbar-logo {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-1);
+  letter-spacing: -0.02em;
+  text-decoration: none;
+}
+
+.topbar-logo svg { color: var(--teal); }
+
+.topbar-secure {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--text-2);
+}
+
+.topbar-secure svg { color: var(--teal); }
+
+/* ══════════════════════════════
+   PAGE WRAP
+══════════════════════════════ */
+.page-wrap {
+  flex: 1;
+  max-width: 820px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 28px 20px 48px;
+}
+
+/* Back link */
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-2);
+  text-decoration: none;
+  margin-bottom: 22px;
+  cursor: pointer;
+  transition: color .15s;
+}
+.back-link:hover { color: var(--text-1); }
+
+/* ══════════════════════════════
+   GRID: left + right
+══════════════════════════════ */
+.pay-grid {
+  display: grid;
+  grid-template-columns: 1fr 258px;
+  gap: 20px;
+  align-items: start;
+}
+
+/* ══════════════════════════════
+   LEFT — PAYMENT METHOD CARD
+══════════════════════════════ */
+.pay-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 24px 22px;
+  box-shadow: var(--shadow-sm);
+}
+
+.pay-card-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-1);
+  letter-spacing: -0.02em;
+  margin-bottom: 20px;
+}
+
+/* ── Method tabs ── */
+.method-tabs {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.method-tab {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 12px 10px;
+  border: 1.5px solid var(--border);
+  border-radius: 9px;
+  background: var(--surface);
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--text-2);
+  transition: all .18s;
+}
+
+.method-tab:hover { border-color: var(--teal); color: var(--teal); }
+
+.method-tab.active {
+  border-color: var(--teal);
+  background: var(--surface);
+  color: var(--teal);
+  font-weight: 600;
+}
+
+.method-tab svg { color: var(--teal); }
+
+/* ── Form fields ── */
+.field-group {
+  margin-bottom: 16px;
+}
+
+.field-label {
+  display: block;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-2);
+  margin-bottom: 7px;
+}
+
+.field-input {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1.5px solid var(--border);
+  border-radius: 7px;
+  font-family: 'Inter', sans-serif;
+  font-size: 13.5px;
+  color: var(--text-1);
+  background: var(--surface);
+  outline: none;
+  transition: border-color .15s, box-shadow .15s;
+}
+
+.field-input::placeholder { color: var(--text-3); }
+
+.field-input:focus {
+  border-color: var(--teal);
+  box-shadow: 0 0 0 3px rgba(13,122,95,0.10);
+}
+
+/* Card number wrapper — icon inside */
+.card-input-wrap {
+  position: relative;
+}
+
+.card-input-wrap .field-input {
+  padding-right: 42px;
+  letter-spacing: 0.08em;
+}
+
+.card-chip-icon {
+  position: absolute;
+  right: 13px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-3);
+  display: flex;
+}
+
+/* Two-col row */
+.field-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-bottom: 16px;
+}
+
+/* CVV wrapper */
+.cvv-wrap { position: relative; }
+.cvv-wrap .field-input { padding-right: 38px; }
+.cvv-info-icon {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-3);
+  cursor: pointer;
+  display: flex;
+}
+
+/* Save card checkbox */
+.save-card-row {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin-bottom: 22px;
+  cursor: pointer;
+}
+
+.save-card-row input[type="checkbox"] {
+  width: 15px;
+  height: 15px;
+  accent-color: var(--teal);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.save-card-label {
+  font-size: 12.5px;
+  color: var(--text-2);
+  cursor: pointer;
+  user-select: none;
+}
+
+/* Pay button */
+.btn-pay {
+  width: 100%;
+  background: var(--teal);
+  color: #fff;
+  border: none;
+  padding: 14px;
+  border-radius: 8px;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  letter-spacing: -0.01em;
+  transition: background .18s, transform .15s, box-shadow .18s;
+}
+
+.btn-pay:hover {
+  background: var(--green-dark);
+  transform: translateY(-1px);
+  box-shadow: 0 5px 18px rgba(13,122,95,0.30);
+}
+
+.btn-pay:active { transform: none; }
+
+/* ── Security badges ── */
+.security-badges {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 28px;
+  margin-top: 22px;
+  padding-top: 18px;
+  border-top: 1px solid var(--border);
+}
+
+.sec-badge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--text-3);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  line-height: 1.3;
+  text-align: center;
+}
+
+.sec-badge svg { color: var(--teal); flex-shrink: 0; }
+
+/* ══════════════════════════════
+   RIGHT — BOOKING SUMMARY
+══════════════════════════════ */
+.booking-summary {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* Doctor card */
+.doctor-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  box-shadow: var(--shadow-sm);
+}
+
+.doctor-avatar {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #c8dde8 0%, #d8e8f4 100%);
+  flex-shrink: 0;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Doctor SVG illustration */
+.doctor-avatar svg { opacity: 0.7; }
+
+.doctor-info {}
+.doctor-name {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-1);
+  margin-bottom: 3px;
+  letter-spacing: -0.01em;
+}
+.doctor-specialty {
+  font-size: 12px;
+  color: var(--teal);
+  font-weight: 500;
+}
+
+/* Appointment detail card */
+.appt-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: var(--shadow-sm);
+}
+
+.appt-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.appt-row:last-child { margin-bottom: 0; }
+
+.appt-icon {
+  width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 1px;
+  color: var(--text-3);
+}
+
+.appt-key {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-3);
+  margin-bottom: 3px;
+  text-transform: capitalize;
+}
+
+.appt-val {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-1);
+  line-height: 1.4;
+}
+
+/* Payment summary card */
+.pay-summary-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: var(--shadow-sm);
+}
+
+.pay-summary-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-1);
+  margin-bottom: 14px;
+  letter-spacing: -0.01em;
+}
+
+.pay-summary-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 9px;
+  font-size: 13px;
+}
+
+.pay-summary-row .s-label { color: var(--text-2); }
+.pay-summary-row .s-val   { font-weight: 500; color: var(--text-1); }
+.pay-summary-row .s-blue  { color: var(--blue-link); font-weight: 600; }
+.pay-summary-row .s-neg   { color: var(--blue-link); font-weight: 600; }
+
+.pay-summary-divider {
+  height: 1px;
+  background: var(--border);
+  margin: 12px 0;
+}
+
+.pay-total-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.pay-total-label {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-1);
+}
+
+.pay-total-amount {
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--teal);
+  letter-spacing: -0.02em;
+}
+
+/* Cancellation policy */
+.cancel-policy {
+  background: #f9fafb;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px 14px;
+  font-size: 11.5px;
+  color: var(--text-2);
+  line-height: 1.6;
+}
+
+.cancel-policy-title {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--text-2);
+  margin-bottom: 5px;
+}
+
+/* ══════════════════════════════
+   FOOTER
+══════════════════════════════ */
+.footer {
+  background: #111827;
+  color: rgba(255,255,255,0.65);
+  padding: 38px 32px 20px;
+}
+
+.footer-inner {
+  max-width: 820px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1.8fr 1fr 1fr;
+  gap: 32px;
+}
+
+.footer-brand-name {
+  font-size: 16px;
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: -0.02em;
+  margin-bottom: 8px;
+}
+
+.footer-brand-desc {
+  font-size: 12px;
+  color: rgba(255,255,255,0.42);
+  line-height: 1.65;
+  max-width: 210px;
+  margin-bottom: 14px;
+}
+
+.footer-social {
+  display: flex;
+  gap: 9px;
+}
+
+.social-btn {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.15);
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  color: rgba(255,255,255,0.45);
+  font-size: 10px;
+  transition: all .18s;
+}
+
+.social-btn:hover { border-color: rgba(255,255,255,0.45); color: #fff; }
+
+.footer-col-title {
+  font-size: 10.5px;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+.footer-links {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.footer-links a {
+  font-size: 12px;
+  color: rgba(255,255,255,0.48);
+  text-decoration: none;
+  transition: color .15s;
+}
+
+.footer-links a:hover { color: rgba(255,255,255,0.9); }
+
+.footer-bottom {
+  max-width: 820px;
+  margin: 22px auto 0;
+  border-top: 1px solid rgba(255,255,255,0.08);
+  padding-top: 14px;
+  font-size: 11px;
+  color: rgba(255,255,255,0.25);
+}
+
+/* ── Toast ── */
+.toast {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%) translateY(16px);
+  background: #0f4a32;
+  color: #fff;
+  padding: 10px 22px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  opacity: 0;
+  pointer-events: none;
+  transition: all .25s;
+  z-index: 999;
+  white-space: nowrap;
+  box-shadow: 0 6px 24px rgba(0,0,0,.2);
+}
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+/* ── Responsive ── */
+@media (max-width: 700px) {
+  .pay-grid    { grid-template-columns: 1fr; }
+  .footer-inner { grid-template-columns: 1fr 1fr; gap: 20px; }
+  .method-tabs { gap: 8px; }
+}
+@media (max-width: 460px) {
+  .footer-inner { grid-template-columns: 1fr; }
+  .field-row    { grid-template-columns: 1fr; }
+  .security-badges { gap: 14px; flex-wrap: wrap; }
+  .topbar       { padding: 0 16px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ══ TOP BAR ══ -->
+<header class="topbar">
+  <a class="topbar-logo" href="#">
+    <!-- Location pin icon like screenshot -->
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>
+    </svg>
+    Clinical Precision
+  </a>
+  <div class="topbar-secure">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+    </svg>
+    Secure Checkout
+  </div>
+</header>
+
+<!-- ══ PAGE CONTENT ══ -->
+<div class="page-wrap">
+
+  <!-- Back link -->
+  <a class="back-link" href="confirm.html">
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+    <line x1="19" y1="12" x2="5" y2="12"/>
+    <polyline points="12 19 5 12 12 5"/>
+  </svg>
+  Back to Appointment Selection
+</a>
+
+  <!-- Two-column grid -->
+  <div class="pay-grid">
+
+    <!-- ── LEFT: Payment form ── -->
+    <div class="pay-card">
+      <div class="pay-card-title">Payment Method</div>
+
+      <!-- Method Tabs -->
+      <div class="method-tabs">
+        <!-- Credit/Debit Card — active -->
+        <button class="method-tab active" id="tab-card" onclick="switchTab('card')">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/>
+          </svg>
+          Credit/Debit Card
+        </button>
+
+        <!-- UPI / Wallets -->
+        <button class="method-tab" id="tab-upi" onclick="switchTab('upi')">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="5" y="2" width="14" height="20" rx="2"/><line x1="9" y1="7" x2="15" y2="7"/><line x1="9" y1="12" x2="15" y2="12"/><line x1="9" y1="17" x2="12" y2="17"/>
+          </svg>
+          UPI / Wallets
+        </button>
+
+        <!-- Net Banking -->
+        <button class="method-tab" id="tab-net" onclick="switchTab('net')">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="3" y1="22" x2="21" y2="22"/><line x1="6" y1="22" x2="6" y2="11"/><line x1="10" y1="22" x2="10" y2="11"/>
+            <line x1="14" y1="22" x2="14" y2="11"/><line x1="18" y1="22" x2="18" y2="11"/>
+            <polygon points="12 2 22 7 2 7"/>
+          </svg>
+          Net Banking
+        </button>
+      </div>
+
+      <!-- Card Form Panel -->
+      <div id="panel-card">
+
+        <!-- Cardholder Name -->
+        <div class="field-group">
+          <label class="field-label" for="cardName">Cardholder Name</label>
+          <input type="text" id="cardName" class="field-input" placeholder="Dr. John Doe"/>
+        </div>
+
+        <!-- Card Number -->
+        <div class="field-group">
+          <label class="field-label" for="cardNumber">Card Number</label>
+          <div class="card-input-wrap">
+            <input type="text" id="cardNumber" class="field-input" placeholder="0000 0000 0000 0000" maxlength="19" oninput="formatCard(this)"/>
+            <span class="card-chip-icon">
+              <svg width="20" height="14" viewBox="0 0 32 22" fill="none">
+                <rect x="1" y="1" width="30" height="20" rx="3" fill="#e5e7eb" stroke="#d1d5db" stroke-width="1"/>
+                <rect x="8" y="6" width="10" height="10" rx="1.5" fill="#d1a84b" opacity=".9"/>
+                <line x1="8" y1="11" x2="18" y2="11" stroke="#b8922a" stroke-width="1"/>
+                <line x1="13" y1="6" x2="13" y2="16" stroke="#b8922a" stroke-width="1"/>
+              </svg>
+            </span>
+          </div>
+        </div>
+
+        <!-- Expiry + CVV -->
+        <div class="field-row">
+          <div class="field-group" style="margin-bottom:0">
+            <label class="field-label" for="expiry">Expiry Date</label>
+            <input type="text" id="expiry" class="field-input" placeholder="MM/YY" maxlength="5" oninput="formatExpiry(this)"/>
+          </div>
+          <div class="field-group" style="margin-bottom:0">
+            <label class="field-label" for="cvv">CVV</label>
+            <div class="cvv-wrap">
+              <input type="password" id="cvv" class="field-input" placeholder="•••" maxlength="4"/>
+              <span class="cvv-info-icon" title="3-digit code on the back of your card">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+                </svg>
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Save card checkbox -->
+        <label class="save-card-row">
+          <input type="checkbox" id="saveCard"/>
+          <span class="save-card-label">Save card information for faster checkout next time</span>
+        </label>
+
+        <!-- Pay button -->
+        <button class="btn-pay" id="payBtn" onclick="processPayment()">
+          Pay 475.00 Securely
+        </button>
+
+      </div><!-- /panel-card -->
+
+      <!-- UPI Panel (hidden) -->
+      <div id="panel-upi" style="display:none;">
+        <div class="field-group">
+          <label class="field-label" for="upiId">UPI ID</label>
+          <input type="text" id="upiId" class="field-input" placeholder="yourname@upi"/>
+        </div>
+        <button class="btn-pay" onclick="processPayment()">Pay 475.00 via UPI</button>
+      </div>
+
+      <!-- Net Banking Panel (hidden) -->
+      <div id="panel-net" style="display:none;">
+        <div class="field-group">
+          <label class="field-label" for="bankSelect">Select Bank</label>
+          <select id="bankSelect" class="field-input" style="cursor:pointer;">
+            <option value="">-- Choose your bank --</option>
+            <option>State Bank of India</option>
+            <option>HDFC Bank</option>
+            <option>ICICI Bank</option>
+            <option>Axis Bank</option>
+            <option>Kotak Mahindra Bank</option>
+          </select>
+        </div>
+        <button class="btn-pay" onclick="processPayment()">Pay 475.00 via Net Banking</button>
+      </div>
+
+      <!-- Security badges -->
+      <div class="security-badges">
+        <div class="sec-badge">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+          </svg>
+          <span>PCI-DSS<br>Compliant</span>
+        </div>
+        <div class="sec-badge">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+          </svg>
+          <span>256-Bit SSL<br>Encryption</span>
+        </div>
+        <div class="sec-badge">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+            <polyline points="9 12 11 14 15 10"/>
+          </svg>
+          <span>HIPAA<br>Secure</span>
+        </div>
+      </div>
+
+    </div><!-- /pay-card -->
+
+    <!-- ── RIGHT: Booking summary ── -->
+    <div class="booking-summary">
+
+      <!-- Doctor card -->
+      <div class="doctor-card">
+        <div class="doctor-avatar">
+          <!-- Doctor illustration SVG -->
+           <img src="https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=280&q=80"
+     alt="Dr. Arjan Singh"
+     width="64"
+     height="64"
+     style="border-radius:50%; object-fit:cover;">
+          
+            <circle cx="26" cy="26" r="26" fill="#dbe8f0"/>
+            <!-- Body / coat -->
+            <rect x="14" y="30" width="24" height="18" rx="4" fill="#ffffff"/>
+            <!-- Coat lapels -->
+            <path d="M26 30 L20 36 L26 34 L32 36 Z" fill="#e8f0f8"/>
+            <!-- Stethoscope hint -->
+            <path d="M20 34 Q18 38 20 40" stroke="#0d7a5f" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+            <circle cx="20" cy="40" r="2" fill="#0d7a5f"/>
+            <!-- Head -->
+            <circle cx="26" cy="22" r="8" fill="#f5d5b8"/>
+            <!-- Hair -->
+            <path d="M18 20 Q18 13 26 13 Q34 13 34 20" fill="#5a3825"/>
+            <!-- Eyes -->
+            <circle cx="23" cy="21" r="1" fill="#333"/>
+            <circle cx="29" cy="21" r="1" fill="#333"/>
+            <!-- Smile -->
+            <path d="M23 24 Q26 27 29 24" stroke="#c47a5a" stroke-width="1" fill="none" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="doctor-info">
+          <div class="doctor-name">Dr. Julianne Voss</div>
+          <div class="doctor-specialty">Surgical Oncology</div>
+        </div>
+      </div>
+
+      <!-- Appointment details -->
+      <div class="appt-card">
+        <!-- Date -->
+        <div class="appt-row">
+          <div class="appt-icon">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
+            </svg>
+          </div>
+          <div>
+            <div class="appt-key">Date</div>
+            <div class="appt-val">Tuesday, October 24, 2024</div>
+          </div>
+        </div>
+        <!-- Time -->
+        <div class="appt-row">
+          <div class="appt-icon">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+            </svg>
+          </div>
+          <div>
+            <div class="appt-key">Time</div>
+            <div class="appt-val">10:30 AM — 11:30 AM (EDT)</div>
+          </div>
+        </div>
+        <!-- Location -->
+        <div class="appt-row">
+          <div class="appt-icon">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>
+            </svg>
+          </div>
+          <div>
+            <div class="appt-key">Location</div>
+            <div class="appt-val">Virtual Consultation (Secure Link)</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Payment summary -->
+      <div class="pay-summary-card">
+        <div class="pay-summary-title">Payment Summary</div>
+
+        <div class="pay-summary-row">
+          <span class="s-label">Consultation Fee</span>
+          <span class="s-val">450.00</span>
+        </div>
+        <div class="pay-summary-row">
+          <span class="s-label">Platform Service Fee</span>
+          <span class="s-val">25.00</span>
+        </div>
+        <div class="pay-summary-row">
+          <span class="s-blue">Insurance Offset</span>
+          <span class="s-neg">-0.00</span>
+        </div>
+
+        <div class="pay-summary-divider"></div>
+
+        <div class="pay-total-row">
+          <span class="pay-total-label">Total Amount</span>
+          <span class="pay-total-amount">475.00</span>
+        </div>
+      </div>
+
+      <!-- Cancellation Policy -->
+      <div class="cancel-policy">
+        <div class="cancel-policy-title">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+          </svg>
+          Cancellation Policy
+        </div>
+        Refunds available up to 24 hours before the appointment. Service fees are non-refundable.
+      </div>
+
+    </div><!-- /booking-summary -->
+
+  </div><!-- /pay-grid -->
+</div><!-- /page-wrap -->
+
+<!-- ══ FOOTER ══ -->
+<footer class="footer">
+  <div class="footer-inner">
+
+    <div>
+      <div class="footer-brand-name">PulseOne</div>
+      <p class="footer-brand-desc">Leading diagnostic aggregator providing reliable health insights at your doorstep.</p>
+      <div class="footer-social">
+        <div class="social-btn" title="Twitter">𝕏</div>
+        <div class="social-btn" title="Globe">🌐</div>
+        <div class="social-btn" title="Web">⊕</div>
+      </div>
+    </div>
+
+    <div>
+      <div class="footer-col-title">Company</div>
+      <ul class="footer-links">
+        <li><a href="#">Privacy Policy</a></li>
+        <li><a href="#">Terms of Service</a></li>
+        <li><a href="#">Partner with Us</a></li>
+      </ul>
+    </div>
+
+    <div>
+      <div class="footer-col-title">Support</div>
+      <ul class="footer-links">
+        <li><a href="#">Contact Support</a></li>
+        <li><a href="#">FAQs</a></li>
+        <li><a href="#">Help Center</a></li>
+      </ul>
+    </div>
+
+  </div>
+  <div class="footer-bottom">
+    © 2024 PulseOne Healthcare. All rights reserved.
+  </div>
+</footer>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ── Toast ──────────────────────────────────────────────────
+function showToast(msg, dur) {
+  dur = dur || 3000;
+  var t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(window._tt);
+  window._tt = setTimeout(function() { t.classList.remove('show'); }, dur);
+}
+
+// ── Tab switch ─────────────────────────────────────────────
+function switchTab(tab) {
+  ['card','upi','net'].forEach(function(id) {
+    document.getElementById('tab-' + id).classList.toggle('active', id === tab);
+    document.getElementById('panel-' + id).style.display = id === tab ? 'block' : 'none';
+  });
+}
+
+// ── Card number formatting ─────────────────────────────────
+function formatCard(input) {
+  var v = input.value.replace(/\D/g, '').substring(0, 16);
+  var parts = [];
+  for (var i = 0; i < v.length; i += 4) parts.push(v.substring(i, i + 4));
+  input.value = parts.join(' ');
+}
+
+// ── Expiry formatting ──────────────────────────────────────
+function formatExpiry(input) {
+  var v = input.value.replace(/\D/g, '').substring(0, 4);
+  if (v.length >= 3) {
+    input.value = v.substring(0, 2) + '/' + v.substring(2);
+  } else {
+    input.value = v;
+  }
+}
+
+// ── Payment processing ─────────────────────────────────────
+function processPayment() {
+  var btn = document.getElementById('payBtn') || document.querySelector('.btn-pay');
+
+  // Validate card fields if card tab is active
+  var activeTab = document.querySelector('.method-tab.active');
+  if (activeTab && activeTab.id === 'tab-card') {
+    var name   = document.getElementById('cardName').value.trim();
+    var number = document.getElementById('cardNumber').value.replace(/\s/g, '');
+    var expiry = document.getElementById('expiry').value.trim();
+    var cvv    = document.getElementById('cvv').value.trim();
+
+    if (!name) {
+      document.getElementById('cardName').focus();
+      showToast('Please enter the cardholder name.');
+      return;
+    }
+    if (number.length < 16) {
+      document.getElementById('cardNumber').focus();
+      showToast('Please enter a valid 16-digit card number.');
+      return;
+    }
+    if (expiry.length < 5) {
+      document.getElementById('expiry').focus();
+      showToast('Please enter the expiry date (MM/YY).');
+      return;
+    }
+    if (cvv.length < 3) {
+      document.getElementById('cvv').focus();
+      showToast('Please enter your CVV.');
+      return;
+    }
+  }
+
+  // Processing state
+  btn = document.querySelector('.btn-pay');
+  var originalText = btn.textContent;
+  btn.textContent = 'Processing…';
+  btn.disabled = true;
+  btn.style.background = '#2d8c5e';
+  showToast('Verifying payment details…');
+
+  setTimeout(function() {
+    btn.textContent = '✓ Payment Successful!';
+    btn.style.background = '#0f4a32';
+    showToast('🎉 Payment of $475.00 confirmed! Redirecting…', 3500);
+
+    setTimeout(function() {
+      btn.textContent = originalText;
+      btn.disabled = false;
+      btn.style.background = '';
+      // Navigate to confirmation page
+      window.location.href = 'bookings.html';
+    }, 2500);
+  }, 2000);
+}
+
+// ── Input focus clear ──────────────────────────────────────
+document.querySelectorAll('.field-input').forEach(function(el) {
+  el.addEventListener('input', function() {
+    this.style.borderColor = '';
+    this.style.boxShadow   = '';
+  });
+});
+</script>
+</body>
+</html>

@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+  <!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -313,19 +313,7 @@
             ☰
         </button>
 
-        <ul class="nav-links" id="navLinks">
-
-            <li><a href="index.html">Home</a></li>
-
-            <li><a href="hospital-details.html">Hospital</a></li>
-
-            <li><a href="cost-estimate.html">Cost Estimate</a></li>
-
-            <li><a href="financial-support.html">Financial Support</a></li>
-
-            <li><a href="admin.html">Admin</a></li>
-
-        </ul>
+        
 
     </nav>
 
@@ -349,6 +337,124 @@
         </div>
 
     </section>
+    <!-- ================= QUICK ACCESS CARDS ================= -->
+     <style>
+        /* ================= QUICK ACCESS CARDS ================= */
+
+.quick-access{
+
+    width:90%;
+    margin:60px auto;
+
+}
+
+.quick-access h2{
+
+    text-align:center;
+    margin-bottom:40px;
+
+}
+
+.qa-container{
+
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+    gap:20px;
+
+}
+
+.qa-card{
+
+    background:white;
+    border-radius:10px;
+    padding:30px 20px;
+    text-align:center;
+    text-decoration:none;
+    color:#333;
+    box-shadow:0 5px 15px rgba(0,0,0,.1);
+    transition:.3s;
+
+}
+
+.qa-card:hover{
+
+    transform:translateY(-8px);
+    box-shadow:0 10px 25px rgba(13,110,253,.2);
+
+}
+
+.qa-icon{
+
+    font-size:36px;
+    margin-bottom:12px;
+
+}
+
+.qa-card h3{
+
+    color:#0d6efd;
+    margin-bottom:6px;
+    font-size:18px;
+
+}
+
+.qa-card p{
+
+    font-size:13px;
+    color:#666;
+    margin:0;
+
+}
+
+@media(max-width:768px){
+
+.qa-container{
+
+grid-template-columns:repeat(2,1fr);
+
+}
+
+}
+     </style>
+<section class="quick-access">
+
+    <h2>Quick Access</h2>
+
+    <div class="qa-container">
+
+        <a href="index.html" class="qa-card">
+            <div class="qa-icon">🏠</div>
+            <h3>Home</h3>
+            <p>Back to homepage</p>
+        </a>
+
+        <a href="hospital-details.html" class="qa-card">
+            <div class="qa-icon">🏥</div>
+            <h3>Hospital</h3>
+            <p>Browse hospital details</p>
+        </a>
+
+        <a href="cost-estimate.html" class="qa-card">
+            <div class="qa-icon">💰</div>
+            <h3>Cost Estimate</h3>
+            <p>Estimate your treatment cost</p>
+        </a>
+
+        <a href="financial-support.html" class="qa-card">
+            <div class="qa-icon">🤝</div>
+            <h3>Financial Support</h3>
+            <p>Check eligibility &amp; apply</p>
+        </a>
+
+        <a href="admin.html" class="qa-card">
+            <div class="qa-icon">🛠️</div>
+            <h3>Admin</h3>
+            <p>Manage the platform</p>
+        </a>
+
+    </div>
+
+</section>
 
     <!-- ================= SEARCH ================= -->
 

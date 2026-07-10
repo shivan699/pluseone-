@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Understanding CGHS Coverage: A Complete Guide for Government Employees | CareLine Insights</title>
+<meta name="description" content="A complete, easy-to-follow guide to CGHS healthcare coverage — eligibility, benefits, empanelled hospitals, and how to apply. Written by CareLine's healthcare policy team." />
+<meta name="author" content="Dr. Aisha Verma" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Lora:ital,wght@0,500;0,600;1,500&display=swap" rel="stylesheet">
+
+<style>
+/* =====================================================
+   CSS VARIABLES — design tokens
+   ===================================================== */
+:root{
+  --primary:#033a12;
+  --primary-dark:#032e11;
+  --secondary:#023411;
+  --accent:#22C55E;
+  --bg:#F8FAFC;
+  --card:#FFFFFF;
+  --text:#111827;
+  --text-muted:#5B6472;
+  --text-faint:#8A93A3;
+  --border:#E5E7EB;
+  --shadow:0 20px 40px rgba(0,0,0,.08);
+  --shadow-sm:0 8px 20px rgba(17,24,39,.06);
+  --radius:18px;
+  --radius-sm:12px;
+  --container:1200px;
+  --section-gap:80px;
+  --font-body:'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-serif:'Lora', Georgia, serif;
+}
+
+/* =====================================================
+   RESET & BASE
+   ===================================================== */
+*,*::before,*::after{ box-sizing:border-box; margin:0; padding:0; }
+html{ scroll-behavior:smooth; }
+body{
+  font-family:var(--font-body);
+  background:var(--bg);
+  color:var(--text);
+  line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+}
+img{ max-width:100%; display:block; }
+a{ color:inherit; text-decoration:none; }
+ul{ list-style:none; }
+button{ font-family:inherit; cursor:pointer; }
+.container{ max-width:var(--container); margin:0 auto; padding:0 24px; }
+
+::selection{ background:rgba(37,99,235,.18); }
+
+/* Scroll reveal (fade-up) — toggled by IntersectionObserver in JS */
+.reveal{ opacity:0; transform:translateY(24px); transition:opacity .7s cubic-bezier(.22,1,.36,1), transform .7s cubic-bezier(.22,1,.36,1); }
+.reveal.in{ opacity:1; transform:translateY(0); }
+.reveal.delay-1{ transition-delay:.08s; }
+.reveal.delay-2{ transition-delay:.16s; }
+.reveal.delay-3{ transition-delay:.24s; }
+
+@media (prefers-reduced-motion:reduce){
+  *{ animation-duration:.01ms !important; transition-duration:.01ms !important; }
+}
+
+/* =====================================================
+   READING PROGRESS BAR
+   ===================================================== */
+.progress-bar{
+  position:fixed; top:0; left:0; height:3px; width:0%;
+  background:linear-gradient(90deg,var(--primary),var(--secondary),var(--accent));
+  z-index:1000;
+  transition:width .1s linear;
+}
+
+/* =====================================================
+   HEADER / NAV
+   ===================================================== */
+.site-header{
+  position:sticky; top:0; z-index:300;
+  background:rgba(248,250,252,.85);
+  backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--border);
+}
+.nav-inner{
+  display:flex; align-items:center; justify-content:space-between;
+  height:72px;
+}
+.brand{ display:flex; align-items:center; gap:10px; font-weight:800; font-size:18px; color:var(--text); }
+.brand-mark{
+  width:34px; height:34px; border-radius:10px;
+  background:linear-gradient(135deg,var(--primary),var(--secondary));
+  display:flex; align-items:center; justify-content:center; color:#fff; font-size:16px;
+}
+.nav-links{ display:flex; align-items:center; gap:6px; }
+.nav-links a{
+  font-size:14px; font-weight:600; color:var(--text-muted);
+  padding:9px 16px; border-radius:100px; transition:all .2s;
+}
+.nav-links a:hover, .nav-links a.active{ color:var(--primary); background:rgba(37,99,235,.08); }
+.nav-cta{
+  background:var(--primary); color:#fff; font-size:14px; font-weight:700;
+  padding:10px 20px; border-radius:100px; border:none; transition:all .2s;
+}
+.nav-cta:hover{ background:var(--primary-dark); box-shadow:0 10px 24px rgba(37,99,235,.28); transform:translateY(-1px); }
+.nav-ham{ display:none; background:none; border:none; flex-direction:column; gap:5px; padding:4px; }
+.nav-ham span{ width:22px; height:2px; background:var(--text); border-radius:2px; }
+
+/* =====================================================
+   BREADCRUMB
+   ===================================================== */
+.breadcrumb{
+  display:flex; align-items:center; gap:8px;
+  font-size:13px; font-weight:600; color:var(--text-faint);
+  margin-bottom:22px; flex-wrap:wrap;
+}
+.breadcrumb a{ color:var(--text-muted); transition:color .2s; }
+.breadcrumb a:hover{ color:var(--primary); }
+.breadcrumb span[aria-current]{ color:var(--text); }
+
+/* =====================================================
+   ARTICLE HERO
+   ===================================================== */
+.article-hero{ padding:44px 0 0; }
+.category-badge{
+  display:inline-flex; align-items:center; gap:6px;
+  background:rgba(37,99,235,.1); color:var(--primary);
+  font-size:12px; font-weight:700; letter-spacing:.02em;
+  padding:6px 14px; border-radius:100px; margin-bottom:18px;
+}
+.category-badge::before{ content:''; width:6px; height:6px; border-radius:50%; background:var(--primary); }
+
+.article-title{
+  font-size:clamp(30px,4.4vw,52px);
+  font-weight:800; letter-spacing:-0.02em; line-height:1.12;
+  max-width:900px; margin-bottom:26px;
+}
+
+.article-meta{
+  display:flex; align-items:center; gap:14px; flex-wrap:wrap;
+  padding-bottom:36px; border-bottom:1px solid var(--border);
+  margin-bottom:0;
+}
+.author-mini{ display:flex; align-items:center; gap:10px; }
+.author-avatar{
+  width:42px; height:42px; border-radius:50%;
+  background:linear-gradient(135deg,var(--primary),var(--secondary));
+  display:flex; align-items:center; justify-content:center;
+  color:#fff; font-weight:700; font-size:14px;
+}
+.author-mini strong{ display:block; font-size:14px; font-weight:700; }
+.author-mini span{ display:block; font-size:12px; color:var(--text-faint); }
+.meta-dot{ width:4px; height:4px; border-radius:50%; background:var(--border); }
+.meta-date, .meta-read{ font-size:13px; color:var(--text-muted); font-weight:500; display:flex; align-items:center; gap:6px; }
+
+.article-hero-image-wrap{
+  margin-top:36px; border-radius:var(--radius); overflow:hidden;
+  box-shadow:var(--shadow); position:relative; height:min(52vw,480px);
+  background:linear-gradient(135deg,#dbeafe,#e0f2fe 55%,#dcfce7);
+}
+.article-hero-image-wrap img{
+  width:100%; height:100%; object-fit:cover;
+  transition:transform .6s cubic-bezier(.22,1,.36,1); /* image zoom on hover */
+}
+.article-hero-image-wrap:hover img{ transform:scale(1.045); }
+.hero-image-fallback{
+  position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px;
+  color:var(--primary); opacity:.55;
+}
+.hero-image-fallback svg{ width:44px; height:44px; }
+.hero-image-fallback span{ font-size:12px; font-family:monospace; color:var(--text-faint); }
+
+/* =====================================================
+   ARTICLE LAYOUT — body + sticky sidebar
+   ===================================================== */
+.article-layout{ padding:var(--section-gap) 0; }
+.article-grid{
+  display:grid;
+  grid-template-columns:1fr 320px;
+  gap:56px;
+  align-items:start;
+}
+
+/* ---- Article body typography ---- */
+.article-body{ max-width:760px; }
+.article-body h2{
+  font-size:26px; font-weight:800; letter-spacing:-.01em;
+  margin:44px 0 18px; scroll-margin-top:100px;
+}
+.article-body h3{
+  font-size:19px; font-weight:700; margin:30px 0 12px; scroll-margin-top:100px;
+}
+.article-body p{
+  font-size:16.5px; color:#374151; margin-bottom:18px;
+}
+.article-body ul.body-list{ margin:0 0 22px; padding-left:0; }
+.article-body ul.body-list li{
+  position:relative; padding-left:28px; margin-bottom:11px;
+  font-size:16px; color:#374151;
+}
+.article-body ul.body-list li::before{
+  content:''; position:absolute; left:0; top:8px;
+  width:8px; height:8px; border-radius:50%;
+  background:linear-gradient(135deg,var(--primary),var(--secondary));
+}
+.article-body blockquote{
+  font-family:var(--font-serif); font-style:italic;
+  font-size:20px; line-height:1.6; color:var(--text);
+  border-left:3px solid var(--primary);
+  background:rgba(37,99,235,.04);
+  padding:20px 26px; border-radius:0 var(--radius-sm) var(--radius-sm) 0;
+  margin:28px 0;
+}
+.article-body blockquote cite{
+  display:block; margin-top:10px; font-family:var(--font-body); font-style:normal;
+  font-size:13px; font-weight:700; color:var(--text-faint);
+}
+.article-body figure{ margin:28px 0; }
+.article-body figure img{
+  border-radius:var(--radius-sm); box-shadow:var(--shadow-sm);
+  transition:transform .5s;
+}
+.article-body figure:hover img{ transform:scale(1.02); }
+.article-body figcaption{
+  font-size:12.5px; color:var(--text-faint); margin-top:8px; text-align:center;
+}
+
+/* Callout boxes */
+.callout{
+  display:flex; gap:14px; align-items:flex-start;
+  padding:18px 20px; border-radius:var(--radius-sm);
+  margin:26px 0; font-size:14.5px; line-height:1.6;
+}
+.callout-icon{ font-size:20px; flex-shrink:0; line-height:1; }
+.callout-info{ background:rgba(14,165,233,.08); border:1px solid rgba(14,165,233,.24); color:#0c4a6e; }
+.callout-success{ background:rgba(34,197,94,.08); border:1px solid rgba(34,197,94,.26); color:#14532d; }
+.callout-warning{ background:rgba(217,119,6,.08); border:1px solid rgba(217,119,6,.24); color:#7c2d12; }
+.callout strong{ display:block; margin-bottom:3px; }
+
+/* Table */
+.table-wrap{ overflow-x:auto; margin:26px 0; border-radius:var(--radius-sm); border:1px solid var(--border); }
+.article-body table{ width:100%; border-collapse:collapse; font-size:14px; min-width:480px; }
+.article-body thead th{
+  text-align:left; background:var(--bg); color:var(--text-muted);
+  font-size:11.5px; text-transform:uppercase; letter-spacing:.04em;
+  padding:12px 16px; border-bottom:1px solid var(--border);
+}
+.article-body tbody td{ padding:13px 16px; border-bottom:1px solid var(--border); color:#374151; }
+.article-body tbody tr:last-child td{ border-bottom:none; }
+.article-body tbody tr:hover{ background:rgba(37,99,235,.03); }
+
+/* Inline code / code-style spacing */
+.article-body code{
+  font-family:'SFMono-Regular', Consolas, monospace;
+  background:#EEF2F7; color:#1D4ED8;
+  padding:2px 7px; border-radius:6px; font-size:.9em;
+}
+
+/* Social share (inline, end of article) */
+.social-share-inline{
+  display:flex; align-items:center; gap:12px; flex-wrap:wrap;
+  margin-top:44px; padding-top:28px; border-top:1px solid var(--border);
+}
+.social-share-inline .share-label{ font-size:13px; font-weight:700; color:var(--text-muted); margin-right:4px; }
+.share-btn{
+  width:38px; height:38px; border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  background:var(--card); border:1px solid var(--border); color:var(--text-muted);
+  transition:all .2s;
+}
+.share-btn:hover{ transform:translateY(-3px); box-shadow:var(--shadow-sm); color:var(--primary); border-color:rgba(37,99,235,.3); }
+
+/* =====================================================
+   SIDEBAR (sticky)
+   ===================================================== */
+.article-sidebar{
+  position:sticky; top:96px;
+  display:flex; flex-direction:column; gap:20px;
+}
+.sidebar-card{
+  background:var(--card); border:1px solid var(--border); border-radius:var(--radius);
+  padding:22px; box-shadow:var(--shadow-sm);
+}
+.sidebar-card h3{ font-size:13px; font-weight:800; text-transform:uppercase; letter-spacing:.05em; color:var(--text-faint); margin-bottom:16px; }
+
+/* Author card */
+.author-card-top{ display:flex; align-items:center; gap:12px; margin-bottom:12px; }
+.author-card-avatar{
+  width:52px; height:52px; border-radius:50%;
+  background:linear-gradient(135deg,var(--primary),var(--secondary));
+  display:flex; align-items:center; justify-content:center; color:#fff; font-weight:800; font-size:16px;
+}
+.author-card-top strong{ display:block; font-size:15px; }
+.author-card-top span{ display:block; font-size:12.5px; color:var(--text-faint); }
+.author-card p{ font-size:13px; color:var(--text-muted); line-height:1.6; margin-bottom:14px; }
+.author-follow{
+  display:inline-flex; align-items:center; gap:6px;
+  font-size:12.5px; font-weight:700; color:var(--primary);
+  border:1.5px solid rgba(37,99,235,.3); border-radius:100px; padding:7px 14px;
+  transition:all .2s;
+}
+.author-follow:hover{ background:var(--primary); color:#fff; border-color:var(--primary); }
+
+/* TOC */
+.toc-list{ display:flex; flex-direction:column; gap:2px; }
+.toc-list a{
+  display:block; font-size:13.5px; color:var(--text-muted); font-weight:500;
+  padding:8px 10px; border-left:2px solid var(--border); border-radius:0 8px 8px 0;
+  transition:all .2s;
+}
+.toc-list a:hover{ color:var(--primary); background:rgba(37,99,235,.05); }
+.toc-list a.active{ color:var(--primary); font-weight:700; border-left-color:var(--primary); background:rgba(37,99,235,.06); }
+
+/* Categories */
+.cat-pill-list{ display:flex; flex-wrap:wrap; gap:8px; }
+.cat-pill{
+  font-size:12px; font-weight:600; color:var(--text-muted);
+  background:var(--bg); border:1px solid var(--border);
+  padding:7px 13px; border-radius:100px; transition:all .2s;
+}
+.cat-pill:hover{ color:var(--primary); border-color:rgba(37,99,235,.3); background:rgba(37,99,235,.06); }
+
+/* Latest articles mini list */
+.latest-item{ display:flex; gap:12px; padding:10px 0; border-bottom:1px solid var(--border); }
+.latest-item:last-child{ border-bottom:none; padding-bottom:0; }
+.latest-thumb{
+  width:56px; height:56px; border-radius:10px; flex-shrink:0;
+  background:linear-gradient(135deg,#dbeafe,#dcfce7);
+}
+.latest-info h4{ font-size:13px; font-weight:700; line-height:1.4; margin-bottom:4px; }
+.latest-info span{ font-size:11px; color:var(--text-faint); }
+
+/* Sidebar share */
+.sidebar-share-row{ display:flex; gap:10px; }
+
+/* =====================================================
+   RELATED ARTICLES
+   ===================================================== */
+.related-section{ padding:var(--section-gap) 0; background:var(--card); border-top:1px solid var(--border); }
+.section-head{ display:flex; align-items:flex-end; justify-content:space-between; margin-bottom:36px; flex-wrap:wrap; gap:12px; }
+.section-head h2{ font-size:28px; font-weight:800; letter-spacing:-.01em; }
+.section-head p{ font-size:14px; color:var(--text-muted); }
+
+.related-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:24px;
+}
+.article-card{
+  background:var(--card); border:1px solid var(--border); border-radius:var(--radius);
+  overflow:hidden; transition:transform .35s cubic-bezier(.22,1,.36,1), box-shadow .35s, border-color .35s;
+}
+.article-card:hover{ transform:translateY(-6px) scale(1.015); box-shadow:var(--shadow); border-color:transparent; }
+.article-card-thumb{
+  height:170px; position:relative; overflow:hidden;
+  background:linear-gradient(135deg,#dbeafe,#e0f2fe 55%,#dcfce7);
+}
+.article-card-thumb img{ width:100%; height:100%; object-fit:cover; transition:transform .5s; }
+.article-card:hover .article-card-thumb img{ transform:scale(1.08); }
+.card-cat-badge{
+  position:absolute; top:12px; left:12px; z-index:2;
+  background:rgba(255,255,255,.92); backdrop-filter:blur(6px);
+  font-size:11px; font-weight:700; color:var(--primary);
+  padding:5px 12px; border-radius:100px;
+}
+.article-card-body{ padding:20px 20px 22px; }
+.card-date{ font-size:11.5px; color:var(--text-faint); font-weight:600; margin-bottom:8px; }
+.card-title{ font-size:16px; font-weight:700; line-height:1.4; margin-bottom:8px; }
+.card-desc{ font-size:13px; color:var(--text-muted); line-height:1.6; margin-bottom:16px; }
+.read-more{
+  display:inline-flex; align-items:center; gap:6px;
+  font-size:13px; font-weight:700; color:var(--primary); transition:gap .2s;
+}
+.read-more:hover{ gap:10px; }
+
+/* =====================================================
+   AI ASSISTANT CTA
+   ===================================================== */
+.ai-cta{
+  padding:var(--section-gap) 0;
+  background:linear-gradient(135deg,var(--primary) 0%,var(--secondary) 100%);
+  position:relative; overflow:hidden;
+}
+.ai-cta::before, .ai-cta::after{
+  content:''; position:absolute; border-radius:50%; filter:blur(60px); opacity:.35;
+}
+.ai-cta::before{ width:360px; height:360px; background:var(--accent); top:-140px; left:-100px; }
+.ai-cta::after{ width:300px; height:300px; background:#fff; bottom:-140px; right:-80px; }
+.ai-cta-inner{ position:relative; z-index:1; text-align:center; max-width:620px; margin:0 auto; }
+.ai-cta-inner h2{ font-size:clamp(24px,3.4vw,36px); font-weight:800; color:#fff; margin-bottom:14px; letter-spacing:-.01em; }
+.ai-cta-inner p{ font-size:15px; color:rgba(255,255,255,.88); margin-bottom:28px; }
+
+.btn-ripple{
+  position:relative; overflow:hidden;
+  display:inline-flex; align-items:center; gap:10px;
+  background:#fff; color:var(--primary);
+  font-size:15px; font-weight:800;
+  padding:15px 32px; border-radius:100px; border:none;
+  box-shadow:0 16px 34px rgba(0,0,0,.18);
+  transition:transform .2s;
+}
+.btn-ripple:hover{ transform:translateY(-2px); }
+.ripple-circle{
+  position:absolute; border-radius:50%; transform:scale(0);
+  background:rgba(37,99,235,.25);
+  animation:rippleAnim .6s ease-out;
+  pointer-events:none;
+}
+@keyframes rippleAnim{ to{ transform:scale(2.6); opacity:0; } }
+
+/* =====================================================
+   FOOTER
+   ===================================================== */
+.site-footer{ background:#0B1220; color:#94A3B8; padding:50px 0 30px; }
+.footer-inner{ display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:16px; }
+.footer-brand{ display:flex; align-items:center; gap:10px; color:#fff; font-weight:800; font-size:16px; }
+.footer-links{ display:flex; gap:20px; flex-wrap:wrap; }
+.footer-links a{ font-size:13px; color:#94A3B8; transition:color .2s; }
+.footer-links a:hover{ color:#fff; }
+.footer-copy{ font-size:12.5px; color:#64748B; margin-top:26px; text-align:center; }
+
+/* =====================================================
+   RESPONSIVE
+   ===================================================== */
+@media (max-width:980px){
+  .article-grid{ grid-template-columns:1fr; }
+  .article-sidebar{ position:static; flex-direction:row; flex-wrap:wrap; }
+  .sidebar-card{ flex:1 1 260px; }
+  .related-grid{ grid-template-columns:repeat(2,1fr); }
+}
+@media (max-width:720px){
+  .nav-links, .nav-cta{ display:none; }
+  .nav-ham{ display:flex; }
+  .article-hero{ padding-top:28px; }
+  .article-hero-image-wrap{ height:56vw; margin-top:26px; }
+  :root{ --section-gap:56px; }
+  .related-grid{ grid-template-columns:1fr; }
+  .article-sidebar{ flex-direction:column; }
+  .footer-inner{ flex-direction:column; text-align:center; }
+}
+</style>
+</head>
+<body>
+
+<!-- Reading progress bar -->
+<div class="progress-bar" id="progressBar"></div>
+
+<!-- ================= HEADER ================= -->
+<header class="site-header">
+  <div class="container nav-inner">
+    <a href="index.html" class="brand">
+           <a href="index.html" class="logo-block"><img src="assets/logo.png" width="200" height="50" alt="PulseOne"/></a>
+    </a>
+    <nav class="nav-links" aria-label="Primary">
+      <a href="index.html">Home</a>
+      <a href="insight.html" class="active">Insights</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+    <a href="insights.html" class="nav-cta">Explore Articles</a>
+    <button class="nav-ham" aria-label="Menu"><span></span><span></span><span></span></button>
+  </div>
+</header>
+
+<main>
+
+  <!-- ================= ARTICLE HERO ================= -->
+  <section class="article-hero">
+    <div class="container">
+
+   
+        <span aria-current="page">Article</span>
+      </nav>
+
+      <span class="category-badge reveal">CGHS</span>
+
+      <h1 class="article-title reveal delay-1">
+        Understanding CGHS Coverage: A Complete Guide for Government Employees
+      </h1>
+
+      <div class="article-meta reveal delay-2">
+        <div class="author-mini">
+          <div class="author-avatar">AV</div>
+          <div>
+            <strong>Dr. Aisha Verma</strong>
+            <span>Healthcare Policy Analyst</span>
+          </div>
+        </div>
+        <span class="meta-dot"></span>
+        <span class="meta-date">📅 12 Jul 2026</span>
+        <span class="meta-dot"></span>
+        <span class="meta-read">⏱ <span id="readTime">–</span> min read</span>
+      </div>
+
+      <div class="article-hero-image-wrap reveal delay-3">
+        <div class="hero-image-fallback">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="9" cy="9" r="2"/><path d="m21 15-5-5L5 21"/></svg>
+          <span>hero-cghs.jpg</span>
+        </div>
+        <img src="cghs.jpg" alt="Doctor explaining CGHS healthcare coverage documents to a patient" onerror="this.style.display='none';" />
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ================= ARTICLE LAYOUT ================= -->
+  <section class="article-layout">
+    <div class="container article-grid">
+
+      <!-- ---- Article body ---- -->
+      <article class="article-body reveal" id="articleBody">
+
+        <h2 id="sec-what">What is CGHS?</h2>
+        <p>The Central Government Health Scheme (CGHS) is a comprehensive healthcare programme designed to provide medical care to central government employees, pensioners, and their eligible dependents. Since its inception, CGHS has grown into one of the largest health assurance schemes in the country, covering both outpatient and inpatient treatment across a wide network of dispensaries and empanelled hospitals.</p>
+        <p>Unlike private insurance, CGHS is not a reimbursement-only model — beneficiaries can access <code>cashless treatment</code> at empanelled hospitals for most major procedures, provided the correct referral and approval process is followed.</p>
+
+        <blockquote>
+          "CGHS was built on a simple idea: healthcare access shouldn't depend on how much paperwork you're willing to do after you're already unwell."
+          <cite>— Ministry of Health &amp; Family Welfare, Annual Report</cite>
+        </blockquote>
+
+        <h2 id="sec-eligibility">Who is Eligible?</h2>
+        <p>Eligibility under CGHS is fairly broad, but it's worth checking your exact category before you assume coverage. Generally, the scheme covers:</p>
+        <ul class="body-list">
+          <li>Serving central government employees and their dependent family members</li>
+          <li>Central government pensioners and their eligible dependents</li>
+          <li>Members of Parliament and ex-Members of Parliament</li>
+          <li>Freedom fighters and certain autonomous body employees, where notified</li>
+          <li>Accredited journalists in specific CGHS-covered cities</li>
+        </ul>
+
+        <div class="callout callout-info">
+          <span class="callout-icon">💡</span>
+          <div><strong>Good to know</strong>Dependent parents, spouse, and unmarried children (subject to income criteria) are usually covered under the same CGHS card as the primary beneficiary.</div>
+        </div>
+
+        <h2 id="sec-benefits">What Does It Cover?</h2>
+        <p>CGHS coverage spans a wide range of services — from routine OPD consultations to major surgical procedures. The table below breaks down the broad coverage categories and how they're typically processed.</p>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Category</th><th>Coverage Type</th><th>Approval Needed</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>OPD Consultation</td><td>Cashless at CGHS dispensary</td><td>No</td></tr>
+              <tr><td>Diagnostic Tests</td><td>Cashless / Reimbursement</td><td>Sometimes</td></tr>
+              <tr><td>Planned Surgery</td><td>Cashless at empanelled hospital</td><td>Yes — prior permission</td></tr>
+              <tr><td>Emergency Surgery</td><td>Cashless or reimbursement</td><td>Post-facto intimation</td></tr>
+              <tr><td>Medicines</td><td>Cashless via CGHS pharmacy</td><td>No</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="callout callout-warning">
+          <span class="callout-icon">⚠️</span>
+          <div><strong>Common mistake</strong>Skipping prior permission for planned, non-emergency surgeries is the single biggest reason CGHS reimbursement claims get delayed or rejected.</div>
+        </div>
+
+        <h2 id="sec-apply">How to Apply for a CGHS Card</h2>
+        <p>The application process has become significantly simpler with the online CGHS portal. Here's the general flow most beneficiaries follow:</p>
+        <ul class="body-list">
+          <li>Fill out the online CGHS beneficiary application form with your service or pension details</li>
+          <li>Upload identity proof, address proof, and a recent photograph</li>
+          <li>Pay the applicable subscription based on your pay level (one-time or annual, depending on your category)</li>
+          <li>Submit the form through your department's nodal officer for verification</li>
+          <li>Receive your CGHS plastic card, usually within a few weeks of approval</li>
+        </ul>
+
+        <div class="callout callout-success">
+          <span class="callout-icon">✅</span>
+          <div><strong>Tip</strong>You can start using CGHS services with your acknowledgement receipt while your physical card is being processed — most dispensaries accept this as valid proof.</div>
+        </div>
+
+        <h2 id="sec-empanelled">Finding an Empanelled Hospital</h2>
+        <p>Before any planned treatment, it's worth confirming that your chosen hospital is currently empanelled under CGHS for your city — empanelment lists are reviewed periodically, and hospitals occasionally move on or off the list. The official CGHS website maintains a searchable, city-wise list that's updated regularly.</p>
+
+        <!-- Social share (end of article) -->
+        <div class="social-share-inline">
+          <span class="share-label">Share this article</span>
+          <a class="share-btn" href="https://twitter.com/intent/tweet?url=https://careline.health/article.html&text=Understanding%20CGHS%20Coverage%3A%20A%20Complete%20Guide" target="_blank" rel="noopener" aria-label="Share on Twitter">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M22 4.01c-.77.35-1.6.58-2.46.69a4.3 4.3 0 0 0 1.88-2.37 8.59 8.59 0 0 1-2.72 1.04A4.28 4.28 0 0 0 11.1 7.11c0 .34.04.67.1.98A12.13 12.13 0 0 1 2.9 3.6a4.27 4.27 0 0 0 1.32 5.7 4.24 4.24 0 0 1-1.94-.53v.05a4.28 4.28 0 0 0 3.43 4.2 4.3 4.3 0 0 1-1.93.07 4.28 4.28 0 0 0 4 2.97A8.6 8.6 0 0 1 2 18.57a12.1 12.1 0 0 0 6.55 1.92c7.86 0 12.16-6.51 12.16-12.16l-.01-.55A8.7 8.7 0 0 0 22 4.01Z"/></svg>
+          </a>
+          <a class="share-btn" href="https://www.linkedin.com/sharing/share-offsite/?url=https://careline.health/article.html" target="_blank" rel="noopener" aria-label="Share on LinkedIn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+          </a>
+          <a class="share-btn" href="https://www.facebook.com/sharer/sharer.php?u=https://careline.health/article.html" target="_blank" rel="noopener" aria-label="Share on Facebook">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M22 12.06C22 6.51 17.52 2 12 2S2 6.51 2 12.06C2 17.06 5.66 21.2 10.44 21.95v-6.98H7.9v-2.9h2.54V9.85c0-2.5 1.49-3.89 3.77-3.89 1.09 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.77-1.63 1.56v1.88h2.78l-.44 2.9h-2.34v6.98C18.34 21.2 22 17.06 22 12.06Z"/></svg>
+          </a>
+          <a class="share-btn" href="https://api.whatsapp.com/send?text=https://careline.health/article.html" target="_blank" rel="noopener" aria-label="Share on WhatsApp">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.37 2 11.74c0 2.07.66 3.98 1.78 5.55L2.5 22l4.9-1.24a10.1 10.1 0 0 0 4.6 1.12c5.52 0 10-4.37 10-9.74S17.52 2 12 2Zm0 17.7c-1.5 0-2.9-.4-4.1-1.1l-.29-.17-2.9.74.77-2.79-.19-.29A7.9 7.9 0 0 1 4.1 11.74C4.1 7.5 7.65 4.06 12 4.06s7.9 3.44 7.9 7.68S16.35 19.7 12 19.7Z"/></svg>
+          </a>
+        </div>
+
+      </article>
+
+      <!-- ---- Sticky sidebar ---- -->
+      <aside class="article-sidebar">
+
+        <div class="sidebar-card author-card reveal">
+          <div class="author-card-top">
+            <div class="author-card-avatar">AV</div>
+            <div>
+              <strong>Dr. Aisha Verma</strong>
+              <span>Healthcare Policy Analyst</span>
+            </div>
+          </div>
+          <p>Aisha writes on public health schemes, insurance policy, and patient rights, with 8+ years covering India's healthcare landscape.</p>
+          <a href="#" class="author-follow">+ Follow</a>
+        </div>
+
+        <div class="sidebar-card reveal">
+          <h3>Table of Contents</h3>
+          <ul class="toc-list" id="tocList"><!-- populated by JS from article headings --></ul>
+        </div>
+
+        <div class="sidebar-card reveal">
+          <h3>Categories</h3>
+          <div class="cat-pill-list">
+            <a href="insights.html?cat=cghs" class="cat-pill">CGHS</a>
+            <a href="insights.html?cat=insurance" class="cat-pill">Insurance</a>
+            <a href="insights.html?cat=surgery" class="cat-pill">Surgery</a>
+            <a href="insights.html?cat=health-tips" class="cat-pill">Health Tips</a>
+          </div>
+        </div>
+
+        <div class="sidebar-card reveal">
+          <h3>Latest Articles</h3>
+          <div class="latest-item">
+            <div class="latest-thumb"></div>
+            <div class="latest-info"><h4>5 Things to Ask Before Surgery</h4><span>08 Jul 2026</span></div>
+          </div>
+          <div class="latest-item">
+            <div class="latest-thumb"></div>
+            <div class="latest-info"><h4>Decoding Your Insurance Policy Wording</h4><span>02 Jul 2026</span></div>
+          </div>
+          <div class="latest-item">
+            <div class="latest-thumb"></div>
+            <div class="latest-info"><h4>Preventive Health Checkups by Age</h4><span>27 Jun 2026</span></div>
+          </div>
+        </div>
+
+        <div class="sidebar-card reveal">
+          <h3>Share</h3>
+          <div class="sidebar-share-row">
+            <a class="share-btn" href="https://twitter.com/intent/tweet?url=https://careline.health/article.html" target="_blank" rel="noopener" aria-label="Share on Twitter">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M22 4.01c-.77.35-1.6.58-2.46.69a4.3 4.3 0 0 0 1.88-2.37 8.59 8.59 0 0 1-2.72 1.04A4.28 4.28 0 0 0 11.1 7.11c0 .34.04.67.1.98A12.13 12.13 0 0 1 2.9 3.6a4.27 4.27 0 0 0 1.32 5.7 4.24 4.24 0 0 1-1.94-.53v.05a4.28 4.28 0 0 0 3.43 4.2 4.3 4.3 0 0 1-1.93.07 4.28 4.28 0 0 0 4 2.97A8.6 8.6 0 0 1 2 18.57a12.1 12.1 0 0 0 6.55 1.92c7.86 0 12.16-6.51 12.16-12.16l-.01-.55A8.7 8.7 0 0 0 22 4.01Z"/></svg>
+            </a>
+            <a class="share-btn" href="https://www.linkedin.com/sharing/share-offsite/?url=https://careline.health/article.html" target="_blank" rel="noopener" aria-label="Share on LinkedIn">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+            </a>
+            <a class="share-btn" href="https://api.whatsapp.com/send?text=https://careline.health/article.html" target="_blank" rel="noopener" aria-label="Share on WhatsApp">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.37 2 11.74c0 2.07.66 3.98 1.78 5.55L2.5 22l4.9-1.24a10.1 10.1 0 0 0 4.6 1.12c5.52 0 10-4.37 10-9.74S17.52 2 12 2Zm0 17.7c-1.5 0-2.9-.4-4.1-1.1l-.29-.17-2.9.74.77-2.79-.19-.29A7.9 7.9 0 0 1 4.1 11.74C4.1 7.5 7.65 4.06 12 4.06s7.9 3.44 7.9 7.68S16.35 19.7 12 19.7Z"/></svg>
+            </a>
+          </div>
+        </div>
+
+      </aside>
+
+    </div>
+  </section>
+
+  <!-- ================= RELATED ARTICLES ================= -->
+  <section class="related-section">
+    <div class="container">
+      <div class="section-head reveal">
+        <div>
+          <h2>Related Articles</h2>
+          <p>More guides on government and insurance-backed healthcare</p>
+        </div>
+      </div>
+      <div class="related-grid" id="relatedGrid"><!-- populated by JS --></div>
+    </div>
+  </section>
+
+  <!-- ================= AI ASSISTANT CTA ================= -->
+  <section class="ai-cta">
+    <div class="container ai-cta-inner reveal">
+      <h2>Need help understanding this topic?</h2>
+      <p>Our AI health assistant can walk you through CGHS eligibility, paperwork, and empanelled hospitals near you — in plain language.</p>
+      <button type="button" class="btn-ripple" id="aiAssistantBtn">
+        💬 Talk to AI Assistant
+      </button>
+    </div>
+  </section>
+
+</main>
+
+<!-- ================= FOOTER ================= -->
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-inner">
+       <a href="index.html" class="logo-block"><img src="assets/logo.png" width="200" height="50" alt="PulseOne"/></a>
+      <nav class="footer-links" aria-label="Footer">
+        <a href="index.html">Home</a>
+        <a href="insights.html">Insights</a>
+        <a href="index.html#contact">Contact</a>
+        <a href="#">Privacy Policy</a>
+      </nav>
+    </div>
+    <p class="footer-copy">© 2026 pulseone Insights. All rights reserved.</p>
+  </div>
+</footer>
+
+<script>
+"use strict";
+
+/* =====================================================
+   RELATED ARTICLES — mock data (swap with real API data)
+   ===================================================== */
+var relatedArticles = [
+  {
+    category: "Surgery",
+    date: "08 Jul 2026",
+    title: "5 Things to Ask Your Surgeon Before a Major Operation",
+    desc: "A practical checklist that helps you walk into surgery consultations informed and confident.",
+    url: "article.html"
+  },
+  {
+    category: "Insurance",
+    date: "02 Jul 2026",
+    title: "Decoding Your Health Insurance Policy Wording",
+    desc: "Sub-limits, co-pay, and waiting periods explained in plain English — no jargon.",
+    url: "article.html"
+  },
+  {
+    category: "Health Tips",
+    date: "27 Jun 2026",
+    title: "Preventive Health Checkups You Need, By Age",
+    desc: "A simple, age-wise guide to the screenings worth prioritising each decade.",
+    url: "article.html"
+  }
+];
+
+function renderRelatedArticles(){
+  var grid = document.getElementById("relatedGrid");
+  if(!grid) return;
+  grid.innerHTML = relatedArticles.map(function(a, i){
+    return (
+      '<a href="' + a.url + '" class="article-card reveal delay-' + ((i % 3) + 1) + '">' +
+        '<div class="article-card-thumb">' +
+          '<span class="card-cat-badge">' + a.category + '</span>' +
+          '<img src="assets/thumbnails/related-' + (i+1) + '.jpg" alt="' + a.title + '" loading="lazy" onerror="this.style.display=\'none\';" />' +
+        '</div>' +
+        '<div class="article-card-body">' +
+          '<div class="card-date">' + a.date + '</div>' +
+          '<h3 class="card-title">' + a.title + '</h3>' +
+          '<p class="card-desc">' + a.desc + '</p>' +
+          '<span class="read-more">Read More →</span>' +
+        '</div>' +
+      '</a>'
+    );
+  }).join("");
+
+  document.querySelectorAll('#relatedGrid .reveal').forEach(function(el){
+    if(window.revealObserver) window.revealObserver.observe(el);
+    else el.classList.add('in');
+  });
+}
+
+/* =====================================================
+   ESTIMATED READING TIME — computed from article word count
+   ===================================================== */
+function computeReadingTime(){
+  var body = document.getElementById("articleBody");
+  var out = document.getElementById("readTime");
+  if(!body || !out) return;
+  var words = body.innerText.trim().split(/\s+/).length;
+  var minutes = Math.max(1, Math.round(words / 200)); // ~200 wpm average
+  out.textContent = minutes;
+}
+
+/* =====================================================
+   TABLE OF CONTENTS — auto-built from <h2> headings,
+   with scroll-based active-link highlighting
+   ===================================================== */
+function buildTOC(){
+  var body = document.getElementById("articleBody");
+  var tocList = document.getElementById("tocList");
+  if(!body || !tocList) return;
+
+  var headings = body.querySelectorAll("h2");
+  if(!headings.length){ tocList.innerHTML = '<li style="font-size:13px;color:var(--text-faint)">No sections found</li>'; return; }
+
+  var links = [];
+  headings.forEach(function(h){
+    var li = document.createElement("li");
+    var a = document.createElement("a");
+    a.href = "#" + h.id;
+    a.textContent = h.textContent;
+    li.appendChild(a);
+    tocList.appendChild(li);
+    links.push({ id: h.id, link: a, el: h });
+  });
+
+  // Highlight the active section while scrolling
+  var tocObserver = new IntersectionObserver(function(entries){
+    entries.forEach(function(entry){
+      var match = links.find(function(l){ return l.id === entry.target.id; });
+      if(!match) return;
+      if(entry.isIntersecting){
+        links.forEach(function(l){ l.link.classList.remove("active"); });
+        match.link.classList.add("active");
+      }
+    });
+  }, { rootMargin: "-100px 0px -70% 0px" });
+
+  headings.forEach(function(h){ tocObserver.observe(h); });
+}
+
+/* =====================================================
+   READING PROGRESS BAR
+   ===================================================== */
+function updateProgressBar(){
+  var bar = document.getElementById("progressBar");
+  var body = document.getElementById("articleBody");
+  if(!bar || !body) return;
+
+  var start = body.offsetTop;
+  var total = body.offsetHeight;
+  var scrolled = window.scrollY - start + window.innerHeight * 0.4;
+  var pct = Math.min(100, Math.max(0, (scrolled / total) * 100));
+  bar.style.width = pct + "%";
+}
+
+/* =====================================================
+   SCROLL REVEAL (fade-up) — shared IntersectionObserver
+   ===================================================== */
+function initScrollReveal(){
+  var els = document.querySelectorAll(".reveal");
+  if(!("IntersectionObserver" in window)){
+    els.forEach(function(el){ el.classList.add("in"); });
+    return;
+  }
+  window.revealObserver = new IntersectionObserver(function(entries){
+    entries.forEach(function(entry){
+      if(entry.isIntersecting){
+        entry.target.classList.add("in");
+        window.revealObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12 });
+  els.forEach(function(el){ window.revealObserver.observe(el); });
+}
+
+/* =====================================================
+   BUTTON RIPPLE EFFECT
+   ===================================================== */
+function initRipple(){
+  document.querySelectorAll(".btn-ripple").forEach(function(btn){
+    btn.addEventListener("click", function(e){
+      var rect = btn.getBoundingClientRect();
+      var size = Math.max(rect.width, rect.height);
+      var circle = document.createElement("span");
+      circle.className = "ripple-circle";
+      circle.style.width = circle.style.height = size + "px";
+      circle.style.left = (e.clientX - rect.left - size / 2) + "px";
+      circle.style.top = (e.clientY - rect.top - size / 2) + "px";
+      btn.appendChild(circle);
+      setTimeout(function(){ circle.remove(); }, 650);
+    });
+  });
+}
+
+/* =====================================================
+   AI ASSISTANT CTA — demo interaction (frontend only)
+   ===================================================== */
+function initAIAssistantButton(){
+  var btn = document.getElementById("aiAssistantBtn");
+  if(!btn) return;
+  btn.addEventListener("click", function(){
+    btn.innerHTML = "💬 Connecting you now…";
+    setTimeout(function(){
+      btn.innerHTML = "💬 Talk to AI Assistant";
+    }, 2200);
+  });
+}
+
+/* =====================================================
+   MOBILE NAV TOGGLE (simple show/hide)
+   ===================================================== */
+function initMobileNav(){
+  var ham = document.querySelector(".nav-ham");
+  var links = document.querySelector(".nav-links");
+  if(!ham || !links) return;
+  ham.addEventListener("click", function(){
+    var isOpen = links.style.display === "flex";
+    links.style.display = isOpen ? "none" : "flex";
+    links.style.cssText += isOpen ? "" : "position:absolute; top:72px; left:0; right:0; background:#fff; flex-direction:column; padding:16px 24px; border-bottom:1px solid var(--border);";
+  });
+}
+
+/* =====================================================
+   INIT
+   ===================================================== */
+document.addEventListener("DOMContentLoaded", function(){
+  renderRelatedArticles();
+  computeReadingTime();
+  buildTOC();
+  initScrollReveal();
+  initRipple();
+  initAIAssistantButton();
+  initMobileNav();
+  updateProgressBar();
+});
+
+window.addEventListener("scroll", updateProgressBar, { passive: true });
+window.addEventListener("resize", updateProgressBar);
+</script>
+
+</body>
+</html>
